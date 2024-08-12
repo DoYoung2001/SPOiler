@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useState } from "react";
+import TracklistAlert from "./TracklistAlert"; // 모달 컴포넌트 임포트
+import "../styles/TracklistAlert.css"; // 스타일 파일 임포트
 
-const Sidebar = () => (
+const Sidebar = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  return (
   <aside className="sidebar">
     <div className="sidebar-item">
       <div className="icon">
@@ -22,7 +34,7 @@ const Sidebar = () => (
       </div>
       <p>내 플레이리스트</p>
     </div>
-    <div className="sidebar-item">
+    <div className="menuItem" onClick={openModal}>
       <div className="icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
           <path
@@ -30,9 +42,10 @@ const Sidebar = () => (
           />
         </svg>
       </div>
+      
       <p>내 플레이리스트 추가</p>
-    </div>
+    </div><TracklistAlert isOpen={isModalOpen} onClose={closeModal} />
   </aside>
 );
-
+};
 export default Sidebar;

@@ -48,28 +48,36 @@ body {
     align-items: center;
   }
   
-  .search {
-    display: flex;
-    align-items: center;
-    margin-right: 16px;
-  }
   
-  .search-icon {
-    display: flex;
-    align-items: center;
-    background-color: #ddf3de;
-    border-radius: 8px 0 0 8px;
-    padding: 0 8px;
-  }
   
-  .search input {
-    border: 1px solid #ddf3de;
-    border-radius: 0 8px 8px 0;
-    padding: 8px;
-  }
-  
+ /* From Uiverse.io by Praashoo7 */ 
  
-  /* From Uiverse.io by barisdogansutcu */ 
+ 
+ .search {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+  }
+
+
+ .search input {
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  padding: 1em;
+  background-color: #ccc;
+  box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  transition: 300ms ease-in-out;
+}
+
+.search input:focus {
+  background-color: white;
+  transform: scale(1.05);
+  box-shadow: 13px 13px 100px #969696,
+             -13px -13px 100px #ffffff;
+}
+  
+/* From Uiverse.io by barisdogansutcu */ 
  .logout-button button {
     
     margin: 0 8px;
@@ -134,6 +142,20 @@ body {
     background-color: #faf7f7;
   }
   
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background-color: #faf7f7;
+
+}
+
 .icon {
     margin-right: 8px;
   }

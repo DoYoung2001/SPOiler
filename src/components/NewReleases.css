@@ -1,0 +1,49 @@
+/* src/components/NewReleases.css */
+.new-releases h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .releases-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .release-card {
+    display: flex;
+    align-items: center;
+    background-color: #282828;
+    border-radius: 4px;
+    padding: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .release-card:hover {
+    background-color: #383838;
+  }
+  
+  .release-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    margin-right: 15px;
+  }
+  
+  .release-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .release-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+  }
+  
+  .release-artist {
+    font-size: 14px;
+    color: #b3b3b3;
+  }

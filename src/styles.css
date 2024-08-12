@@ -1,0 +1,189 @@
+/* styles.css */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ddf3de;
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #ddf3de;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  
+  .header-nav a {
+    margin-right: 16px;
+    text-decoration: none;
+    color: #0b1e0b;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  
+ /* From Uiverse.io by Praashoo7 */ 
+ 
+ 
+ .search {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+  }
+
+
+ .search input {
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  padding: 1em;
+  background-color: #ccc;
+  box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  transition: 300ms ease-in-out;
+}
+
+.search input:focus {
+  background-color: white;
+  transform: scale(1.05);
+  box-shadow: 13px 13px 100px #969696,
+             -13px -13px 100px #ffffff;
+}
+  
+/* From Uiverse.io by barisdogansutcu */ 
+ .logout-button button {
+    
+    margin: 0 8px;
+  }
+  .logout-button button {
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  border: 0;
+  background-color: white;
+  box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 15px;
+  transition: all 0.5s ease;
+}
+
+.logout-button button:hover {
+  letter-spacing: 3px;
+  background-color: #00FF7F;
+  color: #ffffff;
+  box-shadow: #00FF7F 0px 7px 29px 0px;
+}
+
+.logout-button button:active {
+  letter-spacing: 3px;
+  background-color: #00FF7F(261deg 80% 48%);
+  color: #00FF7F;
+  box-shadow: #00FF7F ;
+  transform: translateY(10px);
+  transition: 100ms;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+  }
+  
+.main-layout {
+    display: flex;
+    flex: 1;
+  }
+  
+.sidebar {
+    width: 250px;
+    background-color: #ddf3de;
+    padding: 10px;
+  }
+  
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+.sidebar-item:hover {
+    background-color: #faf7f7;
+  }
+  
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background-color: #faf7f7;
+
+}
+
+.icon {
+    margin-right: 8px;
+  }
+  
+.main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+.content-cards {
+    display: flex;
+    gap: 20px;
+  }
+  
+.content-card {
+    background-color: #ddf3de;
+    border: 1px solid #f3ecec;
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+  }
+  
+.content-card img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+.content-info {
+    padding: 10px 0;
+  }
+  

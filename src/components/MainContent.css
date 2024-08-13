@@ -1,73 +1,72 @@
 /* MainContent.css */
 .main-content {
-    padding: 20px;
-    height: calc(100vh - 60px); /* Adjust based on your header height */
-    overflow-y: auto;
-  }
-  
-  .main-content h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .content-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 20px;
-    height: calc(100% - 60px); /* Adjust based on your h1 height */
-  }
-  
-  .content-box {
-    background-color: #181818;
-    border-radius: 8px;
-    padding: 15px;
-    overflow: hidden;
-    position: relative;
-    max-height: 400px; /* Limit the maximum height */
-  }
-  
-  .content-box .title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #00FF7F;
-    position: sticky;
-    top: 0;
-    background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
-    z-index: 1; /* 제목을 다른 요소 위에 표시 */
-    padding: 10px 0;
+  padding: 20px;
+  height: calc(100vh - 60px); /* Adjust based on your header height */
+  overflow-y: auto;
 }
 
-  
-  /* Specific styles for scrollable content */
-  .content-box > div {
-    height: calc(100% - 40px); /* Adjust based on the header height in the box */
-    overflow-y: auto;
+.main-content h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  height: calc(100% - 60px); /* Adjust based on your h1 height */
+}
+
+.content-box {
+  background-color: #181818;
+  border-radius: 8px;
+  padding: 15px;
+  overflow: hidden;
+  position: relative;
+  max-height: 400px; /* Limit the maximum height */
+}
+
+.content-box .title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #00ff7f;
+  position: sticky;
+  top: 0;
+  background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
+  z-index: 1; /* 제목을 다른 요소 위에 표시 */
+  padding: 10px 0;
+}
+
+/* Specific styles for scrollable content */
+.content-box > div {
+  height: calc(100% - 40px); /* Adjust based on the header height in the box */
+  overflow-y: auto;
+}
+
+/* Scrollbar styling */
+.content-box > div::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content-box > div::-webkit-scrollbar-track {
+  background: #181818;
+}
+
+.content-box > div::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.content-box > div::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, minmax(200px, auto));
   }
-  
-  /* Scrollbar styling */
-  .content-box > div::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .content-box > div::-webkit-scrollbar-track {
-    background: #181818;
-  }
-  
-  .content-box > div::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 3px;
-  }
-  
-  .content-box > div::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-  
-  /* Responsive design for smaller screens */
-  @media (max-width: 768px) {
-    .content-grid {
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(4, minmax(200px, auto));
-    }
-  }
+}

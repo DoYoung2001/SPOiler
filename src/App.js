@@ -48,7 +48,7 @@ const App = () => {
   // 로그인 후에는 Header, Sidebar, MainContent를 표시
   return (
     <div className="app">
-      <Header  onLogout={handleLogout} />
+      <Header onLogout={handleLogout} />
       <div className="main-layout">
         <Sidebar />
         <MainContent />

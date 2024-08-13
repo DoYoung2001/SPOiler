@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BookmarkButton from './BookmarkButton';
-import './FeaturedPlaylists.css';
+import '../styles/FeaturedPlaylists.css';
 
 const FeaturedPlaylists = () => {
   const [token, setToken] = useState('');

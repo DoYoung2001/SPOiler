@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './NewReleases.css';
+import '../styles/NewReleases.css';
 import BookmarkButton from './BookmarkButton';
 
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;

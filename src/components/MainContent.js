@@ -1,6 +1,6 @@
 import React from "react";
 import FeaturedPlaylists from "./FeaturedPlaylists";
-import './MainContent.css';
+import '../styles/MainContent.css';
 import NewReleases from './NewReleases';
 
 const MainContent = () => (

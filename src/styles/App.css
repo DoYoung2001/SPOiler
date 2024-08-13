@@ -1,17 +1,13 @@
-
-/* From Uiverse.io by AnthonyPreite */ 
 /* Login and Register page styles */
 
 .login-container,
-.register-container
-{
+.register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: black;
 }
-
 
 #form {
   display: grid;
@@ -20,7 +16,7 @@
   height: 472px;
   padding: 25px;
   background-color: #161616;
-  box-shadow: 0px 15px 60px #00FF7F;
+  box-shadow: 0px 15px 60px #00ff7f;
   outline: 1px solid #2b9962;
   border-radius: 10px;
 }
@@ -64,7 +60,7 @@
 }
 
 .form-inp:focus {
-  border: 1px solid #00FF7F;
+  border: 1px solid #00ff7f;
 }
 
 .form-inp:first-child {
@@ -75,7 +71,7 @@
   width: 100%;
   background: none;
   font-size: 13.4px;
-  color: #00FF7F;
+  color: #00ff7f;
   border: none;
   padding: 0;
   margin: 0;
@@ -92,23 +88,23 @@
 #submit-button {
   display: block;
   width: 100%;
-  color: #00FF7F;
+  color: #00ff7f;
   background-color: transparent;
   font-weight: 600;
   font-size: 14px;
   margin: 0;
   padding: 14px 13px 12px 13px;
   border: 0;
-  outline: 1px solid #00FF7F;
+  outline: 1px solid #00ff7f;
   border-radius: 8px;
   line-height: 1;
   cursor: pointer;
-  transition: all ease-in-out .3s;
+  transition: all ease-in-out 0.3s;
 }
 
 #submit-button:hover {
-  transition: all ease-in-out .3s;
-  background-color: #00FF7F;
+  transition: all ease-in-out 0.3s;
+  background-color: #00ff7f;
   color: #161616;
   cursor: pointer;
 }
@@ -119,7 +115,7 @@
 }
 
 #register a {
-  color: #ddf3de;
+  color: #868686;
   font-size: 15px;
   text-decoration: none;
 }
@@ -131,7 +127,7 @@
   width: 28px;
   height: 8px;
   margin-left: -33px;
-  background-color: #00FF7F;
+  background-color: #00ff7f;
   border-radius: 10px;
 }
 
@@ -152,5 +148,3 @@
 #bar:after {
   right: -38px;
 }
-
-    

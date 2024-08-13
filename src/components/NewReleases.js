@@ -53,7 +53,7 @@ const NewReleases = () => {
 
   return (
     <div className="new-releases">
-      <h2>신곡 리스트</h2>
+      <p className='title'>신곡 리스트</p>
       <div className="releases-grid">
         {newReleases.map((album) => (
           <div key={album.id} className="release-card">

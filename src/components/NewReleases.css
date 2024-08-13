@@ -1,9 +1,16 @@
 /* src/components/NewReleases.css */
-.new-releases h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
+.new-releases .title  {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #00FF7F;
+  position: sticky;
+  top: 0;
+  background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
+  z-index: 1; /* 제목을 다른 요소 위에 표시 */
+  padding: 10px 0;
+}
+
   
   .releases-grid {
     display: grid;

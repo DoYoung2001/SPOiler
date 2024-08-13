@@ -13,7 +13,7 @@
   .content-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, minmax(200px, auto));
+    grid-template-rows: repeat(2, 1fr);
     gap: 20px;
     height: calc(100% - 60px); /* Adjust based on your h1 height */
   }
@@ -27,11 +27,18 @@
     max-height: 400px; /* Limit the maximum height */
   }
   
-  .content-box h2 {
-    font-size: 1.2rem;
+  .content-box .title {
+    font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
-  }
+    margin-bottom: 20px;
+    color: #00FF7F;
+    position: sticky;
+    top: 0;
+    background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
+    z-index: 1; /* 제목을 다른 요소 위에 표시 */
+    padding: 10px 0;
+}
+
   
   /* Specific styles for scrollable content */
   .content-box > div {

@@ -49,7 +49,7 @@ const FeaturedPlaylists = () => {
 
   return (
     <div className="featured-playlists">
-      <h2>실시간 인기 플레이리스트</h2>
+      <p className="title">실시간 인기 플레이리스트</p>
       <div className="playlists-grid">
         {playlists.map((playlist) => (
           <div key={playlist.id} className="playlist-card">

@@ -4,6 +4,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #ddf3de;
+  overflow: hidden;
 }
 
 .app {
@@ -198,7 +199,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-bottom: 20%;
+  margin-bottom: 50%;
 }
 
 .delete-button:hover {

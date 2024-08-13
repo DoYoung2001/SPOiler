@@ -12,6 +12,22 @@ const Sidebar = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+  const handleDeleteClick = () => {
+    setShowConfirmDialog(true);
+  };
+
+  const handleConfirmDelete = () => {
+    console.log("플레이리스트가 삭제되었습니다.");
+    setShowConfirmDialog(false);
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirmDialog(false);
+  };
+
   return (
   <aside className="sidebar">
     <div className="sidebar-item">
@@ -45,6 +61,31 @@ const Sidebar = () => {
       
       <p>내 플레이리스트 추가</p>
     </div><TracklistAlert isOpen={isModalOpen} onClose={closeModal} />
+    <div className="sidebar-delete">
+        <button className="delete-button" onClick={handleDeleteClick}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24px"
+            height="24px"
+            fill="currentColor"
+            viewBox="0 0 256 256"
+          >
+            <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z" />
+          </svg>
+          플레이리스트 삭제
+        </button>
+      </div>
+      {showConfirmDialog && (
+        <div className="confirm-dialog-overlay">
+          <div className="confirm-dialog">
+            <p>삭제하시겠습니까?</p>
+            <div className="confirm-dialog-buttons">
+              <button onClick={handleConfirmDelete}>확인</button>
+              <button onClick={handleCancelDelete}>취소</button>
+            </div>
+          </div>
+        </div>
+      )}
   </aside>
 );
 };

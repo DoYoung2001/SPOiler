@@ -8,6 +8,7 @@ const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 const NewReleases = () => {
   const [token, setToken] = useState('');
   const [newReleases, setNewReleases] = useState([]);
+  
 
   useEffect(() => {
     // Spotify API 토큰을 요청하는 함수

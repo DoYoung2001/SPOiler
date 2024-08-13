@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './NewReleases.css';
+import BookmarkButton from './BookmarkButton';
 
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
@@ -51,6 +52,8 @@ const NewReleases = () => {
     fetchNewReleases(); // 신곡 리스트 가져오는 함수 호출
   }, [token]);
 
+
+
   return (
     <div className="new-releases">
       <p className='title'>신곡 리스트</p>
@@ -60,7 +63,10 @@ const NewReleases = () => {
             <img src={album.images[0].url} alt={album.name} className="release-image" />
             <div className="release-info">
               <h3 className="release-title">{album.name}</h3>
+              <BookmarkButton /> 
               <p className="release-artist">{album.artists.map(artist => artist.name).join(', ')}</p>
+              
+            
             </div>
           </div>
         ))}

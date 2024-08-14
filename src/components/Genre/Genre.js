@@ -1,8 +1,13 @@
+// CSS 모듈 import: import styles from "./Genre.module.css";로 CSS 모듈을 가져옵니다.
+// 클래스 이름 적용: 기존의 클래스 이름 대신 styles 객체를 사용하여 클래스를 적용합니다.
+//  예를 들어, className="track-pop"을 className={styles["track-pop"]}으로 변경합니다.
+
+
 import React, { useEffect, useState } from "react";
-import BookmarkButton from "./BookmarkButton/BookmarkButton";
-import "../styles/Genre.css";
+import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import axios from "axios";
-import TrackInfo from "./TrackInfo";
+import TrackInfo from "../TrackInfo";
+import styles from "./Genre.module.css"; // CSS 모듈을 import
 
 const SpotifyGenreTracks = () => {
   const [token, setToken] = useState("");
@@ -55,7 +60,7 @@ const SpotifyGenreTracks = () => {
           ); // 인기 기준 설정
           setPopularTracks(tracksWithPopularity);
         } catch (error) {
-          console.error("Error fetching  popular tracks:", error);
+          console.error("Error fetching popular tracks:", error);
         }
       }
     };
@@ -82,28 +87,28 @@ const SpotifyGenreTracks = () => {
   };
 
   return (
-    <div className="track-pop">
-      <p className="title"> TOP 20 : {genre}</p>
-      <div className="track-grid">
+    <div className={styles["track-pop"]}>
+      <p className={styles.title}>TOP 20 : {genre}</p>
+      <div className={styles["track-grid"]}>
         {popularTracks.map((track, index) => (
           <div
             key={track.id}
-            className="track-card"
+            className={styles["track-card"]}
             onClick={() => handleTrackClick(track.id)}
           >
             {track.album.images.length > 0 && (
               <img
                 src={track.album.images[0].url}
                 alt={track.name}
-                className="track-image"
+                className={styles["track-image"]}
               />
             )}
-            <div className="track-info">
-              <h3 className="track-title">
+            <div className={styles["track-info"]}>
+              <h3 className={styles["track-title"]}>
                 {index + 1}. {track.name}
               </h3>
               <BookmarkButton />
-              <p className="track-artist">
+              <p className={styles["track-artist"]}>
                 {track.artists.map((artist) => artist.name).join(", ")}
               </p>
             </div>

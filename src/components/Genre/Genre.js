@@ -5,8 +5,7 @@
 import React, { useEffect, useState } from "react";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import axios from "axios";
-import TrackInfo from "./TrackInfo/TrackInfo";
-import TrackInfo from "../TrackInfo";
+import TrackInfo from "../TrackInfo/TrackInfo";
 import styles from "./Genre.module.css"; // CSS 모듈을 import
 
 const SpotifyGenreTracks = () => {

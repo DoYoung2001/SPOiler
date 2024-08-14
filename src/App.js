@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -6,6 +5,7 @@ import MainContent from "./components/MainContent";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Playlist from "./components/Playlist";
+import PlaylistDetail from "./components/PlaylistDetail"; // 새로운 컴포넌트 임포트
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles.css";
 
@@ -50,17 +50,17 @@ const App = () => {
   // 로그인 후에는 Header, Sidebar, MainContent를 표시
   return (
     <Router>
-      {" "}
-      {/* Router로 감싸기 */}
       <div className="app">
         <Header onLogout={handleLogout} />
         <div className="main-layout">
           <Sidebar />
           <Routes>
-            {/* Routes 컴포넌트로 라우팅 설정 */}
-            <Route path="/" element={<MainContent />} /> {/* 메인 페이지 */}
-            <Route path="/playlist" element={<Playlist />} />{" "}
-            {/* Playlist 컴포넌트 연결 */}
+            <Route path="/" element={<MainContent />} />
+            <Route path="/playlist" element={<Playlist />} />
+            <Route
+              path="/playlist/:playlistName"
+              element={<PlaylistDetail />}
+            />
           </Routes>
         </div>
       </div>

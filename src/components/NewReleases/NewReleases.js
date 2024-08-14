@@ -11,8 +11,9 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import BookmarkButton from "./BookmarkButton/BookmarkButton";
-import AlbumInfo from "./AlbumInfo/AlbumInfo";
+import BookmarkButton from "../BookmarkButton/BookmarkButton";
+import AlbumInfo from "../AlbumInfo/AlbumInfo";
+import styles from "./NewReleases.module.css";
 
 // 클라이언트 ID와 시크릿을 환경 변수에서 가져옴 ( .env 파일 )
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;

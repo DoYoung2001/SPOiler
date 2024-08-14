@@ -118,36 +118,6 @@ body {
   flex: 1;
 }
 
-/* .sidebar {
-    width: 250px;
-    background-color: #ddf3de;
-    padding: 10px;
-  }
-  
-.sidebar-item {
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.sidebar-item:hover {
-    background-color: #faf7f7;
-  } */
-
-.menuItem {
-  display: flex;
-  align-items: center;
-  padding: 5px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.menuItem:hover {
-  background-color: #faf7f7;
-}
-
 /* .icon {
     margin-right: 8px;
   } */
@@ -161,25 +131,43 @@ body {
 .sidebar {
   width: 250px;
   display: flex;
+  border-radius: 0.5rem;
   flex-direction: column;
   height: 100%;
+  font-size: 14px;
+  box-sizing: border-box;
+  padding: 1rem 1rem 0 rem;
+   padding: 10px;
+}
+
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.menuItem:hover {
+  background-color:  #70c489;
 }
 
 .sidebar-item {
   display: flex;
   align-items: center;
-  padding: 5px 18px;
+  padding: 10px 18px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
 .sidebar-item:hover {
-  background-color: #f0f0f0;
+  background-color:  #70c489;
 }
 
 .icon {
   margin-right: 12px;
 }
+
 
 .sidebar-delete {
   margin-top: auto;
@@ -225,14 +213,20 @@ body {
 }
 
 .confirm-dialog {
-  background-color: white;
-  padding: 20px 40px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ededed; /* 파스텔톤 멜론 색 */
+  color: #000;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 15px 60px #00ff7f;
+  width: 320px;
+  text-align: center;
+  position: relative;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  animation: slideUp 0.3s ease-in-out; /* 부드러운 슬라이드 인 애니메이션 */
 }
 
 .confirm-dialog p {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   font-size: 18px;
 }
 
@@ -256,10 +250,17 @@ body {
 }
 
 .confirm-dialog-buttons button:last-child {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: #ccc4c4;
+  color: #000000;
 }
 
 .confirm-dialog-buttons button:hover {
   opacity: 0.8;
+}
+
+.cancel-text {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  
 }

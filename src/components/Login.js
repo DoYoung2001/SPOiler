@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/App.css"; // CSS 파일 import
+import "../styles/Login.css"; // CSS 파일 import
 
 const Login = ({ onLogin, onRegisterClick }) => {
   const [email, setEmail] = useState("");

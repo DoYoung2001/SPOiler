@@ -1,5 +1,5 @@
 import React from "react";
-import FeaturedPlaylists from "../FeaturedPlaylists";
+import FeaturedPlaylists from "../FeaturedPlaylists/FeaturedPlaylists";
 import styles from "./MainContent.module.css";
 import NewReleases from "../NewReleases";
 import SpotifyGenreTracks from "../Genre/Genre";

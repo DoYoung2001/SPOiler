@@ -4,8 +4,7 @@
 
 
 import React, { useEffect, useState } from "react";
-import BookmarkButton from "./BookmarkButton/BookmarkButton";
-
+import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import axios from "axios";
 import TrackInfo from "../TrackInfo";
 import styles from "./Genre.module.css"; // CSS 모듈을 import

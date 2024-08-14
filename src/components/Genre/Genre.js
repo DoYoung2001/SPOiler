@@ -2,10 +2,10 @@
 // 클래스 이름 적용: 기존의 클래스 이름 대신 styles 객체를 사용하여 클래스를 적용합니다.
 //  예를 들어, className="track-pop"을 className={styles["track-pop"]}으로 변경합니다.
 
-
 import React, { useEffect, useState } from "react";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import axios from "axios";
+import TrackInfo from "./TrackInfo/TrackInfo";
 import TrackInfo from "../TrackInfo";
 import styles from "./Genre.module.css"; // CSS 모듈을 import
 

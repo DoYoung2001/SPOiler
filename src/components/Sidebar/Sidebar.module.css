@@ -1,0 +1,130 @@
+.sidebar {
+  width: 250px;
+  display: flex;
+  border-radius: 0.5rem;
+  flex-direction: column;
+  height: 100%;
+  font-size: 14px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.menuItem:hover {
+  background-color: #70c489;
+}
+
+.sidebarItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.sidebarItem:hover {
+  background-color: #70c489;
+}
+
+.icon {
+  margin-right: 12px;
+}
+
+.sidebarDelete {
+  top: 83%;
+  padding: 18px;
+  position: fixed; /* 고정 위치 */
+}
+
+.deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 15px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: #ff3333;
+}
+
+.deleteButton svg {
+  margin-right: 15px;
+}
+
+.confirmDialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmDialog {
+  background-color: #ededed; /* 파스텔톤 멜론 색 */
+  color: #000;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 15px 60px #00ff7f;
+  width: 320px;
+  text-align: center;
+  position: relative;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  animation: slideUp 0.3s ease-in-out; /* 부드러운 슬라이드 인 애니메이션 */
+}
+
+.confirmDialog p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.confirmDialogButtons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.confirmDialogButtons button {
+  margin-left: 20px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.confirmDialogButtons button:first-child {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.confirmDialogButtons button:last-child {
+  background-color: #ccc4c4;
+  color: #000000;
+}
+
+.confirmDialogButtons button:hover {
+  opacity: 0.8;
+}
+
+.cancelText {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}

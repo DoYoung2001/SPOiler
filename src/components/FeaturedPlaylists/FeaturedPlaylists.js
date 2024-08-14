@@ -12,8 +12,9 @@
 // src/components/FeaturedPlaylists.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import BookmarkButton from "./BookmarkButton";
-import "../styles/FeaturedPlaylists.css";
+import BookmarkButton from "../BookmarkButton/BookmarkButton";
+import styles from './FeaturedPlaylists.module.css'; // 모듈 스타일 가져오기
+
 
 const FeaturedPlaylists = () => {
   // 토큰과 플레이리스트 데이터를 저장할 상태 변수 선언
@@ -88,20 +89,20 @@ const FeaturedPlaylists = () => {
   }, [token]); // 토큰이 변경될 때마다 실행
 
   return (
-    <div className="featured-playlists">
-      <p className="title">스포티파이 뮤직PD 앨범</p>
-      <div className="playlists-grid">
+    <div className={styles.featuredPlaylists}>
+      <p className={styles.title}>스포티파이 뮤직PD 앨범</p>
+      <div className={styles.playlistsGrid}>
         {playlists.map((playlist) => (
-          <div key={playlist.id} className="playlist-card">
+          <div key={playlist.id} className={styles.playlistCard}>
             <img
               src={playlist.images[0].url}
               alt={playlist.name}
-              className="playlist-image"
+              className={styles.playlistImage}
             />
-            <div className="playlist-info">
-              <h3 className="playlist-title">{playlist.name}</h3>
+            <div className={styles.playlistInfo}>
+              <h3 className={styles.playlistTitle}>{playlist.name}</h3>
               <BookmarkButton />
-              <p className="playlist-description">{playlist.description}</p>
+              <p className={styles.playlistDescription}>{playlist.description}</p>
             </div>
           </div>
         ))}

@@ -1,6 +1,6 @@
 /* AlbumInfo.css */
 
-.modal-overlay {
+.modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.modalContent {
   background: white;
   padding: 20px;
   border-radius: 8px; /* 둥근 모서리 */
@@ -24,11 +24,11 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.modal-content:hover {
+.modalContent:hover {
   transform: translateY(-5px); /* 호버 시 모달이 살짝 위로 이동 */
 }
 
-.close-button {
+.closeButton {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -46,34 +46,34 @@
   transition: background-color 0.3s ease;
 }
 
-.close-button:hover {
+.closeButton:hover {
   background-color: #d62839; /* 호버 시 색상 변경 */
 }
 
-.album-details {
+.albumDetails {
   text-align: center;
 }
 
-.album-details img {
+.albumDetails img {
   max-width: 100%;
   border-radius: 8px;
 }
 
-.album-details h2 {
+.albumDetails h2 {
   margin-top: 0;
   font-size: 2rem; /* 강조된 앨범 타이틀 크기 */
   color: #333; /* 타이틀 색상 */
   font-weight: 700; /* 두꺼운 글씨 */
 }
 
-.album-details p {
+.albumDetails p {
   margin: 8px 0;
   font-size: 0.9rem; /* 정보 텍스트의 폰트 크기 */
   color: #666; /* 부드러운 회색 색상 */
   line-height: 1.5; /* 줄 간격 조정 */
 }
 
-.album-details a {
+.albumDetails a {
   display: inline-block;
   margin-top: 15px;
   text-decoration: none;
@@ -83,6 +83,6 @@
   transition: color 0.3s ease;
 }
 
-.album-details a:hover {
+.albumDetails a:hover {
   color: #17a74b; /* 링크 호버 색상 */
 }

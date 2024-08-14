@@ -1,16 +1,16 @@
 import React from "react";
-import "../styles/AlbumInfo.css";
+import styles from './AlbumInfo.module.css'; // 모듈 스타일 가져오기
 
 const AlbumInfo = ({ isOpen, onClose, album }) => {
   if (!isOpen || !album) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="close-button" onClick={onClose}>
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
-        <div className="album-details">
+        <div className={styles.albumDetails}>
           <h2>{album.name}</h2>
           <img src={album.images[0].url} alt={album.name} />
           <p>Artist: {album.artists.map((artist) => artist.name).join(", ")}</p>

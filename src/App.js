@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import MainContent from "./components/MainContent";
@@ -45,20 +50,17 @@ const App = () => {
   }
 
   return (
-      <div className="app">
-        <Header onLogout={handleLogout} />
-        <div className="main-layout">
-          <Sidebar />
-          <Routes>
-            <Route path="/" element={<MainContent />} />
-            <Route path="/playlist" element={<Playlist />} />
-            <Route
-              path="/playlist/:playlistName"
-              element={<PlaylistDetail />}
-            />
-          </Routes>
-        </div>
+    <div className="app">
+      <Header onLogout={handleLogout} />
+      <div className="main-layout">
+        <Sidebar />
+        <Routes>
+          <Route path="/" element={<MainContent />} />
+          <Route path="/playlist" element={<Playlist />} />
+          <Route path="/playlist/:playlistName" element={<PlaylistDetail />} />
+        </Routes>
       </div>
+    </div>
   );
 };
 

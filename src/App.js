@@ -51,12 +51,16 @@ const App = () => {
     <div className="app">
       <Header onLogout={handleLogout} />
       <div className="main-layout">
+        <div className="sidebar">
         <Sidebar />
+        </div>
+        <div className="playlist-container">
         <Routes>
           <Route path="/" element={<MainContent />} />
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/playlist/:playlistName" element={<PlaylistDetail />} />
         </Routes>
+      </div>
       </div>
     </div>
   );

@@ -6,8 +6,8 @@
   color: #00ff7f;
   position: sticky;
   top: 0;
-  background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
-  z-index: 1; /* 제목을 다른 요소 위에 표시 */
+  background-color: #181818;
+  z-index: 1;
   padding: 10px 0;
 }
 
@@ -53,4 +53,22 @@
 .release-artist {
   font-size: 14px;
   color: #b3b3b3;
+}
+
+.Infobutton {
+  background-color: #1db954;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  /* padding: 7px 10px; */
+  height: 40px;
+  width: 120px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.Infobutton:hover {
+  background-color: #17a74b;
+  transform: scale(1.05);
 }

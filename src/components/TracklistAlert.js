@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/TracklistAlert.css";
 
-function SpotifyStyleAlert({ isOpen, onClose }) {
+// onPlaylistAdded를 props로 받도록 수정
+function TracklistAlert({ isOpen, onClose, onPlaylistAdded }) {
   const [playlistName, setPlaylistName] = useState("");
   const navigate = useNavigate();
 
@@ -15,6 +16,10 @@ function SpotifyStyleAlert({ isOpen, onClose }) {
       // 새로 생성된 플레이리스트 이름으로 페이지 이동
       navigate(`/playlist/${playlistName}`);
       setPlaylistName("");
+      if (onPlaylistAdded) {
+        // onPlaylistAdded가 존재할 때만 호출
+        onPlaylistAdded();
+      }
       onClose();
     }
   };
@@ -47,4 +52,4 @@ function SpotifyStyleAlert({ isOpen, onClose }) {
   );
 }
 
-export default SpotifyStyleAlert;
+export default TracklistAlert;

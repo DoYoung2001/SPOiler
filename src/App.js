@@ -5,7 +5,7 @@ import MainContent from "./components/MainContent";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Playlist from "./components/Playlist";
-import PlaylistDetail from "./components/PlaylistDetail"; // 새로운 컴포넌트 임포트
+import PlaylistDetail from "./components/PlaylistDetail";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles.css";
 

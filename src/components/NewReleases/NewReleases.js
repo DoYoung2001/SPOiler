@@ -11,9 +11,9 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../styles/NewReleases.css";
-import BookmarkButton from "./BookmarkButton";
-import AlbumInfo from "./AlbumInfo";
+import styles from "./NewReleases.module.css"; // CSS 모듈 파일을 불러옵니다
+import BookmarkButton from "../BookmarkButton"; // 상대 경로로 import
+import AlbumInfo from "../AlbumInfo"; // 상대 경로로 import
 
 // 클라이언트 ID와 시크릿을 환경 변수에서 가져옴 ( .env 파일 )
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
@@ -107,24 +107,24 @@ const NewReleases = () => {
   };
 
   return (
-    <div className="new-releases">
-      <p className="title">최신 음악</p>
-      <div className="releases-grid">
+    <div className={styles.newReleases}>
+      <p className={styles.title}>최신 음악</p>
+      <div className={styles.releasesGrid}>
         {newReleases.map((album) => (
           <div
             key={album.id}
-            className="release-card"
+            className={styles.releaseCard}
             onClick={() => handleAlbumClick(album.id)} // 앨범 클릭 시 상세 정보 요청
           >
             <img
               src={album.images[0].url}
               alt={album.name}
-              className="release-image"
+              className={styles.releaseImage}
             />
-            <div className="release-info">
-              <h3 className="release-title">{album.name}</h3>
+            <div className={styles.releaseInfo}>
+              <h3 className={styles.releaseTitle}>{album.name}</h3>
               <BookmarkButton />
-              <p className="release-artist">
+              <p className={styles.releaseArtist}>
                 {album.artists.map((artist) => artist.name).join(", ")}
               </p>
             </div>

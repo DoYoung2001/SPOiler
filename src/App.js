@@ -10,9 +10,8 @@ import Sidebar from "./components/Sidebar";
 import MainContent from "./components/MainContent";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Playlist from "./components/Playlist";
-import PlaylistDetail from "./components/PlaylistDetail";
-import "./styles.css";
+import Playlist from "./components/Playlist/Playlist";
+import PlaylistDetail from "./components/PlaylistDetail/PlaylistDetail";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,8 +34,6 @@ const App = () => {
   const handleRegisterSubmit = () => {
     setIsRegistering(false);
   };
-
-
 
   // 로그인 여부와 등록 상태에 따라 화면을 다르게 표시
   if (!isLoggedIn) {

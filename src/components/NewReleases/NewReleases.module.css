@@ -1,5 +1,5 @@
-/* src/components/NewReleases.css */
-.new-releases .title {
+/* src/components/NewReleases/NewReleases.module.css */
+.title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
@@ -11,13 +11,13 @@
   padding: 10px 0;
 }
 
-.releases-grid {
+.releasesGrid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
 }
 
-.release-card {
+.releaseCard {
   display: flex;
   align-items: center;
   background-color: #282828;
@@ -27,30 +27,30 @@
   position: relative;
 }
 
-.release-card:hover {
+.releaseCard:hover {
   background-color: #383838;
 }
 
-.release-image {
+.releaseImage {
   width: 60px;
   height: 60px;
   border-radius: 4px;
   margin-right: 15px;
 }
 
-.release-info {
+.releaseInfo {
   display: flex;
   flex-direction: column;
 }
 
-.release-title {
+.releaseTitle {
   font-size: 16px;
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 5px;
 }
 
-.release-artist {
+.releaseArtist {
   font-size: 14px;
   color: #b3b3b3;
 }

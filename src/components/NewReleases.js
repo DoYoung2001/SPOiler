@@ -23,6 +23,8 @@ const NewReleases = () => {
   // 토큰과 신곡 데이터를 저장할 상태 변수 선언
   const [token, setToken] = useState("");
   const [newReleases, setNewReleases] = useState([]);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // 비동기적으로 Spotify API 토큰을 받아오는 함수
@@ -125,13 +127,6 @@ const NewReleases = () => {
               <p className="release-artist">
                 {album.artists.map((artist) => artist.name).join(", ")}
               </p>
-              {/* 버튼 클릭으로 상세 정보를 가져옴 */}
-              <button
-                className="Infobutton"
-                onClick={() => handleAlbumClick(album.id)}
-              >
-                앨범 상세보기
-              </button>
             </div>
           </div>
         ))}

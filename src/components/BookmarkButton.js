@@ -23,6 +23,7 @@ const BookmarkButton = ({ id }) => {
   };
 
   return (
+
     <div>
         <div className="bookmark-container">
       <input
@@ -35,7 +36,9 @@ const BookmarkButton = ({ id }) => {
       <label htmlFor={id} className="bookmark" onClick={handleCheckboxChange}>
         <BookmarkIcon isChecked={isChecked} />
       </label>
+
       </div>
+
     </div>
   );
 };

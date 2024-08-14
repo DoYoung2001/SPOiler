@@ -163,8 +163,8 @@ body {
 .svgIcon {
   fill: #000; /* 기본 아이콘 색상 */
   transition: fill 0.4s; /* 색상 변화에 애니메이션 추가 */
-  width: 24px; /* 아이콘 너비 고정 */
-  height: 24px; /* 아이콘 높이 고정 */
+  width: 20px; /* 아이콘 너비 고정 */
+  height: 20px; /* 아이콘 높이 고정 */
   flex-shrink: 0; /* 아이콘 크기가 줄어들지 않도록 설정 */
 }
 

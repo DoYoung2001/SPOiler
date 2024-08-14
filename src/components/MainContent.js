@@ -2,6 +2,7 @@ import React from "react";
 import FeaturedPlaylists from "./FeaturedPlaylists";
 import './MainContent.css';
 import NewReleases from './NewReleases';
+import SpotifyGenreTracks from './Genre';
 
 const MainContent = () => (
   <main className="main-content">
@@ -17,9 +18,8 @@ const MainContent = () => (
             </div>
           </div>
           <div className="content-box">
-            <p className="title">최근 재생</p>
             <div>
-              {/* 최근 재생 내용 추가 */}
+              <SpotifyGenreTracks />
             </div>
           </div>
           <div className="content-box">

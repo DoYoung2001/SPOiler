@@ -9,10 +9,11 @@
 //    토큰이 성공적으로 받아졌을 때, 다시 useEffect가 실행되어 Spotify API로부터 신곡 리스트 데이터를 요청합니다.
 //    받아온 신곡 리스트 데이터는 상태 변수 newReleases에 저장되며, 컴포넌트에서 이를 활용해 렌더링을 수행합니다.
 
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../styles/NewReleases.css';
-import BookmarkButton from './BookmarkButton';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../styles/NewReleases.css";
+import BookmarkButton from "./BookmarkButton";
+import AlbumInfo from "./AlbumInfo";
 
 // 클라이언트 ID와 시크릿을 환경 변수에서 가져옴 ( .env 파일 )
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
@@ -22,8 +23,9 @@ const NewReleases = () => {
   // 토큰과 신곡 데이터를 저장할 상태 변수 선언
   const [token, setToken] = useState("");
   const [newReleases, setNewReleases] = useState([]);
-  
-  // 컴포넌트가 처음 렌더링될 때 실행되는 useEffect 훅
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     // 비동기적으로 Spotify API 토큰을 받아오는 함수
     const getToken = async () => {
@@ -58,7 +60,8 @@ const NewReleases = () => {
   useEffect(() => {
     // 비동기적으로 신곡 리스트를 받아오는 함수
     const fetchNewReleases = async () => {
-      if (token) { // 토큰이 설정된 경우에만 실행
+      if (token) {
+        // 토큰이 설정된 경우에만 실행
         try {
           // Spotify API를 통해 신곡 리스트 데이터 요청
           const response = await axios.get(
@@ -80,12 +83,39 @@ const NewReleases = () => {
     fetchNewReleases(); // 신곡 리스트 받아오는 함수 호출
   }, [token]); // 토큰이 변경될 때마다 실행
 
+  // 앨범 클릭 시 해당 앨범의 상세 정보를 가져오는 함수
+  const handleAlbumClick = async (albumId) => {
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/albums/${albumId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setSelectedAlbum(response.data); // 앨범의 상세 정보를 상태에 저장
+      setIsModalOpen(true); // 모달 열기
+    } catch (error) {
+      console.error("Error fetching album details:", error);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedAlbum(null);
+  };
+
   return (
     <div className="new-releases">
-      <p className="title">신곡 리스트</p>
+      <p className="title">최신 음악</p>
       <div className="releases-grid">
         {newReleases.map((album) => (
-          <div key={album.id} className="release-card">
+          <div
+            key={album.id}
+            className="release-card"
+            onClick={() => handleAlbumClick(album.id)} // 앨범 클릭 시 상세 정보 요청
+          >
             <img
               src={album.images[0].url}
               alt={album.name}
@@ -101,6 +131,11 @@ const NewReleases = () => {
           </div>
         ))}
       </div>
+      <AlbumInfo
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        album={selectedAlbum}
+      />
     </div>
   );
 };

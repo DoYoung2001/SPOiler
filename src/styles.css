@@ -1,8 +1,6 @@
 /* styles.css */
 
 body {
-
-
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #ddf3de;
@@ -51,8 +49,8 @@ body {
   align-items: center;
 }
 
- /* 검색창*/
- .search {
+/* 검색창*/
+.search {
   position: relative; /* 부모 요소에 상대 위치 지정 */
   display: flex;
   align-items: center;
@@ -75,14 +73,12 @@ body {
 
 .search input:hover {
   border: 1px solid #000; /* 호버 시 얇은 검은색 테두리 */
-
 }
 
 .search input:focus {
   border: 3px solid white; /* 포커스 시 두껍고 하얀색 테두리 */
   transform: scale(1.05);
-  box-shadow: 13px 13px 100px #969696,
-              -13px -13px 100px #ffffff;
+  box-shadow: 13px 13px 100px #969696, -13px -13px 100px #ffffff;
 }
 
 .search-icon {
@@ -150,7 +146,7 @@ body {
   color: white; /* 아티스트 이름 색상을 하얀색으로 설정 */
   overflow: hidden; /* 텍스트가 너무 길 경우 숨김 */
   text-overflow: ellipsis; /* 텍스트가 길 경우 말줄임표(...) 표시 */
-  
+
   white-space: nowrap; /* 텍스트가 한 줄에 표시되도록 설정 */
 }
 
@@ -169,17 +165,15 @@ body {
 }
 
 .svgIcon.checked {
-  fill: #00FF7F; /* 체크 시 아이콘 색상 (초록색) */
+  fill: #00ff7f; /* 체크 시 아이콘 색상 (초록색) */
 }
 /*여기까지 검색창*/
-  
-/* From Uiverse.io by barisdogansutcu */ 
- .logout-button button {
-    
-    margin: 0 8px;
-  }
-  .logout-button button {
 
+/* From Uiverse.io by barisdogansutcu */
+.logout-button button {
+  margin: 0 8px;
+}
+.logout-button button {
   padding: 10px 30px;
   border-radius: 50px;
   cursor: pointer;
@@ -239,10 +233,8 @@ body {
   height: 100%;
   font-size: 14px;
   box-sizing: border-box;
-   padding: 10px;
- 
+  padding: 10px;
 }
-
 
 .menuItem {
   display: flex;
@@ -252,7 +244,7 @@ body {
   cursor: pointer;
 }
 .menuItem:hover {
-  background-color:  #70c489;
+  background-color: #70c489;
 }
 
 .sidebar-item {
@@ -264,13 +256,12 @@ body {
 }
 
 .sidebar-item:hover {
-  background-color:  #70c489;
+  background-color: #70c489;
 }
 
 .icon {
   margin-right: 12px;
 }
-
 
 .sidebar-delete {
   top: 83%;
@@ -290,7 +281,6 @@ body {
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.2s;
-  
 }
 
 .delete-button:hover {
@@ -366,5 +356,4 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  
 }

@@ -6,8 +6,8 @@
   color: #00ff7f;
   position: sticky;
   top: 0;
-  background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
-  z-index: 1; /* 제목을 다른 요소 위에 표시 */
+  background-color: #181818;
+  z-index: 1;
   padding: 10px 0;
 }
 

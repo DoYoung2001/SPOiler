@@ -7,6 +7,7 @@ const Sidebar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlaylistAdded, setIsPlaylistAdded] = useState(false); // 새 플레이리스트가 추가되었는지 여부를 상태로 관리
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [playlistName, setPlaylistName] = useState(""); // 플레이리스트 이름 상태
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   const openModal = () => {
@@ -22,25 +23,42 @@ const Sidebar = () => {
   };
 
   const handleConfirmDelete = () => {
+    // 예시: 로컬 스토리지에서 플레이리스트 제거
+    let storedPlaylists = JSON.parse(localStorage.getItem("playlists")) || [];
+    storedPlaylists = storedPlaylists.filter((name) => name !== playlistName);
+    localStorage.setItem("playlists", JSON.stringify(storedPlaylists));
+
+    // 상태 초기화
     console.log("플레이리스트가 삭제되었습니다.");
     setShowConfirmDialog(false);
+    setIsPlaylistAdded(false);
+    setPlaylistName(""); // 플레이리스트 이름 상태 초기화
+
+    // 페이지 이동을 위해 상태 업데이트가 완료된 후 리디렉션
+    setTimeout(() => {
+      navigate("/"); // 메인 페이지로 이동
+    }, 0);
   };
 
   const handleCancelDelete = () => {
     setShowConfirmDialog(false);
   };
 
-  // 홈 버튼 클릭 시 MainContent로 이동
   const handleHomeClick = () => {
     navigate("/"); // 루트 경로로 이동
   };
 
   // 내 플레이리스트 클릭 시 호출될 함수
   const goToPlaylist = () => {
-    navigate("/playlist");
+    if (playlistName) {
+      navigate(`/playlist/${playlistName}`); // 사용자가 입력한 플레이리스트 이름으로 이동
+    } else {
+      alert("내 플레이리스트를 추가해 주세요."); // 이름이 비어있을 때 알림
+    }
   };
 
-  const handlePlaylistAdded = () => {
+  const handlePlaylistAdded = (name) => {
+    setPlaylistName(name); // 제목 상태를 업데이트
     setIsPlaylistAdded(true); // 플레이리스트가 추가되었음을 상태로 설정
     closeModal(); // 모달 닫기
   };
@@ -93,7 +111,7 @@ const Sidebar = () => {
               <path d="M232,64H24A8,8,0,0,0,16,72V208a8,8,0,0,0,8,8H232a8,8,0,0,0,8-8V72A8,8,0,0,0,232,64ZM40,80H216a8,8,0,0,1,8,8v56H32V88A8,8,0,0,1,40,80ZM224,176H32v-8h16a8,8,0,0,0,8-8V136a8,8,0,0,0-8-8H32v-8h192v8h-8a8,8,0,0,0-8,8v24a8,8,0,0,0,8,8h8Z" />
             </svg>
           </div>
-          <p>내 플레이리스트 추가</p>
+          <span class="name">내 플레이리스트 추가</span>
         </div>
       )}
       <TracklistAlert
@@ -129,4 +147,5 @@ const Sidebar = () => {
     </aside>
   );
 };
+
 export default Sidebar;

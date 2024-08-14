@@ -18,7 +18,7 @@ function TracklistAlert({ isOpen, onClose, onPlaylistAdded }) {
       setPlaylistName("");
       if (onPlaylistAdded) {
         // onPlaylistAdded가 존재할 때만 호출
-        onPlaylistAdded();
+        onPlaylistAdded(playlistName); // 플레이리스트 이름을 인수로 전달
       }
       onClose();
     }

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "./NewReleases.css";
-import BookmarkButton from "./BookmarkButton";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import '../styles/NewReleases.css';
+import BookmarkButton from './BookmarkButton';
 
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
@@ -9,6 +9,7 @@ const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 const NewReleases = () => {
   const [token, setToken] = useState("");
   const [newReleases, setNewReleases] = useState([]);
+  
 
   useEffect(() => {
     // Spotify API 토큰을 요청하는 함수

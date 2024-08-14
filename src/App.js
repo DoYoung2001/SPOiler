@@ -31,6 +31,9 @@ const App = () => {
     setIsRegistering(false);
   };
 
+
+
+  // 로그인 여부와 등록 상태에 따라 화면을 다르게 표시
   if (!isLoggedIn) {
     if (isRegistering) {
       return <Register onSubmit={handleRegisterSubmit} />;

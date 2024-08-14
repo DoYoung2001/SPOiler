@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
@@ -7,6 +6,7 @@ import MainContent from "./components/MainContent";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Playlist from "./components/Playlist";
+import PlaylistDetail from "./components/PlaylistDetail";
 import "./styles.css";
 
 const App = () => {
@@ -42,16 +42,20 @@ const App = () => {
   }
 
   return (
-    <div className="app">
-      <Header onLogout={handleLogout} />
-      <div className="main-layout">
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={<MainContent />} />
-          <Route path="/playlist" element={<Playlist />} />
-        </Routes>
+      <div className="app">
+        <Header onLogout={handleLogout} />
+        <div className="main-layout">
+          <Sidebar />
+          <Routes>
+            <Route path="/" element={<MainContent />} />
+            <Route path="/playlist" element={<Playlist />} />
+            <Route
+              path="/playlist/:playlistName"
+              element={<PlaylistDetail />}
+            />
+          </Routes>
+        </div>
       </div>
-    </div>
   );
 };
 

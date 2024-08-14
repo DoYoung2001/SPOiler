@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Sidebar from "./components/Sidebar";
-import MainContent from "./components/MainContent";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import MainContent from "./components/MainContent/MainContent";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 import Playlist from "./components/Playlist";
 import PlaylistDetail from "./components/PlaylistDetail";
 import "./styles.css";
@@ -35,8 +35,6 @@ const App = () => {
   const handleRegisterSubmit = () => {
     setIsRegistering(false);
   };
-
-
 
   // 로그인 여부와 등록 상태에 따라 화면을 다르게 표시
   if (!isLoggedIn) {

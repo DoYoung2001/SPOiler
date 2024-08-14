@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./Register.module.css"; // CSS 모듈 import
 
 const Register = ({ onSubmit }) => {
   const [email, setEmail] = useState("");
@@ -14,15 +15,15 @@ const Register = ({ onSubmit }) => {
   };
 
   return (
-    <div id="form-ui" className="register-container">
-      <form id="form" onSubmit={handleRegister}>
-        <div id="form-body">
-          <div id="welcome-lines">
-            <div id="welcome-line-1">Spotify</div>
-            <div id="welcome-line-2">Sign up !</div>
+    <div className={styles["login-container"]}>
+      <form id={styles.form} onSubmit={handleRegister}>
+        <div id={styles["form-body"]}>
+          <div id={styles["welcome-lines"]}>
+            <div id={styles["welcome-line-1"]}>Spotify</div>
+            <div id={styles["welcome-line-2"]}>Sign up !</div>
           </div>
-          <div id="input-area">
-            <div className="form-inp">
+          <div id={styles["input-area"]}>
+            <div className={styles["form-inp"]}>
               <input
                 placeholder="Email Address"
                 type="text"
@@ -30,7 +31,7 @@ const Register = ({ onSubmit }) => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="form-inp">
+            <div className={styles["form-inp"]}>
               <input
                 placeholder="Password"
                 type="password"
@@ -39,12 +40,12 @@ const Register = ({ onSubmit }) => {
               />
             </div>
           </div>
-          <div id="register">
-            <a href="#" onClick={handleRegister} className="register-button">
+          <div id={styles["register"]}>
+            <a href="#" onClick={handleRegister} className={styles["register-button"]}>
               Register
             </a>
           </div>
-          <div id="bar"></div>
+          <div id={styles["bar"]}></div>
         </div>
       </form>
     </div>

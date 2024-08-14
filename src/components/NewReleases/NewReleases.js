@@ -106,24 +106,24 @@ const NewReleases = () => {
   };
 
   return (
-    <div className="new-releases">
-      <p className="title">최신 음악</p>
-      <div className="releases-grid">
+    <div className={styles.newReleases}>
+      <p className={styles.title}>최신 음악</p>
+      <div className={styles.releasesGrid}>
         {newReleases.map((album) => (
           <div
             key={album.id}
-            className="release-card"
+            className={styles.releaseCard}
             onClick={() => handleAlbumClick(album.id)} // 앨범 클릭 시 상세 정보 요청
           >
             <img
               src={album.images[0].url}
               alt={album.name}
-              className="release-image"
+              className={styles.releaseImage}
             />
-            <div className="release-info">
-              <h3 className="release-title">{album.name}</h3>
+            <div className={styles.releaseInfo}>
+              <h3 className={styles.releaseTitle}>{album.name}</h3>
               <BookmarkButton />
-              <p className="release-artist">
+              <p className={styles.releaseArtist}>
                 {album.artists.map((artist) => artist.name).join(", ")}
               </p>
             </div>

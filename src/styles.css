@@ -7,8 +7,19 @@ body {
   overflow: hidden;
 }
 
-/* .app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-} */
+
+.app {
+  height: 100vh; /* 전체 높이를 100%로 설정 */
+}
+
+.main-layout {
+  display: flex; /* 플렉스 박스 사용 */
+}
+
+
+.playlist-container {
+  flex-grow: 1; 
+  padding: 20px; /* 패딩 추가 */
+  height: 100vh; /* 전체 높이를 100%로 설정 */
+
+}

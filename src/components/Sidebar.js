@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TracklistAlert from "./TracklistAlert"; // 모달 컴포넌트 임포트
 import "../styles/TracklistAlert.css"; // 스타일 파일 임포트
 import { useNavigate } from "react-router-dom"; // useNavigate 훅 임포트
+import "../styles/Sidebar.css";
 
 const Sidebar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

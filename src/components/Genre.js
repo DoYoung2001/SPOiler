@@ -1,78 +1,122 @@
-import React, { useEffect, useState } from 'react';
-import BookmarkButton from './BookmarkButton';
-import '../styles/Genre.css';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import BookmarkButton from "./BookmarkButton";
+import "../styles/Genre.css";
+import axios from "axios";
+import TrackInfo from "./TrackInfo";
 
 const SpotifyGenreTracks = () => {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState("");
   const [popularTracks, setPopularTracks] = useState([]);
-    const genre = 'k-pop'; // 원하는 장르를 설정하세요.
+  const [selectedTrack, setSelectedTrack] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const genre = "k-pop"; // 원하는 장르를 설정하세요.
 
-    useEffect(() => {
+  useEffect(() => {
     const getAccessToken = async () => {
-        const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // 본인의 클라이언트 ID
-        const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET; // 본인의 클라이언트 비밀 키
+      const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // 본인의 클라이언트 ID
+      const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET; // 본인의 클라이언트 비밀 키
+      try {
+        const response = await axios.post(
+          "https://accounts.spotify.com/api/token",
+          "grant_type=client_credentials",
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Authorization: "Basic " + btoa(clientId + ":" + clientSecret),
+            },
+          }
+        );
+        setToken(response.data.access_token); // 토큰 설정
+      } catch (error) {
+        console.error(
+          "Error fetching the token:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    };
+    getAccessToken();
+  }, []);
+
+  useEffect(() => {
+    const loadPopularTracks = async () => {
+      if (token) {
         try {
-          const response = await axios.post('https://accounts.spotify.com/api/token',
-            'grant_type=client_credentials',
+          const response = await axios.get(
+            `https://api.spotify.com/v1/search?q=genre:${genre}&type=track&limit=20`,
             {
               headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
+                Authorization: `Bearer ${token}`,
               },
             }
           );
-          setToken(response.data.access_token); // 토큰 설정
-        } catch (error) {
-          console.error('Error fetching the token:', error.response ? error.response.data : error.message);
-        }
-    };
-    getAccessToken(); 
-  }, []);
-
-
-    useEffect(() => {
-        const loadPopularTracks  = async () => {
-          if (token) {
-            try {
-              const response = await axios.get(`https://api.spotify.com/v1/search?q=genre:${genre}&type=track&limit=20`, {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              });
-              // 인기 트랙의 popularity 정보를 필터링
-          const tracksWithPopularity = response.data.tracks.items.filter(track => track.popularity > 50); // 인기 기준 설정
+          // 인기 트랙의 popularity 정보를 필터링
+          const tracksWithPopularity = response.data.tracks.items.filter(
+            (track) => track.popularity > 50
+          ); // 인기 기준 설정
           setPopularTracks(tracksWithPopularity);
-            } catch (error) {
-              console.error('Error fetching  popular tracks:', error);
-            }
-          }
-        };
-    
-        loadPopularTracks (); 
-      }, [token]);
-    
+        } catch (error) {
+          console.error("Error fetching  popular tracks:", error);
+        }
+      }
+    };
 
-    return  (
-        <div className="track-pop">
-          <p className='title'> TOP 20 : {genre}</p>
-          <div className="track-grid">
-            {popularTracks.map((track, index) => (
-              <div key={track.id} className="track-card">
-               {track.album.images.length > 0 && (
-              <img src={track.album.images[0].url} alt={track.name} className="track-image" />
-            )}
-                <div className="track-info">
-                  <h3 className="track-title">{index + 1}. {track.name}</h3>
-                  <BookmarkButton /> 
-                  <p className="track-artist">{track.artists.map(artist => artist.name).join(', ')}</p>
-                
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+    loadPopularTracks();
+  }, [token]);
+
+  const handleTrackClick = async (trackId) => {
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/tracks/${trackId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+      // console.log("Track details:", response.data); // 추가된 로그
+      setSelectedTrack(response.data);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching track details:", error);
+    }
+  };
+
+  return (
+    <div className="track-pop">
+      <p className="title"> TOP 20 : {genre}</p>
+      <div className="track-grid">
+        {popularTracks.map((track, index) => (
+          <div
+            key={track.id}
+            className="track-card"
+            onClick={() => handleTrackClick(track.id)}
+          >
+            {track.album.images.length > 0 && (
+              <img
+                src={track.album.images[0].url}
+                alt={track.name}
+                className="track-image"
+              />
+            )}
+            <div className="track-info">
+              <h3 className="track-title">
+                {index + 1}. {track.name}
+              </h3>
+              <BookmarkButton />
+              <p className="track-artist">
+                {track.artists.map((artist) => artist.name).join(", ")}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <TrackInfo
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        track={selectedTrack}
+      />
+    </div>
+  );
 };
 
 export default SpotifyGenreTracks;

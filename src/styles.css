@@ -1,57 +1,56 @@
 /* styles.css */
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #ddf3de;
-  }
-  
-  .app {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #ddf3de;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .header-left {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo svg {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-  }
-  
-  .header-nav a {
-    margin-right: 16px;
-    text-decoration: none;
-    color: #0b1e0b;
-  }
-  
-  .header-right {
-    display: flex;
-    align-items: center;
-  }
-  
-  
-  
- /* From Uiverse.io by Praashoo7 */ 
- 
+
+
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ddf3de;
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ddf3de;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.header-nav a {
+  margin-right: 16px;
+  text-decoration: none;
+  color: #0b1e0b;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
  /* 검색창*/
  .search {
   position: relative; /* 부모 요소에 상대 위치 지정 */
@@ -76,6 +75,7 @@ body {
 
 .search input:hover {
   border: 1px solid #000; /* 호버 시 얇은 검은색 테두리 */
+
 }
 
 .search input:focus {
@@ -179,6 +179,7 @@ body {
     margin: 0 8px;
   }
   .logout-button button {
+
   padding: 10px 30px;
   border-radius: 50px;
   cursor: pointer;
@@ -193,33 +194,33 @@ body {
 
 .logout-button button:hover {
   letter-spacing: 3px;
-  background-color: #00FF7F;
+  background-color: #00ff7f;
   color: #ffffff;
-  box-shadow: #00FF7F 0px 7px 29px 0px;
+  box-shadow: #00ff7f 0px 7px 29px 0px;
 }
 
 .logout-button button:active {
   letter-spacing: 3px;
   background-color: #00FF7F(261deg 80% 48%);
-  color: #00FF7F;
-  box-shadow: #00FF7F ;
+  color: #00ff7f;
+  box-shadow: #00ff7f;
   transform: translateY(10px);
   transition: 100ms;
 }
 
 .profile-pic {
-    width: 40px;
-    height: 40px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 50%;
-  }
-  
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+
 .main-layout {
-    display: flex;
-    flex: 1;
-  }
-  
+  display: flex;
+  flex: 1;
+}
+
 /* .sidebar {
     width: 250px;
     background-color: #ddf3de;
@@ -227,17 +228,16 @@ body {
   }
   
 .sidebar-item {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 .sidebar-item:hover {
     background-color: #faf7f7;
   } */
-  
 
 .menuItem {
   display: flex;
@@ -249,19 +249,18 @@ body {
 
 .menuItem:hover {
   background-color: #faf7f7;
-
 }
 
 /* .icon {
     margin-right: 8px;
   } */
-  
-.main-content {
-    flex: 1;
-    padding: 20px;
-  }
 
- /* sidebar css */
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* sidebar css */
 .sidebar {
   width: 250px;
   display: flex;
@@ -302,7 +301,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-bottom: 20%;
+  margin-bottom: 50%;
 }
 
 .delete-button:hover {
@@ -366,4 +365,4 @@ body {
 
 .confirm-dialog-buttons button:hover {
   opacity: 0.8;
-} 
+}

@@ -1,24 +1,27 @@
-/* .bookmark {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  vertical-align: middle;
-  cursor: pointer;
-}
 
-.svgIcon {
-  fill: #c7c2c2; 
-  transition: fill 0.4s; 
-}
 
-.svgIcon.checked {
-  fill: #00FF7F;
-}
-
-.bookmark-container {
-  display: flex;
+.bookmark {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  
+  .svgIcon {
+    fill: #000; /* 기본 아이콘 색상 */
+    transition: fill 0.4s; /* 색상 변화에 애니메이션 추가 */
+  }
+  
+  .svgIcon.checked {
+    fill: #00FF7F; /* 체크 시 아이콘 색상 (초록색) */
+  }
+  
+  .bookmark-container {
+    display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative; 
-  margin-left: auto; 
-} */
+  position: absolute; /* 절대 위치로 설정하여 오른쪽에 배치 */
+  right: 10px; /* 오른쪽 여백 */
+  top: 50%; /* 중앙 정렬 */
+  transform: translateY(-50%); /* 중앙 정렬 보정 */
+  }

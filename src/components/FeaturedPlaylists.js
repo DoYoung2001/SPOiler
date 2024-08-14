@@ -1,7 +1,8 @@
 // src/components/FeaturedPlaylists.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './FeaturedPlaylists.css';
+import BookmarkButton from './BookmarkButton';
+import '../styles/FeaturedPlaylists.css';
 
 const FeaturedPlaylists = () => {
   const [token, setToken] = useState('');
@@ -56,8 +57,10 @@ const FeaturedPlaylists = () => {
             <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
             <div className="playlist-info">
               <h3 className="playlist-title">{playlist.name}</h3>
+            <BookmarkButton />   
               <p className="playlist-description">{playlist.description}</p>
             </div>
+            
           </div>
         ))}
       </div>

@@ -22,8 +22,11 @@ const Sidebar = () => {
   };
 
   const handleConfirmDelete = () => {
+    // 플레이리스트 삭제 후 메인 페이지로 이동
     console.log("플레이리스트가 삭제되었습니다.");
     setShowConfirmDialog(false);
+    setIsPlaylistAdded(false); // 플레이리스트가 삭제되었으므로 버튼을 다시 보이게 설정
+    navigate("/"); // 메인 페이지로 이동
   };
 
   const handleCancelDelete = () => {

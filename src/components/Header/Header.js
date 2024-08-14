@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import '../styles.css'; // styles.css 파일 경로
+import styles from './Header.module.css'; // 모듈 스타일 가져오기
 
 const Header = ({ onLogout }) => {
   const [token, setToken] = useState('');
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [toggleStates, setToggleStates] = useState({}); // 토글 상태를 저장할 객체
-  const trackRefs = useRef({}); // 트랙 정보의 참조를 저장할 객체
+  const [toggleStates, setToggleStates] = useState({});
+  const trackRefs = useRef({});
 
   useEffect(() => {
     const getToken = async () => {
@@ -68,7 +68,6 @@ const Header = ({ onLogout }) => {
     });
   };
 
-  // 폰트 크기 조정 함수
   const adjustFontSize = (element) => {
     if (element.scrollWidth > element.clientWidth) {
       element.style.fontSize = '0.8em';
@@ -87,9 +86,9 @@ const Header = ({ onLogout }) => {
   }, [results]);
 
   return (
-    <header className="header">
-      <div className="header-left">
-        <div className="logo">
+    <header className={styles.header}>
+      <div className={styles.headerLeft}>
+        <div className={styles.logo}>
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z"
@@ -98,33 +97,33 @@ const Header = ({ onLogout }) => {
           </svg>
           <h2>SPOiler</h2>
         </div>
-        <nav className="header-nav"></nav>
+        <nav className={styles.headerNav}></nav>
       </div>
-      <div className="header-right">
-        <label className="search">
+      <div className={styles.headerRight}>
+        <label className={styles.search}>
           <input
             placeholder="Search"
             value={query}
             onChange={handleSearch}
           />
-          <svg className="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="11" cy="11" r="8" stroke="green" strokeWidth="2" />
             <line x1="16" y1="16" x2="22" y2="22" stroke="green" strokeWidth="2" />
           </svg>
-          <ul className="autocomplete-results">
+          <ul className={styles.autocompleteResults}>
             {results.map((result) => (
-              <li key={result.id} className="autocomplete-item">
-                <div className="track-details">
-                  <img src={result.album.images[0]?.url} alt={result.name} className="track-image" />
+              <li key={result.id} className={styles.autocompleteItem}>
+                <div className={styles.trackDetails}>
+                  <img src={result.album.images[0]?.url} alt={result.name} className={styles.trackImage} />
                   <a
                     href={result.external_urls.spotify}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="autocomplete-link"
+                    className={styles.autocompleteLink}
                   >
-                    <div className="track-info" ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], trackName: el })}>
+                    <div className={styles.trackInfo} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], trackName: el })}>
                       <div>{result.name}</div>
-                      <div className="artist-name" ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], artistName: el })}>
+                      <div className={styles.artistName} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], artistName: el })}>
                         {result.artists[0]?.name}
                       </div>
                     </div>
@@ -134,7 +133,7 @@ const Header = ({ onLogout }) => {
                   xmlns="http://www.w3.org/2000/svg"
                   height="1.5em"
                   viewBox="0 0 384 512"
-                  className={`svgIcon ${toggleStates[result.id] ? 'checked' : ''}`}
+                  className={`${styles.svgIcon} ${toggleStates[result.id] ? styles.checked : ''}`}
                   onClick={() => toggleButton(result.id)}
                   style={{ cursor: 'pointer' }}
                 >
@@ -144,7 +143,7 @@ const Header = ({ onLogout }) => {
             ))}
           </ul>
         </label>
-        <div className="logout-button">
+        <div className={styles.logoutButton}>
           <button onClick={onLogout}>로그아웃</button>
         </div>
       </div>

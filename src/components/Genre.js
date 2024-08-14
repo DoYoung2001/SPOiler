@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import BookmarkButton from "./BookmarkButton";
+import BookmarkButton from "./BookmarkButton/BookmarkButton";
 import "../styles/Genre.css";
 import axios from "axios";
 import TrackInfo from "./TrackInfo";

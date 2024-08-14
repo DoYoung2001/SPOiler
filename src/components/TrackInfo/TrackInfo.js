@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/TrackInfo.css";
+import styles from "./TrackInfo.module.css";
 
 const TrackInfo = ({ isOpen, onClose, track }) => {
   console.log(track);
@@ -12,12 +12,12 @@ const TrackInfo = ({ isOpen, onClose, track }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="close-button" onClick={onClose}>
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
-        <div className="track-details">
+        <div className={styles.trackDetails}>
           <h2>{track.name}</h2>
           {track.album && track.album.images && track.album.images[0] && (
             <img src={track.album.images[0].url} alt={track.name} />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BookmarkButton from "./BookmarkButton";
 import "../styles/Genre.css";
 import axios from "axios";
-import TrackInfo from "./TrackInfo";
+import TrackInfo from "./TrackInfo/TrackInfo";
 
 const SpotifyGenreTracks = () => {
   const [token, setToken] = useState("");

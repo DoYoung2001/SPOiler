@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/Sidebar/Sidebar";
 import MainContent from "./components/MainContent";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -35,8 +35,6 @@ const App = () => {
   const handleRegisterSubmit = () => {
     setIsRegistering(false);
   };
-
-
 
   // 로그인 여부와 등록 상태에 따라 화면을 다르게 표시
   if (!isLoggedIn) {

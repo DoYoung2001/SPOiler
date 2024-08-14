@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom"; // useNavigate 훅 임포트
 
 const Sidebar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPlaylistAdded, setIsPlaylistAdded] = useState(false); // 새 플레이리스트가 추가되었는지 여부를 상태로 관리
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -13,8 +16,6 @@ const Sidebar = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const handleDeleteClick = () => {
     setShowConfirmDialog(true);
@@ -29,8 +30,6 @@ const Sidebar = () => {
     setShowConfirmDialog(false);
   };
 
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
   // 홈 버튼 클릭 시 MainContent로 이동
   const handleHomeClick = () => {
     navigate("/"); // 루트 경로로 이동
@@ -39,6 +38,11 @@ const Sidebar = () => {
   // 내 플레이리스트 클릭 시 호출될 함수
   const goToPlaylist = () => {
     navigate("/playlist");
+  };
+
+  const handlePlaylistAdded = () => {
+    setIsPlaylistAdded(true); // 플레이리스트가 추가되었음을 상태로 설정
+    closeModal(); // 모달 닫기
   };
 
   return (
@@ -76,23 +80,27 @@ const Sidebar = () => {
         <span class="name">내 플레이리스트</span>
        
       </div>
-      <div className="menuItem" onClick={openModal}>
-      
-        <div className="icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24px"
-            height="24px"
-            fill="currentColor"
-            viewBox="0 0 256 256"
-          >
-            <path d="M232,64H24A8,8,0,0,0,16,72V208a8,8,0,0,0,8,8H232a8,8,0,0,0,8-8V72A8,8,0,0,0,232,64ZM40,80H216a8,8,0,0,1,8,8v56H32V88A8,8,0,0,1,40,80ZM224,176H32v-8h16a8,8,0,0,0,8-8V136a8,8,0,0,0-8-8H32v-8h192v8h-8a8,8,0,0,0-8,8v24a8,8,0,0,0,8,8h8Z" />
-          </svg>
+      {!isPlaylistAdded && ( // 플레이리스트가 추가되지 않았을 때만 버튼을 표시
+        <div className="menuItem" onClick={openModal}>
+          <div className="icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24px"
+              height="24px"
+              fill="currentColor"
+              viewBox="0 0 256 256"
+            >
+              <path d="M232,64H24A8,8,0,0,0,16,72V208a8,8,0,0,0,8,8H232a8,8,0,0,0,8-8V72A8,8,0,0,0,232,64ZM40,80H216a8,8,0,0,1,8,8v56H32V88A8,8,0,0,1,40,80ZM224,176H32v-8h16a8,8,0,0,0,8-8V136a8,8,0,0,0-8-8H32v-8h192v8h-8a8,8,0,0,0-8,8v24a8,8,0,0,0,8,8h8Z" />
+            </svg>
+          </div>
+          <p>내 플레이리스트 추가</p>
         </div>
-        <span class="name">내 플레이리스트 추가</span>
-       
-      </div>
-      <TracklistAlert isOpen={isModalOpen} onClose={closeModal} />
+      )}
+      <TracklistAlert
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onPlaylistAdded={handlePlaylistAdded} // 여기서 props를 전달
+      />
       <div className="sidebar-delete">
         <button className="delete-button" onClick={handleDeleteClick}>
           <svg

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './BookmarkButton.css'; // CSS 파일을 불러옵니다
+import '../styles/BookmarkButton.css'; // CSS 파일을 불러옵니다
 
 // SVG 아이콘을 React 컴포넌트로 변환
 const BookmarkIcon = ({ isChecked }) => (
@@ -23,6 +23,7 @@ const BookmarkButton = ({ id }) => {
   };
 
   return (
+
     <div>
         <div className="bookmark-container">
       <input
@@ -35,7 +36,9 @@ const BookmarkButton = ({ id }) => {
       <label htmlFor={id} className="bookmark" onClick={handleCheckboxChange}>
         <BookmarkIcon isChecked={isChecked} />
       </label>
+
       </div>
+
     </div>
   );
 };

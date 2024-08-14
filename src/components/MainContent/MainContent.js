@@ -1,7 +1,7 @@
 import React from "react";
 import FeaturedPlaylists from "../FeaturedPlaylists/FeaturedPlaylists";
 import styles from "./MainContent.module.css";
-import NewReleases from "../NewReleases";
+import NewReleases from "../NewReleases/NewReleases";
 import SpotifyGenreTracks from "../Genre/Genre";
 
 const MainContent = () => (

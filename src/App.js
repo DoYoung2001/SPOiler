@@ -7,15 +7,11 @@ import {
 } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
-import MainContent from "./components/MainContent";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Sidebar from "./components/Sidebar";
 import MainContent from "./components/MainContent/MainContent";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
-import Playlist from "./components/Playlist";
-import PlaylistDetail from "./components/PlaylistDetail";
+import Playlist from "./components/Playlist/Playlist";
+import PlaylistDetail from "./components/PlaylistDetail/PlaylistDetail";
 import "./styles.css";
 
 const App = () => {

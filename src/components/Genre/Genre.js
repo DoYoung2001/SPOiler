@@ -100,12 +100,15 @@ const SpotifyGenreTracks = () => {
               <h3 className={styles["track-title"]}>
                 {index + 1}. {track.name}
               </h3>
-              <div onClick={(e) => e.stopPropagation()}>
-                <BookmarkButton />
-              </div>
               <p className={styles["track-artist"]}>
                 {track.artists.map((artist) => artist.name).join(", ")}
               </p>
+            </div>
+            <div
+              className={styles.bookmarkButtonContainer}
+              onClick={(e) => e.stopPropagation()} // 상위 요소의 클릭 이벤트 전파 차단
+            >
+              <BookmarkButton key={track.id} />
             </div>
           </div>
         ))}

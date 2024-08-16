@@ -99,12 +99,15 @@ const NewReleases = () => {
             />
             <div className={styles.releaseInfo}>
               <h3 className={styles.releaseTitle}>{album.name}</h3>
-              <div onClick={(e) => e.stopPropagation()}>
-                <BookmarkButton />
-              </div>
               <p className={styles.releaseArtist}>
                 {album.artists.map((artist) => artist.name).join(", ")}
               </p>
+            </div>
+            <div
+              className={styles.bookmarkButtonContainer}
+              onClick={(e) => e.stopPropagation()} // 상위 요소의 클릭 이벤트 전파 차단
+            >
+              <BookmarkButton id={album.id} />
             </div>
           </div>
         ))}

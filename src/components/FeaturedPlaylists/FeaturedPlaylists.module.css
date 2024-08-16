@@ -1,5 +1,3 @@
-
-/* FeaturedPlaylists.module.css */
 .featuredPlaylists {
   /* 스타일 정의 */
 }
@@ -28,9 +26,11 @@
   background-color: #282828;
   border-radius: 4px;
   padding: 10px;
-  transition: background-color 0.3s, padding 0.3s;
+  transition: background-color 0.3s, padding 0.3s, height 0.3s;
   position: relative;
   overflow: hidden;
+  height: auto;
+  min-height: 80px;
 }
 
 .playlistCard:hover {
@@ -40,11 +40,10 @@
 .playlistHeader {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   transition: transform 0.3s;
-}
-
-.playlistHeader.expanded {
-  transform: scale(1.05);
+  padding-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .playlistImage {
@@ -52,18 +51,17 @@
   height: 80px;
   border-radius: 4px;
   margin-right: 15px;
-  transition: width 0.3s, height 0.3s;
-}
-
-.playlistImage.expanded {
-  width: 100px;
-  height: 100px;
 }
 
 .playlistInfo {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  max-width: calc(100% - 100px - 40px);
+}
+
+.bookmarkButton {
+  margin-left: auto;
 }
 
 .playlistTitle {
@@ -71,11 +69,6 @@
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 5px;
-  transition: font-size 0.3s;
-}
-
-.playlistTitle.expanded {
-  font-size: 20px;
 }
 
 .playlistDescription {
@@ -85,13 +78,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 250px;
-  transition: font-size 0.3s;
-}
-
-.playlistDescription.expanded {
-  white-space: normal;
-  overflow: visible;
-  max-width: none;
 }
 
 .tracksList {
@@ -105,32 +91,61 @@
   max-height: 300px;
   overflow-y: auto;
   transition: max-height 0.5s ease-in;
+  border-top: 2px solid #555;
+  padding-top: 10px;
+}
+
+/* 스크롤바 스타일 추가 */
+.tracksList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tracksList::-webkit-scrollbar-track {
+  background: #181818;
+}
+
+.tracksList::-webkit-scrollbar-thumb {
+  background: #00FF7F; /* 초록색으로 변경 */
+  border-radius: 3px;
+}
+
+.tracksList::-webkit-scrollbar-thumb:hover {
+  background: #00cc66; /* 더 어두운 초록색으로 변경 */
 }
 
 .trackItem {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 5px;
+  padding: 5px 0;
+  border-bottom: 1px solid #666;
 }
 
 .trackImage {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   margin-right: 10px;
 }
 
 .trackInfo {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .trackName {
   font-size: 14px;
   font-weight: bold;
   color: #ffffff;
+  margin-bottom: 2px;
 }
 
 .artistName {
   font-size: 12px;
   color: #b3b3b3;
+}
+
+.bookmarkButtonContainer {
+  margin-left: auto;
 }

@@ -1,57 +1,62 @@
-/* src/components/NewReleases.css */
 .track-pop .title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #00ff7f;
-    position: sticky;
-    top: 0;
-    background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
-    z-index: 1; /* 제목을 다른 요소 위에 표시 */
-    padding: 10px 0;
-  }
-  
-  .track-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  
-  .track-card {
-    display: flex;
-    align-items: center;
-    background-color: #282828;
-    border-radius: 4px;
-    padding: 10px;
-    transition: background-color 0.3s;
-    position: relative;
-  }
-  
-  .track-card:hover {
-    background-color: #383838;
-  }
-  
-  .track-image {
-    width: 60px;
-    height: 60px;
-    border-radius: 4px;
-    margin-right: 15px;
-  }
-  
-  .track-info {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .track-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 5px;
-  }
-  
-  .track-artist {
-    font-size: 14px;
-    color: #b3b3b3;
-  }
-  
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #00ff7f;
+  position: sticky;
+  top: 0;
+  background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
+  z-index: 1; /* 제목을 다른 요소 위에 표시 */
+  padding: 10px 0;
+}
+
+.track-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.track-card {
+  display: flex;
+  align-items: center;
+  background-color: #282828;
+  border-radius: 4px;
+  padding: 10px;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+.track-card:hover {
+  background-color: #383838;
+}
+
+.track-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  margin-right: 15px;
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* 트랙 정보가 가능한 공간을 차지하도록 설정 */
+}
+
+.track-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.track-artist {
+  font-size: 14px;
+  color: #b3b3b3;
+}
+
+.bookmarkButtonContainer {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* 오른쪽 끝으로 정렬 */
+}

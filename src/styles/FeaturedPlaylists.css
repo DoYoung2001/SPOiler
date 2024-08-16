@@ -22,24 +22,40 @@
   background-color: #282828;
   border-radius: 4px;
   padding: 10px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, padding 0.3s; /* 배경색과 패딩 변화에 애니메이션 추가 */
   position: relative;
+  overflow: hidden; /* 카드가 확장될 때 넘치는 내용을 숨김 */
 }
 
 .playlist-card:hover {
   background-color: #383838;
 }
 
+.playlist-card.expanded {
+  padding: 15px; /* 카드가 커지도록 패딩 증가 */
+}
+
 .playlist-header {
   display: flex; /* 수평 배치 */
   align-items: center; /* 수직 중앙 정렬 */
+  transition: transform 0.3s; /* 크기 변화에 애니메이션 추가 */
+}
+
+.playlist-header.expanded {
+  transform: scale(1.05); /* 확장 시 이미지와 텍스트가 커지도록 설정 */
 }
 
 .playlist-image {
-  width: 60px;
-  height: 60px;
+  width: 80px; /* 이미지 크기 증가 */
+  height: 80px;
   border-radius: 4px;
   margin-right: 15px; /* 이미지와 텍스트 간의 간격 */
+  transition: width 0.3s, height 0.3s; /* 크기 변화에 애니메이션 추가 */
+}
+
+.playlist-image.expanded {
+  width: 100px; /* 확장 시 이미지 크기 증가 */
+  height: 100px;
 }
 
 .playlist-info {
@@ -49,19 +65,31 @@
 }
 
 .playlist-title {
-  font-size: 16px;
+  font-size: 18px; /* 폰트 크기 증가 */
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 5px;
+  transition: font-size 0.3s; /* 폰트 크기 변화에 애니메이션 추가 */
+}
+
+.playlist-title.expanded {
+  font-size: 20px; /* 확장 시 폰트 크기 증가 */
 }
 
 .playlist-description {
-  font-size: 14px;
+  font-size: 16px; /* 기본 폰트 크기 */
   color: #b3b3b3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px;
+  white-space: nowrap; /* 기본적으로 한 줄로 표시 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 말줄임표(...) 표시 */
+  max-width: 250px; /* 최대 너비 설정 */
+  transition: font-size 0.3s; /* 폰트 크기 변화에 애니메이션 추가 */
+}
+
+.playlist-description.expanded {
+  white-space: normal; /* 확장 시 줄 바꿈을 허용 */
+  overflow: visible; /* 넘치는 텍스트 보이기 */
+  max-width: none; /* 최대 너비 해제 */
 }
 
 .tracks-list {
@@ -72,8 +100,27 @@
 }
 
 .tracks-list.expanded {
-  max-height: 500px; /* 필요에 따라 최대 높이를 조정 */
+  max-height: 300px; /* 필요에 따라 최대 높이를 조정 */
+  overflow-y: auto; /* 세로 스크롤바를 추가하여 모든 트랙을 볼 수 있도록 설정 */
   transition: max-height 0.5s ease-in;
+}
+
+/* 스크롤바 스타일 */
+.tracks-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tracks-list::-webkit-scrollbar-track {
+  background: #181818;
+}
+
+.tracks-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.tracks-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .track-item {

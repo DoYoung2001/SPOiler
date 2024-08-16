@@ -1,153 +1,136 @@
 
-.featuredPlaylists .title  {
+/* FeaturedPlaylists.module.css */
+.featuredPlaylists {
+  /* 스타일 정의 */
+}
+
+.title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
   color: #00FF7F;
   position: sticky;
   top: 0;
-  background-color: #181818; /* 제목 배경색을 본문과 동일하게 설정 */
-  z-index: 1; /* 제목을 다른 요소 위에 표시 */
+  background-color: #181818;
+  z-index: 1;
   padding: 10px 0;
 }
 
-.playlists-grid {
+.playlistsGrid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
 }
 
-.playlist-card {
+.playlistCard {
   display: flex;
-  flex-direction: column; /* 세로 방향으로 배치 */
+  flex-direction: column;
   background-color: #282828;
   border-radius: 4px;
   padding: 10px;
-  transition: background-color 0.3s, padding 0.3s; /* 배경색과 패딩 변화에 애니메이션 추가 */
+  transition: background-color 0.3s, padding 0.3s;
   position: relative;
-  overflow: hidden; /* 카드가 확장될 때 넘치는 내용을 숨김 */
+  overflow: hidden;
 }
 
-.playlist-card:hover {
+.playlistCard:hover {
   background-color: #383838;
 }
 
-.playlist-card.expanded {
-  padding: 15px; /* 카드가 커지도록 패딩 증가 */
+.playlistHeader {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s;
 }
 
-.playlist-header {
-  display: flex; /* 수평 배치 */
-  align-items: center; /* 수직 중앙 정렬 */
-  transition: transform 0.3s; /* 크기 변화에 애니메이션 추가 */
+.playlistHeader.expanded {
+  transform: scale(1.05);
 }
 
-.playlist-header.expanded {
-  transform: scale(1.05); /* 확장 시 이미지와 텍스트가 커지도록 설정 */
-}
-
-.playlist-image {
-  width: 80px; /* 이미지 크기 증가 */
+.playlistImage {
+  width: 80px;
   height: 80px;
   border-radius: 4px;
-  margin-right: 15px; /* 이미지와 텍스트 간의 간격 */
-  transition: width 0.3s, height 0.3s; /* 크기 변화에 애니메이션 추가 */
+  margin-right: 15px;
+  transition: width 0.3s, height 0.3s;
 }
 
-.playlist-image.expanded {
-  width: 100px; /* 확장 시 이미지 크기 증가 */
+.playlistImage.expanded {
+  width: 100px;
   height: 100px;
 }
 
-.playlist-info {
+.playlistInfo {
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
+  flex-grow: 1;
 }
 
-.playlist-title {
-  font-size: 18px; /* 폰트 크기 증가 */
+.playlistTitle {
+  font-size: 18px;
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 5px;
-  transition: font-size 0.3s; /* 폰트 크기 변화에 애니메이션 추가 */
+  transition: font-size 0.3s;
 }
 
-.playlist-title.expanded {
-  font-size: 20px; /* 확장 시 폰트 크기 증가 */
+.playlistTitle.expanded {
+  font-size: 20px;
 }
 
-.playlist-description {
-  font-size: 16px; /* 기본 폰트 크기 */
+.playlistDescription {
+  font-size: 16px;
   color: #b3b3b3;
-  white-space: nowrap; /* 기본적으로 한 줄로 표시 */
-  overflow: hidden; /* 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis; /* 넘치는 텍스트에 말줄임표(...) 표시 */
-  max-width: 250px; /* 최대 너비 설정 */
-  transition: font-size 0.3s; /* 폰트 크기 변화에 애니메이션 추가 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+  transition: font-size 0.3s;
 }
 
-.playlist-description.expanded {
-  white-space: normal; /* 확장 시 줄 바꿈을 허용 */
-  overflow: visible; /* 넘치는 텍스트 보이기 */
-  max-width: none; /* 최대 너비 해제 */
+.playlistDescription.expanded {
+  white-space: normal;
+  overflow: visible;
+  max-width: none;
 }
 
-.tracks-list {
+.tracksList {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
-  width: 100%; /* 전체 너비 사용 */
+  width: 100%;
 }
 
-.tracks-list.expanded {
-  max-height: 300px; /* 필요에 따라 최대 높이를 조정 */
-  overflow-y: auto; /* 세로 스크롤바를 추가하여 모든 트랙을 볼 수 있도록 설정 */
+.tracksList.expanded {
+  max-height: 300px;
+  overflow-y: auto;
   transition: max-height 0.5s ease-in;
 }
 
-/* 스크롤바 스타일 */
-.tracks-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.tracks-list::-webkit-scrollbar-track {
-  background: #181818;
-}
-
-.tracks-list::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-
-.tracks-list::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.track-item {
+.trackItem {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
 }
 
-.track-image {
+.trackImage {
   width: 40px;
   height: 40px;
   margin-right: 10px;
 }
 
-.track-info {
+.trackInfo {
   display: flex;
   flex-direction: column;
 }
 
-.track-name {
+.trackName {
   font-size: 14px;
   font-weight: bold;
   color: #ffffff;
 }
 
-.artist-name {
+.artistName {
   font-size: 12px;
   color: #b3b3b3;
 }

@@ -26,14 +26,18 @@ const App = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    navigate("/login"); // 로그아웃 후 로그인 페이지로 이동
   };
 
   const handleRegisterClick = () => {
     setIsRegistering(true);
+ 
+
   };
 
   const handleRegisterSubmit = () => {
     setIsRegistering(false);
+     navigate("/login"); // 회원가입 후 로그인 페이지로 이동
   };
 
   // 로그인 여부와 등록 상태에 따라 화면을 다르게 표시
@@ -59,6 +63,8 @@ const App = () => {
           <Route path="/" element={<MainContent />} />
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/playlist/:playlistName" element={<PlaylistDetail />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
       </div>

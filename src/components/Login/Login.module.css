@@ -1,7 +1,6 @@
-/* Login and Register page styles */
+/* Login  page styles */
 
-.login-container,
-.register-container {
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -81,11 +80,11 @@
   outline: none;
 }
 
-#submit-button-cvr {
+#login-button-cvr {
   margin-top: 20px;
 }
 
-#submit-button {
+#login-button{
   display: block;
   width: 100%;
   color: #00ff7f;
@@ -102,7 +101,7 @@
   transition: all ease-in-out 0.3s;
 }
 
-#submit-button:hover {
+#login-button:hover {
   transition: all ease-in-out 0.3s;
   background-color: #00ff7f;
   color: #161616;

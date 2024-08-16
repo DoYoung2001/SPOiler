@@ -25,6 +25,7 @@
   padding: 10px;
   transition: background-color 0.3s;
   position: relative;
+  cursor: pointer;
 }
 
 .releaseCard:hover {
@@ -53,4 +54,35 @@
 .releaseArtist {
   font-size: 14px;
   color: #b3b3b3;
+}
+
+.trackList {
+  background-color: #282828;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-left: 75px; /* 앨범 이미지 너비 + 여백 */
+}
+
+.trackList h3 {
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.trackList ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.trackList li {
+  font-size: 14px;
+  color: #b3b3b3;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trackList li:hover {
+  color: #ffffff;
 }

@@ -1,16 +1,38 @@
 import React, { useState } from "react";
-import styles from "./Login.module.css"; // CSS 모듈 import
+import axios from 'axios';  // axios import 추가
+import styles from "./Login.module.css";
+import { useNavigate } from "react-router-dom"; // useNavigate import
 
 const Login = ({ onLogin, onRegisterClick }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // 에러 메시지를 위한 state 추가
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
-  const handleLogin = (event) => {
-    event.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setError(""); // 에러 메시지 초기화
+
     if (email && password) {
-      onLogin(); // 이메일과 비밀번호가 제공되면 onLogin 호출
+      try {
+        const response = await axios.post('http://localhost:8080/api/users/login', {
+          email,
+          password
+        });
+        
+        // 로그인 성공 시 토큰 저장
+        localStorage.setItem('token', response.data.token);
+        
+        // 로그인 성공 처리
+        onLogin();
+        navigate("/"); // 로그인 후 메인 페이지로 이동
+      } catch (error) {
+        // 로그인 실패 처리
+        const errorMessage = error.response?.data?.message || "이메일이나 비밀번호가 잘못 입력되었습니다.";
+        window.alert(errorMessage);
+      }
     } else {
-      console.error("이메일과 비밀번호를 입력하세요.");
+      window.alert("이메일과 비밀번호를 입력하세요.");
     }
   };
 
@@ -26,9 +48,10 @@ const Login = ({ onLogin, onRegisterClick }) => {
             <div className={styles["form-inp"]}>
               <input
                 placeholder="Email Address"
-                type="text"
+                type="email" // 이메일 형식으로 변경
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required // 필수 입력 필드로 설정
               />
             </div>
             <div className={styles["form-inp"]}>
@@ -37,11 +60,13 @@ const Login = ({ onLogin, onRegisterClick }) => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required // 필수 입력 필드로 설정
               />
             </div>
           </div>
-          <div id={styles["submit-button-cvr"]}>
-            <button id={styles["submit-button"]} type="submit" className={styles["login-button"]}>
+          {error && <div className={styles["error-message"]}>{error}</div>}
+          <div id={styles["login-button-cvr"]}>
+            <button id={styles["login-button"]} type="submit" className={styles["login-button"]}>
               Login
             </button>
           </div>

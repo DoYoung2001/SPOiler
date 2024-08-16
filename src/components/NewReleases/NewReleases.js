@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
-import AlbumInfo from "../AlbumInfo/AlbumInfo";
+import TrackInfo from "../TrackInfo/TrackInfo";
 import styles from "./NewReleases.module.css";
 
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
@@ -10,11 +10,11 @@ const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 const NewReleases = () => {
   const [token, setToken] = useState("");
   const [newReleases, setNewReleases] = useState([]);
-  const [selectedAlbum, setSelectedAlbum] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedAlbum, setExpandedAlbum] = useState(null);
   const [tracks, setTracks] = useState({});
   const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
+  const [selectedTrack, setSelectedTrack] = useState(null); // 선택된 트랙
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState(false); // 모달 열림 상태
 
   useEffect(() => {
     const getToken = async () => {
@@ -31,10 +31,7 @@ const NewReleases = () => {
         );
         setToken(response.data.access_token);
       } catch (error) {
-        console.error(
-          "Error fetching the token:",
-          error.response ? error.response.data : error.message
-        );
+        console.error("Error fetching the token:", error);
       }
     };
 
@@ -104,31 +101,31 @@ const NewReleases = () => {
     }
   };
 
-  const handleInfoClick = (e, albumId) => {
+  const handleInfoClick = (e, trackId) => {
     e.stopPropagation(); // 이벤트 전파 방지
-    handleAlbumInfo(albumId);
+    handleAlbumInfo(trackId);
   };
 
-  const handleAlbumInfo = async (albumId) => {
+  const handleAlbumInfo = async (trackId) => {
     try {
       const response = await axios.get(
-        `https://api.spotify.com/v1/albums/${albumId}`,
+        `https://api.spotify.com/v1/tracks/${trackId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setSelectedAlbum(response.data);
-      setIsModalOpen(true);
+      setSelectedTrack(response.data);
+      setIsTrackModalOpen(true);
     } catch (error) {
-      console.error("Error fetching album details:", error);
+      console.error("Error fetching track details:", error);
     }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedAlbum(null);
+  const closeTrackModal = () => {
+    setIsTrackModalOpen(false);
+    setSelectedTrack(null);
   };
 
   const handleBookmarkToggle = (trackId) => {
@@ -198,10 +195,10 @@ const NewReleases = () => {
           </div>
         ))}
       </div>
-      <AlbumInfo
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        album={selectedAlbum}
+      <TrackInfo
+        isOpen={isTrackModalOpen}
+        onClose={closeTrackModal}
+        track={selectedTrack}
       />
     </div>
   );

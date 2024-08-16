@@ -14,9 +14,9 @@ import Playlist from "./components/Playlist/Playlist";
 import PlaylistDetail from "./components/PlaylistDetail/PlaylistDetail";
 import "./styles.css";
 
+// 로그인 상태와 회원가입 상태를 App 컴포넌트에서 관리
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token')); // 로컬 스토리지에서 로그인 상태 확인
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   const handleLogin = () => {
@@ -26,25 +26,26 @@ const App = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    localStorage.removeItem('token'); // 로그아웃 시 토큰 삭제
+    navigate("/login"); // 로그아웃 후 로그인 페이지로 이동
   };
 
   const handleRegisterClick = () => {
-    setIsRegistering(true);
+    navigate("/register"); // 회원가입 페이지로 이동
   };
 
   const handleRegisterSubmit = () => {
-    setIsRegistering(false);
+    navigate("/login"); // 회원가입 후 로그인 페이지로 이동
   };
 
-  // 로그인 여부와 등록 상태에 따라 화면을 다르게 표시
   if (!isLoggedIn) {
-    if (isRegistering) {
-      return <Register onSubmit={handleRegisterSubmit} />;
-    } else {
-      return (
-        <Login onLogin={handleLogin} onRegisterClick={handleRegisterClick} />
-      );
-    }
+    return (
+      <Routes>
+        <Route path="/login" element={<Login onLogin={handleLogin} onRegisterClick={handleRegisterClick} />} />
+        <Route path="/register" element={<Register onSubmit={handleRegisterSubmit} />} />
+        <Route path="*" element={<Login onLogin={handleLogin} onRegisterClick={handleRegisterClick} />} /> {/* 기본 경로 설정 */}
+      </Routes>
+    );
   }
 
   return (
@@ -52,20 +53,22 @@ const App = () => {
       <Header onLogout={handleLogout} />
       <div className="main-layout">
         <div className="sidebar">
-        <Sidebar />
+          <Sidebar />
         </div>
         <div className="playlist-container">
-        <Routes>
-          <Route path="/" element={<MainContent />} />
-          <Route path="/playlist" element={<Playlist />} />
-          <Route path="/playlist/:playlistName" element={<PlaylistDetail />} />
-        </Routes>
-      </div>
+          <Routes>
+            <Route path="/" element={<MainContent />} />
+            <Route path="/playlist" element={<Playlist />} />
+            <Route path="/playlist/:playlistName" element={<PlaylistDetail />} />
+            {/* 로그인 페이지는 이미 처리됨 */}
+          </Routes>
+        </div>
       </div>
     </div>
   );
 };
 
+// Router로 래핑된 App 컴포넌트 반환
 const AppWrapper = () => (
   <Router>
     <App />

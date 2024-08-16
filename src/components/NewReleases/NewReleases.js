@@ -12,6 +12,9 @@ const NewReleases = () => {
   const [newReleases, setNewReleases] = useState([]);
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [expandedAlbum, setExpandedAlbum] = useState(null);
+  const [tracks, setTracks] = useState({});
+  const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
 
   useEffect(() => {
     const getToken = async () => {
@@ -60,7 +63,53 @@ const NewReleases = () => {
     fetchNewReleases();
   }, [token]);
 
-  const handleAlbumClick = async (albumId) => {
+  const fetchTracks = async (albumId) => {
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/albums/${albumId}/tracks`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const trackDetails = await Promise.all(
+        response.data.items.map(async (track) => {
+          const trackResponse = await axios.get(
+            `https://api.spotify.com/v1/tracks/${track.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          return trackResponse.data;
+        })
+      );
+      setTracks((prevTracks) => ({
+        ...prevTracks,
+        [albumId]: trackDetails,
+      }));
+    } catch (error) {
+      console.error("Error fetching tracks:", error);
+    }
+  };
+
+  const handleAlbumClick = (albumId) => {
+    if (expandedAlbum === albumId) {
+      setExpandedAlbum(null);
+    } else {
+      setExpandedAlbum(albumId);
+      fetchTracks(albumId);
+    }
+  };
+
+  const handleInfoClick = (e, albumId) => {
+    e.stopPropagation(); // 이벤트 전파 방지
+    handleAlbumInfo(albumId);
+  };
+
+  const handleAlbumInfo = async (albumId) => {
     try {
       const response = await axios.get(
         `https://api.spotify.com/v1/albums/${albumId}`,
@@ -82,6 +131,18 @@ const NewReleases = () => {
     setSelectedAlbum(null);
   };
 
+  const handleBookmarkToggle = (trackId) => {
+    setBookmarkedTracks((prevBookmarkedTracks) => {
+      const updatedBookmarkedTracks = new Set(prevBookmarkedTracks);
+      if (updatedBookmarkedTracks.has(trackId)) {
+        updatedBookmarkedTracks.delete(trackId);
+      } else {
+        updatedBookmarkedTracks.add(trackId);
+      }
+      return updatedBookmarkedTracks;
+    });
+  };
+
   return (
     <div className={styles.newReleases}>
       <p className={styles.title}>최신 음악</p>
@@ -89,26 +150,51 @@ const NewReleases = () => {
         {newReleases.map((album) => (
           <div
             key={album.id}
-            className={styles.releaseCard}
+            className={`${styles.releaseCard} ${expandedAlbum === album.id ? styles.expanded : ''}`}
             onClick={() => handleAlbumClick(album.id)}
           >
-            <img
-              src={album.images[0].url}
-              alt={album.name}
-              className={styles.releaseImage}
-            />
-            <div className={styles.releaseInfo}>
-              <h3 className={styles.releaseTitle}>{album.name}</h3>
-              <p className={styles.releaseArtist}>
-                {album.artists.map((artist) => artist.name).join(", ")}
-              </p>
+            <div className={styles.releaseHeader}>
+              <img
+                src={album.images[0].url}
+                alt={album.name}
+                className={styles.releaseImage}
+              />
+              <div className={styles.releaseInfo}>
+                <h3 className={styles.releaseTitle}>{album.name}</h3>
+                <p className={styles.releaseArtist}>
+                  {album.artists.map((artist) => artist.name).join(", ")}
+                </p>
+              </div>
+              <div className={styles.buttonContainer}>
+                <button onClick={(e) => handleInfoClick(e, album.id)}>...</button>
+              </div>
             </div>
-            <div
-              className={styles.bookmarkButtonContainer}
-              onClick={(e) => e.stopPropagation()} // 상위 요소의 클릭 이벤트 전파 차단
-            >
-              <BookmarkButton id={album.id} />
-            </div>
+            {expandedAlbum === album.id && (
+              <div className={`${styles.tracksList} ${styles.expanded}`}>
+                {tracks[album.id] && tracks[album.id].map((track) => (
+                  <div key={track.id} className={styles.trackItem}>
+                    <img
+                      src={track.album?.images?.[0]?.url || 'default-image-url.jpg'}
+                      alt={track.name}
+                      className={styles.trackImage}
+                    />
+                    <div className={styles.trackInfo}>
+                      <p className={styles.trackName}>{track.name}</p>
+                      <p className={styles.artistName}>
+                        {track.artists.map((artist) => artist.name).join(", ")}
+                      </p>
+                    </div>
+                    <div className={styles.bookmarkButtonContainer} onClick={(e) => e.stopPropagation()}>
+                      <BookmarkButton
+                        key={track.id}
+                        isBookmarked={bookmarkedTracks.has(track.id)}
+                        onToggle={() => handleBookmarkToggle(track.id)}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

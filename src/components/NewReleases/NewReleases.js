@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import TrackInfo from "../TrackInfo/TrackInfo";
@@ -10,11 +10,11 @@ const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 const NewReleases = () => {
   const [token, setToken] = useState("");
   const [newReleases, setNewReleases] = useState([]);
-  const [selectedAlbum, setSelectedAlbum] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedAlbum, setExpandedAlbum] = useState(null);
   const [tracks, setTracks] = useState({});
   const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
+  const [selectedTrack, setSelectedTrack] = useState(null); // 선택된 트랙
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState(false); // 모달 열림 상태
 
   useEffect(() => {
     const getToken = async () => {
@@ -101,12 +101,12 @@ const NewReleases = () => {
     }
   };
 
-  const handleInfoClick = (e, albumId) => {
+  const handleInfoClick = (e, trackId) => {
     e.stopPropagation(); // 이벤트 전파 방지
-    handleAlbumInfo(albumId);
+    handleAlbumInfo(trackId);
   };
 
-  const handleAlbumInfo = async (albumId) => {
+  const handleAlbumInfo = async (trackId) => {
     try {
       const response = await axios.get(
         `https://api.spotify.com/v1/tracks/${trackId}`,

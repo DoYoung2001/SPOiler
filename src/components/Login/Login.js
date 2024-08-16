@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from 'axios';  // axios import 추가
 import styles from "./Login.module.css";
+import { useNavigate } from "react-router-dom"; // useNavigate import
 
 const Login = ({ onLogin, onRegisterClick }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // 에러 메시지를 위한 state 추가
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   const handleLogin = async (event) => {
     event.preventDefault();

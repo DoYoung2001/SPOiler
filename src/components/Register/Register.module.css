@@ -4,7 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* 전체 화면 높이 */
+  width: 100vw; /* 전체 화면 너비 */
   background-color: black;
 }
 

@@ -1,7 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import BookmarkButton from './BookmarkButton';
-import '../styles/FeaturedPlaylists.css';
+// - useEffect와 토큰 받아오기:
+
+//   컴포넌트가 처음 렌더링될 때 useEffect가 실행되어 Spotify API로부터 액세스 토큰을 받아옵니다.
+//   토큰을 요청할 때, 클라이언트 ID와 시크릿을 Base64로 인코딩하여 헤더에 포함시킵니다.
+//   받아온 토큰은 상태 변수 token에 저장됩니다.
+
+// - useEffect와 피처드 플레이리스트 받아오기:
+
+//   토큰이 성공적으로 받아졌을 때, 다시 useEffect가 실행되어 Spotify API로부터 피처드 플레이리스트 데이터를 요청합니다.
+//   받아온 플레이리스트 데이터는 상태 변수 playlists에 저장되며, 컴포넌트에서 이를 활용해 렌더링을 수행합니다.
+
+// src/components/FeaturedPlaylists.js
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import BookmarkButton from "../BookmarkButton/BookmarkButton";
+import styles from './FeaturedPlaylists.module.css'; // 모듈 스타일 가져오기
+
 
 const FeaturedPlaylists = () => {
   const [token, setToken] = useState('');

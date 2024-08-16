@@ -1,6 +1,6 @@
-/* TrackInfo.css */
+/* AlbumInfo.css */
 
-.modal-overlay {
+.modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,30 +10,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* 높은 z-index 값 추가 */
+  z-index: 1000;
 }
 
-.modal-content {
+.modalContent {
   background: white;
   padding: 20px;
   border-radius: 8px; /* 둥근 모서리 */
   max-width: 450px; /* 모달의 최대 너비 */
   width: 90%; /* 모달의 폭을 화면의 90%로 설정 */
-  height: 90%;
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
 }
 
-.modal-content:hover {
+.modalContent:hover {
   transform: translateY(-5px); /* 호버 시 모달이 살짝 위로 이동 */
 }
 
-.close-button {
+.closeButton {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #e63946; /* 빨간색 배경 */
+  background: #e63946;
   color: white;
   border: none;
   border-radius: 50%;
@@ -47,39 +46,34 @@
   transition: background-color 0.3s ease;
 }
 
-.close-button:hover {
+.closeButton:hover {
   background-color: #d62839; /* 호버 시 색상 변경 */
 }
 
-.track-details {
+.albumDetails {
   text-align: center;
 }
 
-.track-details img {
+.albumDetails img {
   max-width: 100%;
-  border-radius: auto;
+  border-radius: 8px;
 }
 
-.track-details h2 {
+.albumDetails h2 {
   margin-top: 0;
-  font-size: 2rem; /* 강조된 트랙 타이틀 크기 */
+  font-size: 2rem; /* 강조된 앨범 타이틀 크기 */
   color: #333; /* 타이틀 색상 */
   font-weight: 700; /* 두꺼운 글씨 */
 }
 
-.track-details p {
+.albumDetails p {
   margin: 8px 0;
-  font-size: 0.9rem;
-  color: #666;
-  line-height: 1.5;
+  font-size: 0.9rem; /* 정보 텍스트의 폰트 크기 */
+  color: #666; /* 부드러운 회색 색상 */
+  line-height: 1.5; /* 줄 간격 조정 */
 }
 
-.track-details audio {
-  width: 100%;
-  margin-top: 10px;
-}
-
-.track-details a {
+.albumDetails a {
   display: inline-block;
   margin-top: 15px;
   text-decoration: none;
@@ -89,6 +83,6 @@
   transition: color 0.3s ease;
 }
 
-.track-details a:hover {
+.albumDetails a:hover {
   color: #17a74b; /* 링크 호버 색상 */
 }

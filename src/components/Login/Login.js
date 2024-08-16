@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/Login.css"; // CSS 파일 import
+import styles from "./Login.module.css"; // CSS 모듈 import
 
 const Login = ({ onLogin, onRegisterClick }) => {
   const [email, setEmail] = useState("");
@@ -15,15 +15,15 @@ const Login = ({ onLogin, onRegisterClick }) => {
   };
 
   return (
-    <div id="form-ui" className="login-container">
-      <form id="form" onSubmit={handleLogin}>
-        <div id="form-body">
-          <div id="welcome-lines">
-            <div id="welcome-line-1">Spotify</div>
-            <div id="welcome-line-2">Welcome !</div>
+    <div className={styles["login-container"]}>
+      <form id={styles.form} onSubmit={handleLogin}>
+        <div id={styles["form-body"]}>
+          <div id={styles["welcome-lines"]}>
+            <div id={styles["welcome-line-1"]}>Spotify</div>
+            <div id={styles["welcome-line-2"]}>Welcome !</div>
           </div>
-          <div id="input-area">
-            <div className="form-inp">
+          <div id={styles["input-area"]}>
+            <div className={styles["form-inp"]}>
               <input
                 placeholder="Email Address"
                 type="text"
@@ -31,7 +31,7 @@ const Login = ({ onLogin, onRegisterClick }) => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="form-inp">
+            <div className={styles["form-inp"]}>
               <input
                 placeholder="Password"
                 type="password"
@@ -40,17 +40,17 @@ const Login = ({ onLogin, onRegisterClick }) => {
               />
             </div>
           </div>
-          <div id="submit-button-cvr">
-            <button id="submit-button" type="submit" className="login-button">
+          <div id={styles["submit-button-cvr"]}>
+            <button id={styles["submit-button"]} type="submit" className={styles["login-button"]}>
               Login
             </button>
           </div>
-          <div id="register">
-            <a href="#" onClick={onRegisterClick} className="register-button">
+          <div id={styles["register"]}>
+            <a href="#" onClick={onRegisterClick} className={styles["register-button"]}>
               Register
             </a>
           </div>
-          <div id="bar"></div>
+          <div id={styles["bar"]}></div>
         </div>
       </form>
     </div>

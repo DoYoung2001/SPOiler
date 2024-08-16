@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import BookmarkButton from "./BookmarkButton";
-import "../styles/Genre.css";
+import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import axios from "axios";
-import TrackInfo from "./TrackInfo";
+import TrackInfo from "../TrackInfo/TrackInfo";
+import styles from "./Genre.module.css";
 
 const SpotifyGenreTracks = () => {
   const [token, setToken] = useState("");
   const [popularTracks, setPopularTracks] = useState([]);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const genre = "k-pop"; // 원하는 장르를 설정하세요.
+  const genre = "k-pop";
 
   useEffect(() => {
     const getAccessToken = async () => {
-      const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // 본인의 클라이언트 ID
-      const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET; // 본인의 클라이언트 비밀 키
+      const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+      const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
       try {
         const response = await axios.post(
           "https://accounts.spotify.com/api/token",
@@ -26,7 +26,7 @@ const SpotifyGenreTracks = () => {
             },
           }
         );
-        setToken(response.data.access_token); // 토큰 설정
+        setToken(response.data.access_token);
       } catch (error) {
         console.error(
           "Error fetching the token:",
@@ -49,13 +49,12 @@ const SpotifyGenreTracks = () => {
               },
             }
           );
-          // 인기 트랙의 popularity 정보를 필터링
           const tracksWithPopularity = response.data.tracks.items.filter(
             (track) => track.popularity > 50
-          ); // 인기 기준 설정
+          );
           setPopularTracks(tracksWithPopularity);
         } catch (error) {
-          console.error("Error fetching  popular tracks:", error);
+          console.error("Error fetching popular tracks:", error);
         }
       }
     };
@@ -73,7 +72,6 @@ const SpotifyGenreTracks = () => {
           },
         }
       );
-      // console.log("Track details:", response.data); // 추가된 로그
       setSelectedTrack(response.data);
       setIsModalOpen(true);
     } catch (error) {
@@ -82,28 +80,30 @@ const SpotifyGenreTracks = () => {
   };
 
   return (
-    <div className="track-pop">
-      <p className="title"> TOP 20 : {genre}</p>
-      <div className="track-grid">
+    <div className={styles["track-pop"]}>
+      <p className={styles.title}>TOP 20 : {genre}</p>
+      <div className={styles["track-grid"]}>
         {popularTracks.map((track, index) => (
           <div
             key={track.id}
-            className="track-card"
+            className={styles["track-card"]}
             onClick={() => handleTrackClick(track.id)}
           >
             {track.album.images.length > 0 && (
               <img
                 src={track.album.images[0].url}
                 alt={track.name}
-                className="track-image"
+                className={styles["track-image"]}
               />
             )}
-            <div className="track-info">
-              <h3 className="track-title">
+            <div className={styles["track-info"]}>
+              <h3 className={styles["track-title"]}>
                 {index + 1}. {track.name}
               </h3>
-              <BookmarkButton />
-              <p className="track-artist">
+              <div onClick={(e) => e.stopPropagation()}>
+                <BookmarkButton />
+              </div>
+              <p className={styles["track-artist"]}>
                 {track.artists.map((artist) => artist.name).join(", ")}
               </p>
             </div>

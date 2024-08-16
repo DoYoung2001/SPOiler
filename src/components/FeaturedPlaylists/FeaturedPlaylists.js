@@ -107,7 +107,7 @@ const FeaturedPlaylists = () => {
         {playlists.map((playlist) => (
           <div key={playlist.id} className={`${styles.playlistCard} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} onClick={() => handlePlaylistClick(playlist.id)}>
             <div className={`${styles.playlistHeader} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
-              <img src={playlist.images[0].url} alt={playlist.name} className={`${styles.playlistImage} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} />
+              <img src={playlist.images[0]?.url} alt={playlist.name} className={`${styles.playlistImage} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} />
               <div className={styles.playlistInfo}>
                 <h3 className={`${styles.playlistTitle} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>{playlist.name}</h3>
                 <p className={`${styles.playlistDescription} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
@@ -116,18 +116,29 @@ const FeaturedPlaylists = () => {
               </div>
             </div>
             <div className={`${styles.tracksList} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
-              {tracks[playlist.id] && tracks[playlist.id].map((trackItem) => (
-                <div key={trackItem.track.id} className={styles.trackItem} onClick={(e) => handleTrackClick(e, trackItem.track.id)}>
-                  <img src={trackItem.track.album.images[0]?.url} alt={trackItem.track.name} className={styles.trackImage} />
-                  <div className={styles.trackInfo}>
-                    <p className={styles.trackName}>{trackItem.track.name}</p>
-                    <p className={styles.artistName}>{trackItem.track.artists.map(artist => artist.name).join(', ')}</p>
+              {tracks[playlist.id] && tracks[playlist.id].map((trackItem) => {
+                // trackItem.track이 null이거나 undefined인 경우 렌더링하지 않음
+                if (!trackItem || !trackItem.track) return null;
+
+                return (
+                  <div key={trackItem.track.id} className={styles.trackItem} onClick={(e) => handleTrackClick(e, trackItem.track.id)}>
+                    <img 
+                      src={trackItem.track.album?.images?.[0]?.url || 'default-image-url.jpg'} 
+                      alt={trackItem.track.name || 'Track'} 
+                      className={styles.trackImage} 
+                    />
+                    <div className={styles.trackInfo}>
+                      <p className={styles.trackName}>{trackItem.track.name || 'Unknown Track'}</p>
+                      <p className={styles.artistName}>
+                        {trackItem.track.artists ? trackItem.track.artists.map(artist => artist.name).join(', ') : 'Unknown Artist'}
+                      </p>
+                    </div>
+                    <div className={styles.bookmarkButtonContainer} onClick={(e) => { e.stopPropagation(); handleBookmarkClick(trackItem.track.id); }}>
+                      <BookmarkButton key={trackItem.track.id} />
+                    </div>
                   </div>
-                  <div className={styles.bookmarkButtonContainer} onClick={(e) => { e.stopPropagation(); handleBookmarkClick(trackItem.track.id); }}>
-                    <BookmarkButton key={trackItem.track.id} /> {/* 고유한 키 추가 */}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ))}

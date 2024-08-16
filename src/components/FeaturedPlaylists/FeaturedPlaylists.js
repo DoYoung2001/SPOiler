@@ -15,7 +15,6 @@ import axios from "axios";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import styles from './FeaturedPlaylists.module.css'; // 모듈 스타일 가져오기
 
-
 const FeaturedPlaylists = () => {
   const [token, setToken] = useState('');
   const [playlists, setPlaylists] = useState([]);
@@ -88,28 +87,28 @@ const FeaturedPlaylists = () => {
   };
 
   return (
-    <div className="featured-playlists">
-      <p className="title">실시간 인기 플레이리스트</p>
-      <div className="playlists-grid">
+    <div className={styles.featuredPlaylists}>
+      <p className={styles.title}>실시간 인기 플레이리스트</p>
+      <div className={styles.playlistsGrid}>
         {playlists.map((playlist) => (
-          <div key={playlist.id} className={`playlist-card ${expandedPlaylist === playlist.id ? 'expanded' : ''}`} onClick={() => handlePlaylistClick(playlist.id)}>
-            <div className={`playlist-header ${expandedPlaylist === playlist.id ? 'expanded' : ''}`}>
-              <img src={playlist.images[0].url} alt={playlist.name} className={`playlist-image ${expandedPlaylist === playlist.id ? 'expanded' : ''}`} />
-              <div className="playlist-info">
-                <h3 className={`playlist-title ${expandedPlaylist === playlist.id ? 'expanded' : ''}`}>{playlist.name}</h3>
+          <div key={playlist.id} className={`${styles.playlistCard} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} onClick={() => handlePlaylistClick(playlist.id)}>
+            <div className={`${styles.playlistHeader} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
+              <img src={playlist.images[0].url} alt={playlist.name} className={`${styles.playlistImage} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} />
+              <div className={styles.playlistInfo}>
+                <h3 className={`${styles.playlistTitle} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>{playlist.name}</h3>
                 <BookmarkButton />
-                <p className={`playlist-description ${expandedPlaylist === playlist.id ? 'expanded' : ''}`}>
+                <p className={`${styles.playlistDescription} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
                   {expandedPlaylist === playlist.id ? playlist.description : `${playlist.description.substring(0, 50)}...`}
                 </p>
               </div>
             </div>
-            <div className={`tracks-list ${expandedPlaylist === playlist.id ? 'expanded' : ''}`}>
+            <div className={`${styles.tracksList} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
               {tracks[playlist.id] && tracks[playlist.id].map((trackItem) => (
-                <div key={trackItem.track.id} className="track-item">
-                  <img src={trackItem.track.album.images[0]?.url} alt={trackItem.track.name} className="track-image" />
-                  <div className="track-info">
-                    <p className="track-name">{trackItem.track.name}</p>
-                    <p className="artist-name">{trackItem.track.artists.map(artist => artist.name).join(', ')}</p>
+                <div key={trackItem.track.id} className={styles.trackItem}>
+                  <img src={trackItem.track.album.images[0]?.url} alt={trackItem.track.name} className={styles.trackImage} />
+                  <div className={styles.trackInfo}>
+                    <p className={styles.trackName}>{trackItem.track.name}</p>
+                    <p className={styles.artistName}>{trackItem.track.artists.map(artist => artist.name).join(', ')}</p>
                   </div>
                 </div>
               ))}

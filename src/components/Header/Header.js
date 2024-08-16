@@ -41,7 +41,7 @@ const Header = ({ onLogout }) => {
     if (e.target.value && token) {
       try {
         const response = await axios.get(
-          `https://api.spotify.com/v1/search?q=${e.target.value}&type=track&limit=5`,
+          `https://api.spotify.com/v1/search?q=${e.target.value}&type=track&limit=15`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

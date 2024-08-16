@@ -87,8 +87,10 @@
     padding: 0;
     margin: 0;
     z-index: 1000; /* 다른 요소 위에 표시되도록 */
+    overflow-y: auto;  /* 세로 스크롤 활성화 */
+    max-height: 300px; /* 원하는 높이로 설정 */
   }
-  .aautocompleteItem {
+  .autocompleteItem {
     display: flex;
     align-items: center;
     justify-content: space-between; /* 아이콘과 텍스트를 양쪽 끝으로 정렬 */
@@ -98,6 +100,7 @@
     color: white; /* 기본 글자색을 하얀색으로 설정 */
   }
   
+
   .autocompleteItem:hover {
     background-color: #555; /* 호버 시 배경색 변경 */
   }

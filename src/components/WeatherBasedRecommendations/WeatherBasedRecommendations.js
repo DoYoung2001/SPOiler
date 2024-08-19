@@ -77,6 +77,21 @@ const WeatherBasedRecommendations = ({ weather }) => {
     }
   };
 
+  const getTitle = (weather) => {
+    switch (weather) {
+      case "Clear":
+        return "맑은 날씨에 추천하는 노래";
+      case "Clouds":
+        return "흐린 날씨에 추천하는 노래";
+      case "Snow":
+        return "눈 내리는 날에 추천하는 노래";
+      case "Rain":
+        return "비 오는 날에 추천하는 노래";
+      default:
+        return "추천하는 노래";
+    }
+  };
+
   const handleTrackClick = async (trackId) => {
     try {
       const response = await axios.get(
@@ -96,7 +111,7 @@ const WeatherBasedRecommendations = ({ weather }) => {
 
   return (
     <div className={styles["track-pop"]}>
-      <p className={styles["title"]}>추천 재생목록</p>
+      <p className={styles["title"]}>{getTitle(weather)}</p>
       <div className={styles["track-grid"]}>
         {recommendedTracks.map((track) => (
           <div
@@ -112,9 +127,7 @@ const WeatherBasedRecommendations = ({ weather }) => {
               />
             )}
             <div className={styles["track-info"]}>
-              <h3 className={styles["track-title"]}>
-                {track.name}
-              </h3>
+              <h3 className={styles["track-title"]}>{track.name}</h3>
               <p className={styles["track-artist"]}>
                 {track.artists.map((artist) => artist.name).join(", ")}
               </p>

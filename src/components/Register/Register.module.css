@@ -1,11 +1,11 @@
-/* Login and Register page styles */
+/* Register page styles */
 
-.login-container,
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* 전체 화면 높이 */
+  width: 100vw; /* 전체 화면 너비 */
   background-color: black;
 }
 
@@ -81,11 +81,11 @@
   outline: none;
 }
 
-#submit-button-cvr {
+#register-button-cvr {
   margin-top: 20px;
 }
 
-#submit-button {
+#register-button {
   display: block;
   width: 100%;
   color: #00ff7f;
@@ -102,7 +102,7 @@
   transition: all ease-in-out 0.3s;
 }
 
-#submit-button:hover {
+#register-button:hover {
   transition: all ease-in-out 0.3s;
   background-color: #00ff7f;
   color: #161616;

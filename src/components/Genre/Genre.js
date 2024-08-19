@@ -1,24 +1,20 @@
-// CSS 모듈 import: import styles from "./Genre.module.css";로 CSS 모듈을 가져옵니다.
-// 클래스 이름 적용: 기존의 클래스 이름 대신 styles 객체를 사용하여 클래스를 적용합니다.
-//  예를 들어, className="track-pop"을 className={styles["track-pop"]}으로 변경합니다.
-
 import React, { useEffect, useState } from "react";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import axios from "axios";
 import TrackInfo from "../TrackInfo/TrackInfo";
-import styles from "./Genre.module.css"; // CSS 모듈을 import
+import styles from "./Genre.module.css";
 
 const SpotifyGenreTracks = () => {
   const [token, setToken] = useState("");
   const [popularTracks, setPopularTracks] = useState([]);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const genre = "k-pop"; // 원하는 장르를 설정하세요.
+  const genre = "k-pop";
 
   useEffect(() => {
     const getAccessToken = async () => {
-      const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // 본인의 클라이언트 ID
-      const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET; // 본인의 클라이언트 비밀 키
+      const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+      const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
       try {
         const response = await axios.post(
           "https://accounts.spotify.com/api/token",
@@ -30,7 +26,7 @@ const SpotifyGenreTracks = () => {
             },
           }
         );
-        setToken(response.data.access_token); // 토큰 설정
+        setToken(response.data.access_token);
       } catch (error) {
         console.error(
           "Error fetching the token:",
@@ -53,10 +49,9 @@ const SpotifyGenreTracks = () => {
               },
             }
           );
-          // 인기 트랙의 popularity 정보를 필터링
           const tracksWithPopularity = response.data.tracks.items.filter(
             (track) => track.popularity > 50
-          ); // 인기 기준 설정
+          );
           setPopularTracks(tracksWithPopularity);
         } catch (error) {
           console.error("Error fetching popular tracks:", error);
@@ -77,7 +72,6 @@ const SpotifyGenreTracks = () => {
           },
         }
       );
-      // console.log("Track details:", response.data); // 추가된 로그
       setSelectedTrack(response.data);
       setIsModalOpen(true);
     } catch (error) {
@@ -106,10 +100,15 @@ const SpotifyGenreTracks = () => {
               <h3 className={styles["track-title"]}>
                 {index + 1}. {track.name}
               </h3>
-              <BookmarkButton />
               <p className={styles["track-artist"]}>
                 {track.artists.map((artist) => artist.name).join(", ")}
               </p>
+            </div>
+            <div
+              className={styles.bookmarkButtonContainer}
+              onClick={(e) => e.stopPropagation()} // 상위 요소의 클릭 이벤트 전파 차단
+            >
+              <BookmarkButton key={track.id} />
             </div>
           </div>
         ))}

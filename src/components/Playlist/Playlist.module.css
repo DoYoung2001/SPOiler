@@ -14,10 +14,6 @@ body {
   height: 100vh; /* 전체 화면 높이 */
 }
 
-.mainLayout {
-  display: flex;
-  flex: 1;
-}
 
 .playlistContainer {
   display: flex;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';  // axios import 추가
+import axios from "axios"; // axios import 추가
 import styles from "./Login.module.css";
 import { useNavigate } from "react-router-dom"; // useNavigate import
 
@@ -15,20 +15,24 @@ const Login = ({ onLogin, onRegisterClick }) => {
 
     if (email && password) {
       try {
-        const response = await axios.post('http://localhost:8080/api/users/login', {
-          email,
-          password
-        });
-        
+        const response = await axios.post(
+          "http://localhost:8080/api/users/login",
+          {
+            email,
+            password,
+          }
+        );
+
         // 로그인 성공 시 토큰 저장
-        localStorage.setItem('token', response.data.token);
-        
+        localStorage.setItem("token", response.data.accessToken);
         // 로그인 성공 처리
         onLogin();
         navigate("/"); // 로그인 후 메인 페이지로 이동
       } catch (error) {
         // 로그인 실패 처리
-        const errorMessage = error.response?.data?.message || "이메일이나 비밀번호가 잘못 입력되었습니다.";
+        const errorMessage =
+          error.response?.data?.message ||
+          "이메일이나 비밀번호가 잘못 입력되었습니다.";
         window.alert(errorMessage);
       }
     } else {
@@ -66,12 +70,20 @@ const Login = ({ onLogin, onRegisterClick }) => {
           </div>
           {error && <div className={styles["error-message"]}>{error}</div>}
           <div id={styles["login-button-cvr"]}>
-            <button id={styles["login-button"]} type="submit" className={styles["login-button"]}>
+            <button
+              id={styles["login-button"]}
+              type="submit"
+              className={styles["login-button"]}
+            >
               Login
             </button>
           </div>
           <div id={styles["register"]}>
-            <a href="#" onClick={onRegisterClick} className={styles["register-button"]}>
+            <a
+              href="#"
+              onClick={onRegisterClick}
+              className={styles["register-button"]}
+            >
               Register
             </a>
           </div>

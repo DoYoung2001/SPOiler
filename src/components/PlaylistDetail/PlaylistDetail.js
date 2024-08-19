@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./PlaylistDetail.module.css";
+import TracklistAlert from "../TracklistAlert/TracklistAlert"; // 모달 컴포넌트 임포트
 
 const PlaylistDetail = () => {
   const { playlistName } = useParams(); // URL에서 playlistName을 가져옵니다
@@ -15,7 +16,6 @@ const PlaylistDetail = () => {
     const fetchTracks = async () => {
       setError(""); // 에러 초기화
 
-      
       try {
         const token = localStorage.getItem("token"); // 로컬 스토리지에서 JWT 토큰을 가져옴
 

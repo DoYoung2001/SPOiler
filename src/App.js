@@ -103,7 +103,7 @@ const App = () => {
               <Route path="/" element={<MainContent lat={location.lat} lon={location.lon} />} />
               <Route path="/playlist" element={<Playlist />} />
               <Route
-                path="/playlist/:playlistName"
+                path="/myplaylist"
                 element={<PlaylistDetail />}
               />
               {/* 로그인 페이지는 이미 처리됨 */}

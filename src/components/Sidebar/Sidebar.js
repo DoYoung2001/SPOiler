@@ -55,7 +55,7 @@ const Sidebar = ({ lat, lon }) => {
 
   // 내 플레이리스트 클릭 시 호출될 함수
   const goToPlaylist = () => {
-    navigate("/playlist"); // 플레이리스트 페이지로 이동
+    navigate("/myplaylist"); // 플레이리스트 페이지로 이동
   };
 
   const handlePlaylistAdded = (name) => {

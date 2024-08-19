@@ -113,7 +113,13 @@ const FeaturedPlaylists = () => {
       <p className={styles.title}>실시간 인기 플레이리스트</p>
       <div className={styles.playlistsGrid}>
         {playlists.map((playlist) => (
-          <div key={playlist.id} className={`${styles.playlistCard} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} onClick={() => handlePlaylistClick(playlist.id)}>
+          <div 
+          key={playlist.id} 
+          className={`${styles.playlistCard} 
+          ${expandedPlaylist === playlist.id ? styles.expanded : ''
+
+          }`} 
+          onClick={() => handlePlaylistClick(playlist.id)}>
             <div className={`${styles.playlistHeader} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
               <img src={playlist.images[0]?.url} alt={playlist.name} className={`${styles.playlistImage} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} />
               <div className={styles.playlistInfo}>
@@ -142,7 +148,7 @@ const FeaturedPlaylists = () => {
                     </div>
                     <div className={styles.bookmarkButtonContainer} onClick={(e) => e.stopPropagation()}>
                       <BookmarkButton
-                        id={trackItem.track.id}
+                        trackId={trackItem.track.id}
                         isBookmarked={bookmarkedTracks.has(trackItem.track.id)}
                         onToggle={() => handleBookmarkToggle(trackItem.track.id)}
                       />

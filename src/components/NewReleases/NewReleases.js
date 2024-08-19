@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
 import AlbumInfo from "../AlbumInfo/AlbumInfo";
-import TrackInfo from "../TrackInfo/TrackInfo"; // TrackInfo 추가
+import TrackInfo from "../TrackInfo/TrackInfo";
 import styles from "./NewReleases.module.css";
 
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
@@ -105,7 +105,7 @@ const NewReleases = () => {
   };
 
   const handleInfoClick = (e, albumId) => {
-    e.stopPropagation(); // 이벤트 전파 방지
+    e.stopPropagation();
     handleAlbumInfo(albumId);
   };
 
@@ -127,7 +127,7 @@ const NewReleases = () => {
   };
 
   const handleTrackClick = async (e, trackId) => {
-    e.stopPropagation(); // 이벤트 전파 방지
+    e.stopPropagation();
     try {
       const response = await axios.get(
         `https://api.spotify.com/v1/tracks/${trackId}`,
@@ -229,7 +229,7 @@ const NewReleases = () => {
                         onClick={(e) => e.stopPropagation()}
                       >
                         <BookmarkButton
-                          key={track.id}
+                          trackId={track.id}
                           isBookmarked={bookmarkedTracks.has(track.id)}
                           onToggle={() => handleBookmarkToggle(track.id)}
                         />

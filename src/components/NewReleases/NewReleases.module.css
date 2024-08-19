@@ -154,4 +154,6 @@
 
 .bookmarkButtonContainer {
   margin-left: auto;
+  z-index: 2; /* 버튼이 다른 요소 위에 표시되도록 설정 */
 }
+

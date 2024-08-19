@@ -111,9 +111,52 @@ const FeaturedPlaylists = () => {
     }
   };
 
-  const handleBookmarkClick = (trackId) => {
-    console.log(`Bookmark clicked for track ID: ${trackId}`);
-    // 예: axios.post('/api/bookmark', { trackId });
+  const handleBookmarkClick = async (trackId, isChecked) => {
+    try {
+      // localStorage에서 토큰 가져오기
+      const token = localStorage.getItem("token");
+      // 토큰이 없으면 에러 처리
+      if (!token) {
+        console.error("Error: No token found in localStorage");
+        return;
+      }
+
+      if (isChecked) {
+        // 북마크 추가
+        const response = await axios.post(
+          "http://localhost:8080/api/tracklist",
+          { spotifyId: trackId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
+          }
+        );
+        console.log("Track successfully bookmarked:", response.data);
+      } else {
+        // 북마크 제거
+        const response = await axios.delete(
+          `http://localhost:8080/api/tracklist/${trackId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
+          }
+        );
+        console.log("Track successfully removed from bookmarks:", response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Error bookmarking track:", error.response.data);
+      } else if (error.request) {
+        console.error(
+          "Error bookmarking track: No response received",
+          error.request
+        );
+      } else {
+        console.error("Error bookmarking track:", error.message);
+      }
+    }
   };
 
   return (
@@ -148,25 +191,47 @@ const FeaturedPlaylists = () => {
                 // trackItem.track이 null이거나 undefined인 경우 렌더링하지 않음
                 if (!trackItem || !trackItem.track) return null;
 
-                return (
-                  <div key={trackItem.track.id} className={styles.trackItem} onClick={(e) => handleTrackClick(e, trackItem.track.id)}>
-                    <img 
-                      src={trackItem.track.album?.images?.[0]?.url || 'default-image-url.jpg'} 
-                      alt={trackItem.track.name || 'Track'} 
-                      className={styles.trackImage} 
-                    />
-                    <div className={styles.trackInfo}>
-                      <p className={styles.trackName}>{trackItem.track.name || 'Unknown Track'}</p>
-                      <p className={styles.artistName}>
-                        {trackItem.track.artists ? trackItem.track.artists.map(artist => artist.name).join(', ') : 'Unknown Artist'}
-                      </p>
+                  return (
+                    <div
+                      key={trackItem.track.id}
+                      className={styles.trackItem}
+                      onClick={(e) => handleTrackClick(e, trackItem.track.id)}
+                    >
+                      <img
+                        src={
+                          trackItem.track.album?.images?.[0]?.url ||
+                          "default-image-url.jpg"
+                        }
+                        alt={trackItem.track.name || "Track"}
+                        className={styles.trackImage}
+                      />
+                      <div className={styles.trackInfo}>
+                        <p className={styles.trackName}>
+                          {trackItem.track.name || "Unknown Track"}
+                        </p>
+                        <p className={styles.artistName}>
+                          {trackItem.track.artists
+                            ? trackItem.track.artists
+                                .map((artist) => artist.name)
+                                .join(", ")
+                            : "Unknown Artist"}
+                        </p>
+                      </div>
+                      <div
+                        className={styles.bookmarkButtonContainer}
+                        onClick={(e) => {
+                          e.stopPropagation(); // 북마크 버튼 클릭 시 이벤트 전파 방지
+                          handleBookmarkClick(trackItem.track.id, !trackItem.isBookmarked);
+                        }}
+                      >
+                        <BookmarkButton
+                          id={trackItem.track.id}
+                          onBookmarkClick={handleBookmarkClick}
+                        />
+                      </div>
                     </div>
-                    <div className={styles.bookmarkButtonContainer} onClick={(e) => { e.stopPropagation(); handleBookmarkClick(trackItem.track.id); }}>
-                      <BookmarkButton key={trackItem.track.id} />
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
         ))}

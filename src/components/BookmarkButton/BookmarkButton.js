@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styles from './BookmarkButton.module.css'; // 모듈 스타일 가져오기
 
-
 // SVG 아이콘을 React 컴포넌트로 변환
 const BookmarkIcon = ({ isChecked }) => (
   <svg
@@ -15,18 +14,19 @@ const BookmarkIcon = ({ isChecked }) => (
 );
 
 // 체크박스와 SVG 아이콘을 포함한 버튼 컴포넌트
-const BookmarkButton = ({ id }) => {
+const BookmarkButton = ({ id, onBookmarkClick }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   // 체크박스 상태를 토글하는 함수
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
+    if (onBookmarkClick) {
+      onBookmarkClick(id, !isChecked); // 트랙 ID와 체크 상태를 전달
+    }
   };
 
   return (
-
-    <div>
-        <div className={styles.bookmarkContainer}>
+    <div className={styles.bookmarkContainer}>
       <input
         type="checkbox"
         id={id}
@@ -37,9 +37,6 @@ const BookmarkButton = ({ id }) => {
       <label htmlFor={id} className={styles.bookmark} onClick={handleCheckboxChange}>
         <BookmarkIcon isChecked={isChecked} />
       </label>
-
-      </div>
-
     </div>
   );
 };

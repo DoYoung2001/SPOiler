@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import TracklistAlert from "../TracklistAlert/TracklistAlert"; // 모달 컴포넌트 임포트
 import styles from "./Sidebar.module.css";
 import { useNavigate } from "react-router-dom"; // useNavigate 훅 임포트
+import { useWeather } from "../../hooks/useWeather";
+import Lottie from "react-lottie";
+import clearAnimation from "./animations/clear.json"; // 맑은 날씨 애니메이션
+import rainAnimation from './animations/rain.json'; 
+import cloudsAnimation from './animations/clouds.json';
+import snowAnimation from './animations/snow.json';
 
-const Sidebar = () => {
+const Sidebar = ({ lat, lon }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlaylistAdded, setIsPlaylistAdded] = useState(false); // 새 플레이리스트가 추가되었는지 여부를 상태로 관리
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [playlistName, setPlaylistName] = useState(""); // 플레이리스트 이름 상태
   const navigate = useNavigate(); // useNavigate 훅 사용
+  const { data } = useWeather(lat, lon);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -63,6 +70,32 @@ const Sidebar = () => {
     closeModal(); // 모달 닫기
   };
 
+  // 날씨 애니메이션 선택
+  const getWeatherAnimation = (weatherType) => {
+    switch (weatherType) {
+      case "Clear":
+        return clearAnimation;
+      case "Rain":
+        return rainAnimation;
+      case "Clouds":
+        return cloudsAnimation;
+      case "Snow":
+        return snowAnimation;
+      default:
+        return null;
+    }
+  };
+  const animationData = data ? getWeatherAnimation(data.weather[0].main) : null;
+
+  const weatherAnimationOptions = {
+    loop: true,
+    autoplay: true,
+    animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <aside className={styles.sidebar}>
       <div className={styles.sidebarItem} onClick={handleHomeClick}>
@@ -115,6 +148,16 @@ const Sidebar = () => {
         onClose={closeModal}
         onPlaylistAdded={handlePlaylistAdded} // 여기서 props를 전달
       />
+      {!data ? null : (
+        <div>
+          <Lottie options={weatherAnimationOptions} height={150} width={150} />
+          <div>{data.name}</div>
+          <div>{data.weather.description}</div>
+          <div>{data.main.temp}</div>
+          <div>{data.wind.speed}</div>
+        </div>
+      )}
+
       <div className={styles.sidebarDelete}>
         <button className={styles.deleteButton} onClick={handleDeleteClick}>
           <svg

@@ -11,6 +11,7 @@ const FeaturedPlaylists = () => {
   const [expandedPlaylist, setExpandedPlaylist] = useState(null);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set()); // 북마크된 트랙 상태 추가
 
   useEffect(() => {
     const getToken = async () => {
@@ -95,9 +96,16 @@ const FeaturedPlaylists = () => {
     }
   };
 
-  const handleBookmarkClick = (trackId) => {
-    console.log(`Bookmark clicked for track ID: ${trackId}`);
-    // 예: axios.post('/api/bookmark', { trackId });
+  const handleBookmarkToggle = (trackId) => {
+    setBookmarkedTracks((prevBookmarkedTracks) => {
+      const updatedBookmarkedTracks = new Set(prevBookmarkedTracks);
+      if (updatedBookmarkedTracks.has(trackId)) {
+        updatedBookmarkedTracks.delete(trackId);
+      } else {
+        updatedBookmarkedTracks.add(trackId);
+      }
+      return updatedBookmarkedTracks;
+    });
   };
 
   return (
@@ -117,7 +125,6 @@ const FeaturedPlaylists = () => {
             </div>
             <div className={`${styles.tracksList} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
               {tracks[playlist.id] && tracks[playlist.id].map((trackItem) => {
-                // trackItem.track이 null이거나 undefined인 경우 렌더링하지 않음
                 if (!trackItem || !trackItem.track) return null;
 
                 return (
@@ -133,8 +140,12 @@ const FeaturedPlaylists = () => {
                         {trackItem.track.artists ? trackItem.track.artists.map(artist => artist.name).join(', ') : 'Unknown Artist'}
                       </p>
                     </div>
-                    <div className={styles.bookmarkButtonContainer} onClick={(e) => { e.stopPropagation(); handleBookmarkClick(trackItem.track.id); }}>
-                      <BookmarkButton key={trackItem.track.id} />
+                    <div className={styles.bookmarkButtonContainer} onClick={(e) => e.stopPropagation()}>
+                      <BookmarkButton
+                        id={trackItem.track.id}
+                        isBookmarked={bookmarkedTracks.has(trackItem.track.id)}
+                        onToggle={() => handleBookmarkToggle(trackItem.track.id)}
+                      />
                     </div>
                   </div>
                 );

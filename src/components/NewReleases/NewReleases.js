@@ -103,7 +103,24 @@ const NewReleases = () => {
 
   const handleInfoClick = (e, trackId) => {
     e.stopPropagation(); // 이벤트 전파 방지
-    handleAlbumInfo(trackId);
+    handleTrackInfo(trackId); // handleAlbumInfo -> handleTrackInfo로 수정
+  };
+
+  const handleTrackInfo = async (trackId) => {
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/tracks/${trackId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setSelectedTrack(response.data);
+      setIsTrackModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching track details:", error);
+    }
   };
 
   const handleAlbumInfo = async (trackId) => {
@@ -147,7 +164,9 @@ const NewReleases = () => {
         {newReleases.map((album) => (
           <div
             key={album.id}
-            className={`${styles.releaseCard} ${expandedAlbum === album.id ? styles.expanded : ''}`}
+            className={`${styles.releaseCard} ${
+              expandedAlbum === album.id ? styles.expanded : ""
+            }`}
             onClick={() => handleAlbumClick(album.id)}
           >
             <div className={styles.releaseHeader}>
@@ -163,33 +182,48 @@ const NewReleases = () => {
                 </p>
               </div>
               <div className={styles.buttonContainer}>
-                <button onClick={(e) => handleInfoClick(e, album.id)}>...</button>
+                <button onClick={(e) => handleInfoClick(e, album.id)}>
+                  ...
+                </button>
               </div>
             </div>
             {expandedAlbum === album.id && (
               <div className={`${styles.tracksList} ${styles.expanded}`}>
-                {tracks[album.id] && tracks[album.id].map((track) => (
-                  <div key={track.id} className={styles.trackItem}>
-                    <img
-                      src={track.album?.images?.[0]?.url || 'default-image-url.jpg'}
-                      alt={track.name}
-                      className={styles.trackImage}
-                    />
-                    <div className={styles.trackInfo}>
-                      <p className={styles.trackName}>{track.name}</p>
-                      <p className={styles.artistName}>
-                        {track.artists.map((artist) => artist.name).join(", ")}
-                      </p>
-                    </div>
-                    <div className={styles.bookmarkButtonContainer} onClick={(e) => e.stopPropagation()}>
-                      <BookmarkButton
-                        key={track.id}
-                        isBookmarked={bookmarkedTracks.has(track.id)}
-                        onToggle={() => handleBookmarkToggle(track.id)}
+                {tracks[album.id] &&
+                  tracks[album.id].map((track) => (
+                    <div
+                      key={track.id}
+                      className={styles.trackItem}
+                      onClick={(e) => handleInfoClick(e, track.id)}
+                    >
+                      <img
+                        src={
+                          track.album?.images?.[0]?.url ||
+                          "default-image-url.jpg"
+                        }
+                        alt={track.name}
+                        className={styles.trackImage}
                       />
+                      <div className={styles.trackInfo}>
+                        <p className={styles.trackName}>{track.name}</p>
+                        <p className={styles.artistName}>
+                          {track.artists
+                            .map((artist) => artist.name)
+                            .join(", ")}
+                        </p>
+                      </div>
+                      <div
+                        className={styles.bookmarkButtonContainer}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <BookmarkButton
+                          key={track.id}
+                          isBookmarked={bookmarkedTracks.has(track.id)}
+                          onToggle={() => handleBookmarkToggle(track.id)}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
           </div>

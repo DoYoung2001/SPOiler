@@ -1,4 +1,3 @@
-
 .title {
   font-size: 24px;
   font-weight: bold;
@@ -23,7 +22,7 @@
   background-color: #282828;
   border-radius: 4px;
   padding: 10px;
-  transition: background-color 0.3s, padding 0.3s, height 0.3s;
+  transition: background-color 0.3s, padding 0.3s;
   position: relative;
   overflow: hidden;
   height: auto;
@@ -56,11 +55,26 @@
   flex-grow: 1;
 }
 
+.titleContainer {
+  display: flex;
+  align-items: center;
+}
+
 .releaseTitle {
   font-size: 18px;
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+.moreButton {
+  background: none;
+  border: none;
+  color: #00FF7F;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
 }
 
 .releaseArtist {
@@ -72,30 +86,15 @@
   max-width: 250px;
 }
 
-.buttonContainer {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-}
-
-.buttonContainer button {
-  background: none;
-  border: none;
-  color: #00FF7F;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 0;
-}
-
 .tracksList {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-out;
+  transition: max-height 0.5s ease-out;
   width: 100%;
 }
 
 .tracksList.expanded {
-  max-height: 300px;
+  max-height: 500px; /* 충분히 큰 값으로 설정하여 모든 트랙이 표시되도록 */
   overflow-y: auto;
   transition: max-height 0.5s ease-in;
   border-top: 2px solid #555;

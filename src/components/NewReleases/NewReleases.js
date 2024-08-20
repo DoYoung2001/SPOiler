@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
+import AlbumInfo from "../AlbumInfo/AlbumInfo";
 import TrackInfo from "../TrackInfo/TrackInfo";
 import styles from "./NewReleases.module.css";
 
@@ -131,6 +132,11 @@ const KpopNewReleases = () => {
           </div>
         ))}
       </div>
+      <AlbumInfo
+        isOpen={isAlbumModalOpen}
+        onClose={closeAlbumModal}
+        album={selectedAlbum}
+      />
       <TrackInfo
         isOpen={isTrackModalOpen}
         onClose={closeTrackModal}

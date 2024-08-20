@@ -9,10 +9,29 @@
     border-radius: 8px;
   }
   
+  /* 스크롤바 스타일 추가 */
+  .resultsContainer::-webkit-scrollbar {
+    width: 6px; /* 스크롤바 너비 */
+  }
+  
+  .resultsContainer::-webkit-scrollbar-track {
+    background: #181818; /* 스크롤바 트랙 배경색 */
+  }
+  
+  .resultsContainer::-webkit-scrollbar-thumb {
+    background: #888; /* 스크롤바 색상 */
+    border-radius: 3px; /* 스크롤바 모서리 둥글게 */
+  }
+  
+  .resultsContainer::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 호버 시 스크롤바 색상 */
+  }
+  
   .trackList {
     flex: 2;
     margin-right: 20px;
   }
+  
   .searchResultsHeader {
     color: #00ff7f; /* "Search Results" 텍스트를 초록색으로 설정 */
     margin-left: 20px;
@@ -120,7 +139,7 @@
     border-radius: 8px;
     margin-bottom: 20px;
   }
-
+  
   .trackDetails {/*track 이름*/
     text-align: center;
     margin-top: 12px;

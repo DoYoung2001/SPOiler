@@ -7,9 +7,9 @@ const Header = ({ onLogout }) => {
   const [token, setToken] = useState('');
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [toggleStates, setToggleStates] = useState({});
   const trackRefs = useRef({});
   const navigate = useNavigate(); // useNavigate 훅 초기화
+  const autocompleteRef = useRef(null); // 자동완성 결과에 대한 참조 추가
 
   useEffect(() => {
     const getToken = async () => {
@@ -66,40 +66,21 @@ const Header = ({ onLogout }) => {
     }
   };
 
-  const toggleButton = async (trackId) => {
+  const handleAutocompleteClick = async (trackName) => {
+    setQuery(trackName);
     try {
-      setToggleStates((prevStates) => {
-        const newState = !prevStates[trackId];
-        alert(`Track ${newState ? 'bookmarked' : 'unbookmarked'}`);
-        return {
-          ...prevStates,
-          [trackId]: newState,
-        };
-      });
-
-      const localToken = localStorage.getItem('token');
-      if (!localToken) {
-        console.error('Error: No token found in localStorage');
-        return;
-      }
-
-      await axios.post(
-        'http://localhost:8080/api/tracklist',
-        { spotifyId: trackId },
+      const response = await axios.get(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(trackName)}&type=track&limit=15`,
         {
           headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
+      setResults(response.data.tracks.items);
+      navigate(`/search?query=${encodeURIComponent(trackName)}`);
     } catch (error) {
-      if (error.response) {
-        console.error('Error toggling bookmark:', error.response.data);
-      } else if (error.request) {
-        console.error('Error toggling bookmark: No response received', error.request);
-      } else {
-        console.error('Error toggling bookmark:', error.message);
-      }
+      console.error('Error fetching search results for autocomplete click', error);
     }
   };
 
@@ -119,6 +100,20 @@ const Header = ({ onLogout }) => {
       }
     });
   }, [results]);
+
+  // 클릭 이벤트 핸들러
+  const handleClickOutside = (event) => {
+    if (autocompleteRef.current && !autocompleteRef.current.contains(event.target)) {
+      setResults([]); // 자동완성 결과 숨기기
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside); // 문서 클릭 이벤트 리스너 추가
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside); // 컴포넌트 언마운트 시 리스너 제거
+    };
+  }, []);
 
   return (
     <header className={styles.header}>
@@ -153,35 +148,18 @@ const Header = ({ onLogout }) => {
               <circle cx="11" cy="11" r="8" stroke="green" strokeWidth="2" />
               <line x1="16" y1="16" x2="22" y2="22" stroke="green" strokeWidth="2" />
             </svg>
-            <ul className={styles.autocompleteResults}>
+            <ul className={styles.autocompleteResults} ref={autocompleteRef}> {/* 자동완성 결과에 ref 추가 */}
               {results.map((result) => (
-                <li key={result.id} className={styles.autocompleteItem}>
+                <li key={result.id} className={styles.autocompleteItem} onClick={() => handleAutocompleteClick(result.name)}>
                   <div className={styles.trackDetails}>
                     <img src={result.album.images[0]?.url} alt={result.name} className={styles.trackImage} />
-                    <a
-                      href={result.external_urls.spotify}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.autocompleteLink}
-                    >
-                      <div className={styles.trackInfo} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], trackName: el })}>
-                        <div>{result.name}</div>
-                        <div className={styles.artistName} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], artistName: el })}>
-                          {result.artists[0]?.name}
-                        </div>
+                    <div className={styles.trackInfo} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], trackName: el })}>
+                      <div>{result.name}</div>
+                      <div className={styles.artistName} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], artistName: el })}>
+                        {result.artists[0]?.name}
                       </div>
-                    </a>
+                    </div>
                   </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="1.5em"
-                    viewBox="0 0 384 512"
-                    className={`${styles.svgIcon} ${toggleStates[result.id] ? styles.checked : ''}`}
-                    onClick={() => toggleButton(result.id)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"></path>
-                  </svg>
                 </li>
               ))}
             </ul>

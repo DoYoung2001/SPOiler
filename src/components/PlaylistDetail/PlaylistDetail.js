@@ -2,96 +2,117 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./PlaylistDetail.module.css";
-import TracklistAlert from "../TracklistAlert/TracklistAlert"; // 모달 컴포넌트 임포트
 
 const PlaylistDetail = () => {
-  const { playlistName } = useParams(); // URL에서 playlistName을 가져옵니다
-  const [tracks, setTracks] = useState([]); // 트랙리스트 상태
-  const [error, setError] = useState(""); // 에러 상태
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅 사용
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기/닫기 상태
-  const userId = 1; // 예시로 사용자의 ID를 하드코딩. 실제로는 로그인된 사용자 정보를 통해 얻어야 함
-  const [trackDetails, setTrackDetails] = useState({}); // 추가된 상태: 스포티파이 API에서 받은 곡 상세 정보
+  const { playlistName } = useParams();
+  const [tracks, setTracks] = useState([]);
+  const [error, setError] = useState("");
+  const [token, setToken] = useState(""); // Spotify API 토큰 상태
+  const navigate = useNavigate();
+  const userId = 1; // 예시로 사용자의 ID를 하드코딩
 
+  // Spotify API 토큰 가져오기
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const response = await axios.post(
+          "https://accounts.spotify.com/api/token",
+          "grant_type=client_credentials",
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Authorization:
+                "Basic " +
+                btoa(
+                  process.env.REACT_APP_SPOTIFY_CLIENT_ID +
+                    ":" +
+                    process.env.REACT_APP_SPOTIFY_CLIENT_SECRET
+                ),
+            },
+          }
+        );
+        setToken(response.data.access_token);
+      } catch (error) {
+        console.error(
+          "Error fetching the token:",
+          error.response ? error.response.data : error.message
+        );
+        setError("Failed to fetch Spotify token. Please try again later.");
+      }
+    };
+
+    getToken();
+  }, []);
+
+  // 트랙 정보 가져오기
   useEffect(() => {
     const fetchTracks = async () => {
-      setError(""); // 에러 초기화
+      setError("");
 
       try {
-        const token = localStorage.getItem("token"); // 로컬 스토리지에서 JWT 토큰을 가져옴
+        const localToken = localStorage.getItem("token");
 
-        if (!token) {
+        if (!localToken) {
           throw new Error("JWT Token not found. Please login again.");
         }
 
+        // 서버에서 저장된 트랙리스트를 가져옴
         const response = await axios.get(
-          `http://localhost:8080/api/tracklist?userId=${userId}`, // 트랙리스트 조회 API
+          `http://localhost:8080/api/tracklist?userId=${userId}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // 인증 헤더에 JWT 토큰 포함
+              Authorization: `Bearer ${localToken}`,
             },
           }
         );
 
-        setTracks(response.data); // 트랙리스트를 상태에 저장
+        const trackIds = response.data.map((track) => track.spotifyId);
 
-        // 스포티파이 액세스 토큰 가져오기
-        const spotifyToken = localStorage.getItem("spotifyToken"); // 스포티파이 액세스 토큰을 로컬 스토리지에서 가져옴
+        // Spotify API를 통해 트랙의 세부 정보를 가져옴
+        const trackDetailsPromises = trackIds.map((spotifyId) =>
+          axios.get(`https://api.spotify.com/v1/tracks/${spotifyId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        );
 
-        if (!spotifyToken) {
-          throw new Error(
-            "Spotify Token not found. Please login to Spotify again."
+        const trackDetailsResponses = await Promise.all(trackDetailsPromises);
+        const spotifyTracks = trackDetailsResponses.map((res) => res.data);
+
+        // 중복 트랙 방지 로직 추가
+        setTracks((prevTracks) => {
+          const newTracks = spotifyTracks.filter(
+            (newTrack) => !prevTracks.some((track) => track.id === newTrack.id)
           );
-        }
+          return [...prevTracks, ...newTracks];
+        });
 
-        // 스포티파이 API에서 곡 상세 정보를 가져오기
-        const trackIds = response.data
-          .map((track) => track.spotifyId)
-          .join(",");
-        const spotifyResponse = await axios.get(
-          `https://api.spotify.com/v1/tracks?ids=${trackIds}`,
-          {
-            headers: {
-              Authorization: `Bearer ${spotifyToken}`,
-            },
-          }
-        );
-
-        // 곡 상세 정보를 상태에 저장
-        const tracksDetails = spotifyResponse.data.tracks.reduce(
-          (acc, track) => {
-            acc[track.id] = track;
-            return acc;
-          },
-          {}
-        );
-        setTrackDetails(tracksDetails);
-
-        console.log(response.data);
-        console.log(tracksDetails);
-        localStorage.setItem("tracksExist", response.data.length > 0); // 트랙이 있는지 여부를 로컬 스토리지에 저장
+        localStorage.setItem("tracksExist", spotifyTracks.length > 0);
       } catch (error) {
         console.error("Error fetching tracks:", error);
         setError("Failed to fetch tracks. Please try again later.");
       }
     };
 
-    fetchTracks();
-  }, [userId, playlistName]);
+    if (token) {
+      fetchTracks();
+    }
+  }, [token, userId, playlistName]);
 
   const handleDelete = async (spotifyId) => {
     try {
-      const token = localStorage.getItem("token"); // 로컬 스토리지에서 JWT 토큰을 가져옴
+      const localToken = localStorage.getItem("token");
 
-      if (!token) {
+      if (!localToken) {
         throw new Error("JWT Token not found. Please login again.");
       }
 
       const response = await axios.delete(
-        `http://localhost:8080/api/tracklist/${spotifyId}`, // 트랙 삭제 API
+        `http://localhost:8080/api/tracklist/${spotifyId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 인증 헤더에 JWT 토큰 포함
+            Authorization: `Bearer ${localToken}`,
           },
         }
       );
@@ -99,12 +120,11 @@ const PlaylistDetail = () => {
       if (response.status === 200) {
         setTracks((prevTracks) =>
           prevTracks.filter((track) => track.id !== spotifyId)
-        ); // 상태에서 트랙 삭제
-        alert(response.data); // 성공 메시지 표시
+        );
+        alert(response.data);
 
-        // 모든 트랙이 삭제되었으면 메인 페이지로 이동
         if (tracks.length === 1) {
-          navigate("/"); // 메인 페이지로 이동
+          navigate("/");
         }
       } else {
         throw new Error("Failed to delete track. Please try again later.");
@@ -115,10 +135,49 @@ const PlaylistDetail = () => {
     }
   };
 
-  const handlePlaylistAdded = (newTrack) => {
-    // 새로 추가된 트랙을 상태에 추가
-    setTracks((prevTracks) => [newTrack, ...prevTracks]);
-    setIsModalOpen(false); // 모달 닫기
+  // const handlePlaylistAdded = (newTrack) => {
+  //   setTracks((prevTracks) => {
+  //     // 중복된 트랙을 추가하지 않도록 체크
+  //     if (prevTracks.some((track) => track.id === newTrack.id)) {
+  //       return prevTracks;
+  //     }
+  //     return [newTrack, ...prevTracks];
+  //   });
+  // };
+
+  const handleAddTrack = async (newTrack) => {
+    console.log("handleAddTrack called for track:", newTrack.id);
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/tracklist`,
+        { spotifyId: newTrack.id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setTracks((prevTracks) => {
+          const isDuplicate = prevTracks.some(
+            (track) => track.id === newTrack.id
+          );
+          if (isDuplicate) {
+            console.log("Duplicate track detected:", newTrack.id);
+            return prevTracks;
+          }
+          console.log("Adding new track:", newTrack.id);
+          return [newTrack, ...prevTracks];
+        });
+        alert("곡이 성공적으로 추가되었습니다.");
+      } else if (response.status === 409) {
+        alert("이미 재생 목록에 있는 곡입니다.");
+      }
+    } catch (error) {
+      console.error("Error adding track:", error);
+      setError("트랙을 추가하는 중 오류가 발생하였습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -131,37 +190,29 @@ const PlaylistDetail = () => {
           <p>{error}</p>
         ) : tracks.length > 0 ? (
           <div className={styles.tracksList}>
-            {tracks.map((track) => {
-              const trackDetail = trackDetails[track.spotifyId] || {}; // 스포티파이에서 받은 곡 상세 정보
-              return (
-                <div key={track.spotifyId} className={styles.trackItem}>
-                  <img
-                    src={
-                      trackDetail.album?.images[0]?.url ||
-                      "default-image-url.jpg"
-                    } // 곡 이미지 URL
-                    alt={trackDetail.name}
-                    className={styles.trackImage}
-                  />
-                  <div className={styles.trackInfo}>
-                    <p className={styles.trackName}>{trackDetail.name}</p>{" "}
-                    {/* 곡 제목 */}
-                    <p className={styles.artistName}>
-                      {trackDetail.artists?.[0]?.name}
-                    </p>{" "}
-                    {/* 아티스트 이름 */}
-                  </div>
-                  <div className={styles.deleteButtonContainer}>
-                    <button
-                      className={styles.deleteButton}
-                      onClick={() => handleDelete(track.spotifyId)}
-                    >
-                      삭제
-                    </button>
-                  </div>
+            {tracks.map((track) => (
+              <div key={track.id} className={styles.trackItem}>
+                <img
+                  src={track.album.images[0]?.url || "default-image-url.jpg"}
+                  alt={track.name}
+                  className={styles.trackImage}
+                />
+                <div className={styles.trackInfo}>
+                  <p className={styles.trackName}>{track.name}</p>
+                  <p className={styles.artistName}>
+                    {track.artists.map((artist) => artist.name).join(", ")}
+                  </p>
                 </div>
-              );
-            })}
+                <div className={styles.deleteButtonContainer}>
+                  <button
+                    className={styles.deleteButton}
+                    onClick={() => handleDelete(track.id)}
+                  >
+                    삭제
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <p>플레이리스트에 곡이 없습니다.</p>

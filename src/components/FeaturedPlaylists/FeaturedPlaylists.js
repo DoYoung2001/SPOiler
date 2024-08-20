@@ -12,6 +12,7 @@ const FeaturedPlaylists = () => {
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set()); // 북마크된 트랙을 저장할 상태 추가
 
   useEffect(() => {
     const getToken = async () => {
@@ -65,6 +66,30 @@ const FeaturedPlaylists = () => {
       fetchFeaturedPlaylists();
     }
   }, [token]);
+
+    // 초기 북마크 상태를 가져오는 useEffect
+    useEffect(() => {
+      const fetchInitialBookmarks = async () => {
+        const userToken = localStorage.getItem("token");
+        if (userToken) {
+          try {
+            const response = await axios.get("http://localhost:8080/api/tracklist", {
+              headers: {
+                Authorization: `Bearer ${userToken}`,
+              },
+            });
+            const bookmarkedIds = new Set(
+              response.data.map((track) => track.spotifyId)
+            );
+            setBookmarkedTracks(bookmarkedIds);
+          } catch (error) {
+            console.error("Error fetching initial bookmarks:", error);
+          }
+        }
+      };
+  
+      fetchInitialBookmarks();
+    }, []);
 
   const fetchTracks = async (playlistId) => {
     try {
@@ -199,8 +224,8 @@ const FeaturedPlaylists = () => {
                       >
                         <BookmarkButton
                           trackId={trackItem.track.id}
-                          initialBookmarked={false}
-                        />
+                          initialBookmarked={bookmarkedTracks.has(trackItem.track.id)}
+                          />
                       </div>
                     </div>
                   );

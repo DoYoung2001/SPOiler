@@ -9,6 +9,7 @@ const PlaylistDetail = () => {
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(""); // 에러 상태
   const userId = 1; // 예시로 사용자의 ID를 하드코딩. 실제로는 로그인된 사용자 정보를 통해 얻어야 함
+  const [trackDetails, setTrackDetails] = useState({}); // 추가된 상태: 스포티파이 API에서 받은 곡 상세 정보
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -31,7 +32,41 @@ const PlaylistDetail = () => {
         );
 
         setTracks(response.data); // 트랙리스트를 상태에 저장
+
+        // 스포티파이 액세스 토큰 가져오기
+        const spotifyToken = localStorage.getItem("spotifyToken"); // 스포티파이 액세스 토큰을 로컬 스토리지에서 가져옴
+
+        if (!spotifyToken) {
+          throw new Error(
+            "Spotify Token not found. Please login to Spotify again."
+          );
+        }
+
+        // 스포티파이 API에서 곡 상세 정보를 가져오기
+        const trackIds = response.data
+          .map((track) => track.spotifyId)
+          .join(",");
+        const spotifyResponse = await axios.get(
+          `https://api.spotify.com/v1/tracks?ids=${trackIds}`,
+          {
+            headers: {
+              Authorization: `Bearer ${spotifyToken}`,
+            },
+          }
+        );
+
+        // 곡 상세 정보를 상태에 저장
+        const tracksDetails = spotifyResponse.data.tracks.reduce(
+          (acc, track) => {
+            acc[track.id] = track;
+            return acc;
+          },
+          {}
+        );
+        setTrackDetails(tracksDetails);
+
         console.log(response.data);
+        console.log(tracksDetails);
       } catch (error) {
         console.error("Error fetching tracks:", error);
         setError("Failed to fetch tracks. Please try again later.");
@@ -85,27 +120,37 @@ const PlaylistDetail = () => {
       <div className={styles.playlistDetailBox}>
         {tracks.length > 0 ? (
           <div className={styles.tracksList}>
-            {tracks.map((track) => (
-              <div key={track.id} className={styles.trackItem}>
-                <img
-                  src={track.imageUrl || "default-image-url.jpg"}
-                  alt={track.name}
-                  className={styles.trackImage}
-                />
-                <div className={styles.trackInfo}>
-                  <p className={styles.trackName}>{track.name}</p>
-                  <p className={styles.artistName}>{track.artist}</p>
+            {tracks.map((track) => {
+              const trackDetail = trackDetails[track.spotifyId] || {}; // 스포티파이에서 받은 곡 상세 정보
+              return (
+                <div key={track.spotifyId} className={styles.trackItem}>
+                  <img
+                    src={
+                      trackDetail.album?.images[0]?.url ||
+                      "default-image-url.jpg"
+                    } // 곡 이미지 URL
+                    alt={trackDetail.name}
+                    className={styles.trackImage}
+                  />
+                  <div className={styles.trackInfo}>
+                    <p className={styles.trackName}>{trackDetail.name}</p>{" "}
+                    {/* 곡 제목 */}
+                    <p className={styles.artistName}>
+                      {trackDetail.artists?.[0]?.name}
+                    </p>{" "}
+                    {/* 아티스트 이름 */}
+                  </div>
+                  <div className={styles.deleteButtonContainer}>
+                    <button
+                      className={styles.deleteButton}
+                      onClick={() => handleDelete(track.spotifyId)}
+                    >
+                      삭제
+                    </button>
+                  </div>
                 </div>
-                <div className={styles.deleteButtonContainer}>
-                  <button
-                    className={styles.deleteButton}
-                    onClick={() => handleDelete(track.id)}
-                  >
-                    삭제
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <p>플레이리스트에 곡이 없습니다.</p>

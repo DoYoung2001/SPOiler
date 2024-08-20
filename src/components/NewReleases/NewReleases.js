@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
-import AlbumInfo from "../AlbumInfo/AlbumInfo";
 import TrackInfo from "../TrackInfo/TrackInfo";
 import styles from "./NewReleases.module.css";
 
@@ -12,9 +11,9 @@ const PLAYLIST_ID = "37i9dQZF1DXe5W6diBL5N4"; // New Music K-Pop 플레이리스
 const KpopNewReleases = () => {
   const [token, setToken] = useState("");
   const [playlistTracks, setPlaylistTracks] = useState([]);
-  const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
+  const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
 
   useEffect(() => {
     const getToken = async () => {
@@ -60,6 +59,28 @@ const KpopNewReleases = () => {
     fetchPlaylistTracks();
   }, [token]);
 
+  useEffect(() => {
+    // 초기 북마크 상태를 가져오는 함수
+    const fetchInitialBookmarks = async () => {
+      const userToken = localStorage.getItem("token");
+      if (userToken) {
+        try {
+          const response = await axios.get("http://localhost:8080/api/tracklist", {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          });
+          const bookmarkedIds = new Set(response.data.map(track => track.spotifyId));
+          setBookmarkedTracks(bookmarkedIds);
+        } catch (error) {
+          console.error("Error fetching initial bookmarks:", error);
+        }
+      }
+    };
+
+    fetchInitialBookmarks();
+  }, []);
+
   const handleTrackInfo = async (trackId) => {
     try {
       const response = await axios.get(
@@ -80,18 +101,6 @@ const KpopNewReleases = () => {
   const closeTrackModal = () => {
     setIsTrackModalOpen(false);
     setSelectedTrack(null);
-  };
-
-  const handleBookmarkToggle = (trackId) => {
-    setBookmarkedTracks((prevBookmarkedTracks) => {
-      const updatedBookmarkedTracks = new Set(prevBookmarkedTracks);
-      if (updatedBookmarkedTracks.has(trackId)) {
-        updatedBookmarkedTracks.delete(trackId);
-      } else {
-        updatedBookmarkedTracks.add(trackId);
-      }
-      return updatedBookmarkedTracks;
-    });
   };
 
   return (
@@ -118,14 +127,11 @@ const KpopNewReleases = () => {
               </div>
               <div
                 className={styles.bookmarkButtonContainer}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleBookmarkToggle(track.id);
-                }}
+                onClick={(e) => e.stopPropagation()}
               >
                 <BookmarkButton
-                  isBookmarked={bookmarkedTracks.has(track.id)}
-                  onToggle={() => handleBookmarkToggle(track.id)}
+                  trackId={track.id}
+                  initialBookmarked={bookmarkedTracks.has(track.id)}
                 />
               </div>
             </div>

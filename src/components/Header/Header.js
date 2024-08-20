@@ -9,6 +9,7 @@ const Header = ({ onLogout }) => {
   const [results, setResults] = useState([]);
   const trackRefs = useRef({});
   const navigate = useNavigate(); // useNavigate 훅 초기화
+  const autocompleteRef = useRef(null); // 자동완성 결과에 대한 참조 추가
 
   useEffect(() => {
     const getToken = async () => {
@@ -65,6 +66,24 @@ const Header = ({ onLogout }) => {
     }
   };
 
+  const handleAutocompleteClick = async (trackName) => {
+    setQuery(trackName);
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(trackName)}&type=track&limit=15`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
+      setResults(response.data.tracks.items);
+      navigate(`/search?query=${encodeURIComponent(trackName)}`);
+    } catch (error) {
+      console.error('Error fetching search results for autocomplete click', error);
+    }
+  };
+
   const adjustFontSize = (element) => {
     if (element.scrollWidth > element.clientWidth) {
       element.style.fontSize = '0.8em';
@@ -81,6 +100,20 @@ const Header = ({ onLogout }) => {
       }
     });
   }, [results]);
+
+  // 클릭 이벤트 핸들러
+  const handleClickOutside = (event) => {
+    if (autocompleteRef.current && !autocompleteRef.current.contains(event.target)) {
+      setResults([]); // 자동완성 결과 숨기기
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside); // 문서 클릭 이벤트 리스너 추가
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside); // 컴포넌트 언마운트 시 리스너 제거
+    };
+  }, []);
 
   return (
     <header className={styles.header}>
@@ -115,26 +148,18 @@ const Header = ({ onLogout }) => {
               <circle cx="11" cy="11" r="8" stroke="green" strokeWidth="2" />
               <line x1="16" y1="16" x2="22" y2="22" stroke="green" strokeWidth="2" />
             </svg>
-            <ul className={styles.autocompleteResults}>
+            <ul className={styles.autocompleteResults} ref={autocompleteRef}> {/* 자동완성 결과에 ref 추가 */}
               {results.map((result) => (
-                <li key={result.id} className={styles.autocompleteItem}>
+                <li key={result.id} className={styles.autocompleteItem} onClick={() => handleAutocompleteClick(result.name)}>
                   <div className={styles.trackDetails}>
                     <img src={result.album.images[0]?.url} alt={result.name} className={styles.trackImage} />
-                    <a
-                      href={result.external_urls.spotify}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.autocompleteLink}
-                    >
-                      <div className={styles.trackInfo} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], trackName: el })}>
-                        <div>{result.name}</div>
-                        <div className={styles.artistName} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], artistName: el })}>
-                          {result.artists[0]?.name}
-                        </div>
+                    <div className={styles.trackInfo} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], trackName: el })}>
+                      <div>{result.name}</div>
+                      <div className={styles.artistName} ref={(el) => (trackRefs.current[result.id] = { ...trackRefs.current[result.id], artistName: el })}>
+                        {result.artists[0]?.name}
                       </div>
-                    </a>
+                    </div>
                   </div>
-                  
                 </li>
               ))}
             </ul>

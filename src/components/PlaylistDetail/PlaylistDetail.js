@@ -95,11 +95,11 @@ const PlaylistDetail = () => {
   const handleDelete = async (spotifyId) => {
     try {
       const localToken = localStorage.getItem("token");
-  
+
       if (!localToken) {
         throw new Error("JWT Token not found. Please login again.");
       }
-  
+
       const response = await axios.delete(
         `http://localhost:8080/api/tracklist/${spotifyId}`,
         {
@@ -108,13 +108,13 @@ const PlaylistDetail = () => {
           },
         }
       );
-  
+
       if (response.status === 200) {
         setTracks((prevTracks) =>
           prevTracks.filter((track) => track.id !== spotifyId)
         );
         alert(response.data);
-  
+
         // 모든 트랙이 삭제된 경우 홈으로 이동
         if (tracks.length === 1) {
           navigate("/");
@@ -123,11 +123,13 @@ const PlaylistDetail = () => {
         throw new Error("Failed to delete track. Please try again later.");
       }
     } catch (error) {
-      console.error("Error deleting track:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error deleting track:",
+        error.response ? error.response.data : error.message
+      );
       setError("Failed to delete track. Please try again later.");
     }
   };
-  
 
   return (
     <div className={styles.playlistDetailContainer}>

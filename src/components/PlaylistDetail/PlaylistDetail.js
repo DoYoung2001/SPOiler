@@ -9,7 +9,6 @@ const PlaylistDetail = () => {
   const [error, setError] = useState("");
   const [token, setToken] = useState(""); // Spotify API 토큰 상태
   const navigate = useNavigate();
-  const userId = 1; // 예시로 사용자의 ID를 하드코딩
 
   // Spotify API 토큰 가져오기
   useEffect(() => {
@@ -58,7 +57,7 @@ const PlaylistDetail = () => {
 
         // 서버에서 저장된 트랙리스트를 가져옴
         const response = await axios.get(
-          `http://localhost:8080/api/tracklist?userId=${userId}`,
+          `http://localhost:8080/api/tracklist`,
           {
             headers: {
               Authorization: `Bearer ${localToken}`,
@@ -80,14 +79,7 @@ const PlaylistDetail = () => {
         const trackDetailsResponses = await Promise.all(trackDetailsPromises);
         const spotifyTracks = trackDetailsResponses.map((res) => res.data);
 
-        // 중복 트랙 방지 로직 추가
-        setTracks((prevTracks) => {
-          const newTracks = spotifyTracks.filter(
-            (newTrack) => !prevTracks.some((track) => track.id === newTrack.id)
-          );
-          return [...prevTracks, ...newTracks];
-        });
-
+        setTracks(spotifyTracks);
         localStorage.setItem("tracksExist", spotifyTracks.length > 0);
       } catch (error) {
         console.error("Error fetching tracks:", error);
@@ -98,7 +90,7 @@ const PlaylistDetail = () => {
     if (token) {
       fetchTracks();
     }
-  }, [token, userId, playlistName]);
+  }, [token, playlistName]);
 
   const handleDelete = async (spotifyId) => {
     try {
@@ -123,6 +115,7 @@ const PlaylistDetail = () => {
         );
         alert(response.data);
 
+        // 모든 트랙이 삭제된 경우 홈으로 이동
         if (tracks.length === 1) {
           navigate("/");
         }
@@ -130,53 +123,11 @@ const PlaylistDetail = () => {
         throw new Error("Failed to delete track. Please try again later.");
       }
     } catch (error) {
-      console.error("Error deleting track:", error);
-      setError("Failed to delete track. Please try again later.");
-    }
-  };
-
-  // const handlePlaylistAdded = (newTrack) => {
-  //   setTracks((prevTracks) => {
-  //     // 중복된 트랙을 추가하지 않도록 체크
-  //     if (prevTracks.some((track) => track.id === newTrack.id)) {
-  //       return prevTracks;
-  //     }
-  //     return [newTrack, ...prevTracks];
-  //   });
-  // };
-
-  const handleAddTrack = async (newTrack) => {
-    console.log("handleAddTrack called for track:", newTrack.id);
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/api/tracklist`,
-        { spotifyId: newTrack.id },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      console.error(
+        "Error deleting track:",
+        error.response ? error.response.data : error.message
       );
-
-      if (response.status === 200) {
-        setTracks((prevTracks) => {
-          const isDuplicate = prevTracks.some(
-            (track) => track.id === newTrack.id
-          );
-          if (isDuplicate) {
-            console.log("Duplicate track detected:", newTrack.id);
-            return prevTracks;
-          }
-          console.log("Adding new track:", newTrack.id);
-          return [newTrack, ...prevTracks];
-        });
-        alert("곡이 성공적으로 추가되었습니다.");
-      } else if (response.status === 409) {
-        alert("이미 재생 목록에 있는 곡입니다.");
-      }
-    } catch (error) {
-      console.error("Error adding track:", error);
-      setError("트랙을 추가하는 중 오류가 발생하였습니다. 다시 시도해주세요.");
+      setError("Failed to delete track. Please try again later.");
     }
   };
 

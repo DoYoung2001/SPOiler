@@ -9,6 +9,7 @@ const WeatherBasedRecommendations = ({ weather }) => {
   const [recommendedTracks, setRecommendedTracks] = useState([]);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
 
   useEffect(() => {
     const getAccessToken = async () => {
@@ -34,6 +35,27 @@ const WeatherBasedRecommendations = ({ weather }) => {
       }
     };
     getAccessToken();
+  }, []);
+
+  useEffect(() => {
+    const fetchInitialBookmarks = async () => {
+      const userToken = localStorage.getItem("token");
+      if (userToken) {
+        try {
+          const response = await axios.get("http://localhost:8080/api/tracklist", {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          });
+          const bookmarkedIds = new Set(response.data.map(track => track.spotifyId));
+          setBookmarkedTracks(bookmarkedIds);
+        } catch (error) {
+          console.error("Error fetching initial bookmarks:", error);
+        }
+      }
+    };
+
+    fetchInitialBookmarks();
   }, []);
 
   useEffect(() => {
@@ -109,6 +131,18 @@ const WeatherBasedRecommendations = ({ weather }) => {
     }
   };
 
+  const toggleBookmark = (trackId) => {
+    setBookmarkedTracks((prevBookmarks) => {
+      const newBookmarks = new Set(prevBookmarks);
+      if (newBookmarks.has(trackId)) {
+        newBookmarks.delete(trackId);
+      } else {
+        newBookmarks.add(trackId);
+      }
+      return newBookmarks;
+    });
+  };
+
   return (
     <div className={styles["track-pop"]}>
       <p className={styles["title"]}>{getTitle(weather)}</p>
@@ -136,7 +170,11 @@ const WeatherBasedRecommendations = ({ weather }) => {
               className={styles.bookmarkButtonContainer}
               onClick={(e) => e.stopPropagation()}
             >
-              <BookmarkButton key={track.id} />
+              <BookmarkButton
+                trackId={track.id}
+                initialBookmarked={bookmarkedTracks.has(track.id)}
+                onToggle={() => toggleBookmark(track.id)}
+              />
             </div>
           </div>
         ))}

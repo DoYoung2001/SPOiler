@@ -8,11 +8,11 @@ import clearAnimation from "./animations/clear.json"; // 맑은 날씨 애니메
 import rainAnimation from './animations/rain.json'; 
 import cloudsAnimation from './animations/clouds.json';
 import snowAnimation from './animations/snow.json';
+import axios from "axios";
 
 const Sidebar = ({ lat, lon }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [playlistName, setPlaylistName] = useState(""); // 플레이리스트 이름 상태
   const navigate = useNavigate(); // useNavigate 훅 사용
   const { data } = useWeather(lat, lon);
 
@@ -28,21 +28,36 @@ const Sidebar = ({ lat, lon }) => {
     setShowConfirmDialog(true);
   };
 
-  const handleConfirmDelete = () => {
-    // 예시: 로컬 스토리지에서 플레이리스트 제거
-    let storedPlaylists = JSON.parse(localStorage.getItem("playlists")) || [];
-    storedPlaylists = storedPlaylists.filter((name) => name !== playlistName);
-    localStorage.setItem("playlists", JSON.stringify(storedPlaylists));
+  const handleConfirmDelete = async () => {
+    try {
+      // 로컬 스토리지에서 토큰을 가져옴
+      const token = localStorage.getItem("token"); 
 
-    // 상태 초기화
-    console.log("플레이리스트가 삭제되었습니다.");
-    setShowConfirmDialog(false);
-    setPlaylistName(""); // 플레이리스트 이름 상태 초기화
+      if (!token) {
+        throw new Error("JWT Token not found. Please login again.");
+      }
 
-    // 페이지 이동을 위해 상태 업데이트가 완료된 후 리디렉션
-    setTimeout(() => {
-      navigate("/"); // 메인 페이지로 이동
-    }, 0);
+      // 전체 트랙 삭제 API 호출
+      const response = await axios.delete("http://localhost:8080/api/tracklist/clear", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        console.log("모든 트랙이 삭제되었습니다.");
+        setShowConfirmDialog(false);
+
+        // 페이지 이동을 위해 상태 업데이트가 완료된 후 리디렉션
+        navigate("/"); // 메인 페이지로 이동
+      } else {
+        throw new Error("Failed to delete tracks. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Error deleting tracks:", error);
+      alert("트랙 삭제에 실패했습니다. 나중에 다시 시도해 주세요.");
+      setShowConfirmDialog(false);
+    }
   };
 
   const handleCancelDelete = () => {
@@ -56,11 +71,6 @@ const Sidebar = ({ lat, lon }) => {
   // 내 플레이리스트 클릭 시 호출될 함수
   const goToPlaylist = () => {
     navigate("/myplaylist"); // 플레이리스트 페이지로 이동
-  };
-
-  const handlePlaylistAdded = (name) => {
-    setPlaylistName(name); // 제목 상태를 업데이트
-    closeModal(); // 모달 닫기
   };
 
   // 날씨 애니메이션 선택
@@ -124,7 +134,7 @@ const Sidebar = ({ lat, lon }) => {
       <TracklistAlert
         isOpen={isModalOpen}
         onClose={closeModal}
-        onPlaylistAdded={handlePlaylistAdded} // 여기서 props를 전달
+        onPlaylistAdded={() => {}} // handlePlaylistAdded 제거
       />
       {!data ? null : (
         <div>
@@ -153,7 +163,7 @@ const Sidebar = ({ lat, lon }) => {
       {showConfirmDialog && (
         <div className={styles.confirmDialogOverlay}>
           <div className={styles.confirmDialog}>
-            <p className={styles.cancelText}>삭제하시겠습니까?</p>
+            <p className={styles.cancelText}>모든 트랙을 삭제하시겠습니까?</p>
             <div className={styles.confirmDialogButtons}>
               <button onClick={handleConfirmDelete}>확인</button>
               <button onClick={handleCancelDelete}>취소</button>

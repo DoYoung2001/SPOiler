@@ -132,11 +132,6 @@ const KpopNewReleases = () => {
           </div>
         ))}
       </div>
-      <AlbumInfo
-        isOpen={isAlbumModalOpen}
-        onClose={closeAlbumModal}
-        album={selectedAlbum}
-      />
       <TrackInfo
         isOpen={isTrackModalOpen}
         onClose={closeTrackModal}

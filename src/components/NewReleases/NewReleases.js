@@ -7,15 +7,12 @@ import styles from "./NewReleases.module.css";
 
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
+const PLAYLIST_ID = "37i9dQZF1DXe5W6diBL5N4"; // New Music K-Pop 플레이리스트 ID
 
-const NewReleases = () => {
+const KpopNewReleases = () => {
   const [token, setToken] = useState("");
-  const [newReleases, setNewReleases] = useState([]);
-  const [expandedAlbum, setExpandedAlbum] = useState(null);
-  const [tracks, setTracks] = useState({});
+  const [playlistTracks, setPlaylistTracks] = useState([]);
   const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
-  const [selectedAlbum, setSelectedAlbum] = useState(null);
-  const [isAlbumModalOpen, setIsAlbumModalOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
 
@@ -42,92 +39,28 @@ const NewReleases = () => {
   }, []);
 
   useEffect(() => {
-    const fetchNewReleases = async () => {
+    const fetchPlaylistTracks = async () => {
       if (token) {
         try {
           const response = await axios.get(
-            "https://api.spotify.com/v1/browse/new-releases",
+            `https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }
           );
-          setNewReleases(response.data.albums.items);
+          setPlaylistTracks(response.data.items.map(item => item.track));
         } catch (error) {
-          console.error("Error fetching new releases:", error);
+          console.error("Error fetching playlist tracks:", error);
         }
       }
     };
 
-    fetchNewReleases();
+    fetchPlaylistTracks();
   }, [token]);
 
-  const fetchTracks = async (albumId) => {
-    try {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/albums/${albumId}/tracks`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const trackDetails = await Promise.all(
-        response.data.items.map(async (track) => {
-          const trackResponse = await axios.get(
-            `https://api.spotify.com/v1/tracks/${track.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          return trackResponse.data;
-        })
-      );
-      setTracks((prevTracks) => ({
-        ...prevTracks,
-        [albumId]: trackDetails,
-      }));
-    } catch (error) {
-      console.error("Error fetching tracks:", error);
-    }
-  };
-
-  const handleAlbumClick = (albumId) => {
-    if (expandedAlbum === albumId) {
-      setExpandedAlbum(null);
-    } else {
-      setExpandedAlbum(albumId);
-      fetchTracks(albumId);
-    }
-  };
-
-  const handleInfoClick = (e, albumId) => {
-    e.stopPropagation();
-    handleAlbumInfo(albumId);
-  };
-
-  const handleAlbumInfo = async (albumId) => {
-    try {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/albums/${albumId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setSelectedAlbum(response.data);
-      setIsAlbumModalOpen(true);
-    } catch (error) {
-      console.error("Error fetching album details:", error);
-    }
-  };
-
-  const handleTrackClick = async (e, trackId) => {
-    e.stopPropagation();
+  const handleTrackInfo = async (trackId) => {
     try {
       const response = await axios.get(
         `https://api.spotify.com/v1/tracks/${trackId}`,
@@ -142,11 +75,6 @@ const NewReleases = () => {
     } catch (error) {
       console.error("Error fetching track details:", error);
     }
-  };
-
-  const closeAlbumModal = () => {
-    setIsAlbumModalOpen(false);
-    setSelectedAlbum(null);
   };
 
   const closeTrackModal = () => {
@@ -168,76 +96,39 @@ const NewReleases = () => {
 
   return (
     <div className={styles.newReleases}>
-      <p className={styles.title}>최신 음악</p>
+      <p className={styles.title}>New Music K-Pop (국내 최신 가요)</p>
       <div className={styles.releasesGrid}>
-        {newReleases.map((album) => (
+        {playlistTracks.map((track) => (
           <div
-            key={album.id}
-            className={`${styles.releaseCard} ${
-              expandedAlbum === album.id ? styles.expanded : ""
-            }`}
-            onClick={() => handleAlbumClick(album.id)}
+            key={track.id}
+            className={styles.releaseCard}
+            onClick={() => handleTrackInfo(track.id)}
           >
             <div className={styles.releaseHeader}>
               <img
-                src={album.images[0].url}
-                alt={album.name}
+                src={track.album.images[0].url}
+                alt={track.name}
                 className={styles.releaseImage}
               />
               <div className={styles.releaseInfo}>
-                <div className={styles.titleContainer}>
-                  <h3 className={styles.releaseTitle}>{album.name}</h3>
-                  <button
-                    className={styles.moreButton}
-                    onClick={(e) => handleInfoClick(e, album.id)}
-                  >
-                    ...
-                  </button>
-                </div>
+                <h3 className={styles.releaseTitle}>{track.name}</h3>
                 <p className={styles.releaseArtist}>
-                  {album.artists.map((artist) => artist.name).join(", ")}
+                  {track.artists.map((artist) => artist.name).join(", ")}
                 </p>
               </div>
-            </div>
-            {expandedAlbum === album.id && (
-              <div className={`${styles.tracksList} ${styles.expanded}`}>
-                {tracks[album.id] &&
-                  tracks[album.id].map((track) => (
-                    <div
-                      key={track.id}
-                      className={styles.trackItem}
-                      onClick={(e) => handleTrackClick(e, track.id)}
-                    >
-                      <img
-                        src={
-                          track.album?.images?.[0]?.url ||
-                          "default-image-url.jpg"
-                        }
-                        alt={track.name}
-                        className={styles.trackImage}
-                      />
-                      <div className={styles.trackInfo}>
-                        <p className={styles.trackName}>{track.name}</p>
-                        <p className={styles.artistName}>
-                          {track.artists
-                            .map((artist) => artist.name)
-                            .join(", ")}
-                        </p>
-                      </div>
-                      <div
-                        className={styles.bookmarkButtonContainer}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <BookmarkButton
-                          trackId={track.id}
-                          isBookmarked={bookmarkedTracks.has(track.id)}
-                          onToggle={() => handleBookmarkToggle(track.id)}
-                        />
-                      </div>
-                    </div>
-                  ))}
+              <div
+                className={styles.bookmarkButtonContainer}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleBookmarkToggle(track.id);
+                }}
+              >
+                <BookmarkButton
+                  isBookmarked={bookmarkedTracks.has(track.id)}
+                  onToggle={() => handleBookmarkToggle(track.id)}
+                />
               </div>
-            )}
+            </div>
           </div>
         ))}
       </div>
@@ -255,4 +146,4 @@ const NewReleases = () => {
   );
 };
 
-export default NewReleases;
+export default KpopNewReleases;

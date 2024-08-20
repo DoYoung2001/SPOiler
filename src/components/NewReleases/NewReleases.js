@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
+import AlbumInfo from "../AlbumInfo/AlbumInfo";
 import TrackInfo from "../TrackInfo/TrackInfo";
 import styles from "./NewReleases.module.css";
 
@@ -13,8 +14,10 @@ const NewReleases = () => {
   const [expandedAlbum, setExpandedAlbum] = useState(null);
   const [tracks, setTracks] = useState({});
   const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
-  const [selectedTrack, setSelectedTrack] = useState(null); // 선택된 트랙
-  const [isTrackModalOpen, setIsTrackModalOpen] = useState(false); // 모달 열림 상태
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [isAlbumModalOpen, setIsAlbumModalOpen] = useState(false);
+  const [selectedTrack, setSelectedTrack] = useState(null);
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
 
   useEffect(() => {
     const getToken = async () => {
@@ -101,12 +104,30 @@ const NewReleases = () => {
     }
   };
 
-  const handleInfoClick = (e, trackId) => {
-    e.stopPropagation(); // 이벤트 전파 방지
-    handleTrackInfo(trackId); // handleAlbumInfo -> handleTrackInfo로 수정
+  const handleInfoClick = (e, albumId) => {
+    e.stopPropagation();
+    handleAlbumInfo(albumId);
   };
 
-  const handleTrackInfo = async (trackId) => {
+  const handleAlbumInfo = async (albumId) => {
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/albums/${albumId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setSelectedAlbum(response.data);
+      setIsAlbumModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching album details:", error);
+    }
+  };
+
+  const handleTrackClick = async (e, trackId) => {
+    e.stopPropagation();
     try {
       const response = await axios.get(
         `https://api.spotify.com/v1/tracks/${trackId}`,
@@ -123,21 +144,9 @@ const NewReleases = () => {
     }
   };
 
-  const handleAlbumInfo = async (trackId) => {
-    try {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/tracks/${trackId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setSelectedTrack(response.data);
-      setIsTrackModalOpen(true);
-    } catch (error) {
-      console.error("Error fetching track details:", error);
-    }
+  const closeAlbumModal = () => {
+    setIsAlbumModalOpen(false);
+    setSelectedAlbum(null);
   };
 
   const closeTrackModal = () => {
@@ -176,15 +185,18 @@ const NewReleases = () => {
                 className={styles.releaseImage}
               />
               <div className={styles.releaseInfo}>
-                <h3 className={styles.releaseTitle}>{album.name}</h3>
+                <div className={styles.titleContainer}>
+                  <h3 className={styles.releaseTitle}>{album.name}</h3>
+                  <button
+                    className={styles.moreButton}
+                    onClick={(e) => handleInfoClick(e, album.id)}
+                  >
+                    ...
+                  </button>
+                </div>
                 <p className={styles.releaseArtist}>
                   {album.artists.map((artist) => artist.name).join(", ")}
                 </p>
-              </div>
-              <div className={styles.buttonContainer}>
-                <button onClick={(e) => handleInfoClick(e, album.id)}>
-                  ...
-                </button>
               </div>
             </div>
             {expandedAlbum === album.id && (
@@ -194,7 +206,7 @@ const NewReleases = () => {
                     <div
                       key={track.id}
                       className={styles.trackItem}
-                      onClick={(e) => handleInfoClick(e, track.id)}
+                      onClick={(e) => handleTrackClick(e, track.id)}
                     >
                       <img
                         src={
@@ -217,7 +229,7 @@ const NewReleases = () => {
                         onClick={(e) => e.stopPropagation()}
                       >
                         <BookmarkButton
-                          key={track.id}
+                          trackId={track.id}
                           isBookmarked={bookmarkedTracks.has(track.id)}
                           onToggle={() => handleBookmarkToggle(track.id)}
                         />
@@ -229,6 +241,11 @@ const NewReleases = () => {
           </div>
         ))}
       </div>
+      <AlbumInfo
+        isOpen={isAlbumModalOpen}
+        onClose={closeAlbumModal}
+        album={selectedAlbum}
+      />
       <TrackInfo
         isOpen={isTrackModalOpen}
         onClose={closeTrackModal}

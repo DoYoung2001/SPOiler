@@ -13,15 +13,15 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import Playlist from "./components/Playlist/Playlist";
 import PlaylistDetail from "./components/PlaylistDetail/PlaylistDetail";
+import SearchPage from "./components/SearchPage/SearchPage"; // SearchPage 컴포넌트 가져오기
 import "./styles.css";
 
 const queryClient = new QueryClient();
 
-// 로그인 상태와 회원가입 상태를 App 컴포넌트에서 관리
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token")); // 로컬 스토리지에서 로그인 상태 확인
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [location, setLocation] = useState({ lat: null, lon: null });
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -34,7 +34,6 @@ const App = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          // 에러 시 기본 위치를 설정할 수 있습니다 (예: 서울)
           setLocation({ lat: 37.52193056, lon: 129.1166333 });
         }
       );
@@ -43,21 +42,21 @@ const App = () => {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
-    navigate("/"); // 로그인 후 메인 페이지로 이동
+    navigate("/");
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem("token"); // 로그아웃 시 토큰 삭제
-    navigate("/login"); // 로그아웃 후 로그인 페이지로 이동
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   const handleRegisterClick = () => {
-    navigate("/register"); // 회원가입 페이지로 이동
+    navigate("/register");
   };
 
   const handleRegisterSubmit = () => {
-    navigate("/login"); // 회원가입 후 로그인 페이지로 이동
+    navigate("/login");
   };
 
   if (!isLoggedIn) {
@@ -84,8 +83,7 @@ const App = () => {
               onRegisterClick={handleRegisterClick}
             />
           }
-        />{" "}
-        {/* 기본 경로 설정 */}
+        />
       </Routes>
     );
   }
@@ -102,11 +100,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<MainContent lat={location.lat} lon={location.lon} />} />
               <Route path="/playlist" element={<Playlist />} />
-              <Route
-                path="/myplaylist"
-                element={<PlaylistDetail />}
-              />
-              {/* 로그인 페이지는 이미 처리됨 */}
+              <Route path="/myplaylist" element={<PlaylistDetail />} />
+              <Route path="/search" element={<SearchPage />} /> {/* SearchPage 라우트 추가 */}
             </Routes>
           </div>
         </div>
@@ -115,7 +110,6 @@ const App = () => {
   );
 };
 
-// Router로 래핑된 App 컴포넌트 반환
 const AppWrapper = () => (
   <Router>
     <App />

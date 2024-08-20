@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./PlaylistDetail.module.css";
-import TracklistAlert from "../TracklistAlert/TracklistAlert"; // 모달 컴포넌트 임포트
 
 const PlaylistDetail = () => {
   const { playlistName } = useParams();
@@ -10,7 +9,6 @@ const PlaylistDetail = () => {
   const [error, setError] = useState("");
   const [token, setToken] = useState(""); // Spotify API 토큰 상태
   const navigate = useNavigate();
-  const userId = 1; // 예시로 사용자의 ID를 하드코딩
 
   // Spotify API 토큰 가져오기
   useEffect(() => {
@@ -59,7 +57,7 @@ const PlaylistDetail = () => {
 
         // 서버에서 저장된 트랙리스트를 가져옴
         const response = await axios.get(
-          `http://localhost:8080/api/tracklist?userId=${userId}`,
+          `http://localhost:8080/api/tracklist`,
           {
             headers: {
               Authorization: `Bearer ${localToken}`,
@@ -92,7 +90,7 @@ const PlaylistDetail = () => {
     if (token) {
       fetchTracks();
     }
-  }, [token, userId, playlistName]);
+  }, [token, playlistName]);
 
   const handleDelete = async (spotifyId) => {
     try {
@@ -117,6 +115,7 @@ const PlaylistDetail = () => {
         );
         alert(response.data);
 
+        // 모든 트랙이 삭제된 경우 홈으로 이동
         if (tracks.length === 1) {
           navigate("/");
         }
@@ -124,13 +123,12 @@ const PlaylistDetail = () => {
         throw new Error("Failed to delete track. Please try again later.");
       }
     } catch (error) {
-      console.error("Error deleting track:", error);
+      console.error(
+        "Error deleting track:",
+        error.response ? error.response.data : error.message
+      );
       setError("Failed to delete track. Please try again later.");
     }
-  };
-
-  const handlePlaylistAdded = (newTrack) => {
-    setTracks((prevTracks) => [newTrack, ...prevTracks]);
   };
 
   return (

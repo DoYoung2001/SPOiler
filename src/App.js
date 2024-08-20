@@ -34,7 +34,7 @@ const App = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          setLocation({ lat: 37.52193056, lon: 129.1166333 });
+          setLocation({ lat: 34.6937378, lon: 135.5021651 });
         }
       );
     }
@@ -98,10 +98,14 @@ const App = () => {
           </div>
           <div className="playlist-container">
             <Routes>
-              <Route path="/" element={<MainContent lat={location.lat} lon={location.lon} />} />
+              <Route
+                path="/"
+                element={<MainContent lat={location.lat} lon={location.lon} />}
+              />
               <Route path="/playlist" element={<Playlist />} />
               <Route path="/myplaylist" element={<PlaylistDetail />} />
-              <Route path="/search" element={<SearchPage />} /> {/* SearchPage 라우트 추가 */}
+              <Route path="/search" element={<SearchPage />} />{" "}
+              {/* SearchPage 라우트 추가 */}
             </Routes>
           </div>
         </div>

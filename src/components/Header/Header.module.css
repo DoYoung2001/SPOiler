@@ -73,7 +73,7 @@
     right: 10px;
     width: 20px;
     height: 20px;
-    pointer-events: none; /* 클릭 불가능하게 설정 */
+  
   }
   .autocompleteResults {
     position: absolute; /* 부모 요소에 상대적인 위치 지정 */
@@ -89,6 +89,22 @@
     z-index: 1000; /* 다른 요소 위에 표시되도록 */
     overflow-y: auto;  /* 세로 스크롤 활성화 */
     max-height: 300px; /* 원하는 높이로 설정 */
+  }
+  .autocompleteResults::-webkit-scrollbar {
+    width: 6px; /* 스크롤바 너비 */
+  }
+  
+  .autocompleteResults::-webkit-scrollbar-track {
+    background: #181818; /* 스크롤바 트랙 배경색 */
+  }
+  
+  .autocompleteResults::-webkit-scrollbar-thumb {
+    background: #888; /* 스크롤바 색상 */
+    border-radius: 3px; /* 스크롤바 모서리 둥글게 */
+  }
+  
+  .autocompleteResults::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 호버 시 스크롤바 색상 */
   }
   .autocompleteItem {
     display: flex;
@@ -144,19 +160,7 @@
     color: white; /* 링크 색상 설정 */
   }
   
-  .svgIcon {
-    fill: #000; /* 기본 아이콘 색상 */
-    transition: fill 0.4s; /* 색상 변화에 애니메이션 추가 */
-    width: 20px; /* 아이콘 너비 고정 */
-    height: 20px; /* 아이콘 높이 고정 */
-    flex-shrink: 0; /* 아이콘 크기가 줄어들지 않도록 설정 */
-  }
   
-  .svgIcon.checked {
-    fill: #00FF7F; /* 체크 시 아이콘 색상 (초록색) */
-  }
-  /*여기까지 검색창*/
-
 
   /* 여기부터 로그아웃버튼 */
   .logoutButton button {

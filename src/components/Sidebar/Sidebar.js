@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom"; // useNavigate 훅 임포트
 import { useWeather } from "../../hooks/useWeather";
 import Lottie from "react-lottie";
 import clearAnimation from "./animations/clear.json"; // 맑은 날씨 애니메이션
-import rainAnimation from './animations/rain.json'; 
-import cloudsAnimation from './animations/clouds.json';
-import snowAnimation from './animations/snow.json';
+import rainAnimation from "./animations/rain.json";
+import cloudsAnimation from "./animations/clouds.json";
+import snowAnimation from "./animations/snow.json";
 import axios from "axios";
 
 const Sidebar = ({ lat, lon }) => {
@@ -31,18 +31,21 @@ const Sidebar = ({ lat, lon }) => {
   const handleConfirmDelete = async () => {
     try {
       // 로컬 스토리지에서 토큰을 가져옴
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
 
       if (!token) {
         throw new Error("JWT Token not found. Please login again.");
       }
 
       // 전체 트랙 삭제 API 호출
-      const response = await axios.delete("http://localhost:8080/api/tracklist/clear", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.delete(
+        "http://localhost:8080/api/tracklist/clear",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.status === 200) {
         console.log("모든 트랙이 삭제되었습니다.");
@@ -137,12 +140,19 @@ const Sidebar = ({ lat, lon }) => {
         onPlaylistAdded={() => {}} // handlePlaylistAdded 제거
       />
       {!data ? null : (
-        <div>
-          <Lottie options={weatherAnimationOptions} height={150} width={150} />
-          <div>{data.name}</div>
-          <div>{data.weather.description}</div>
-          <div>{data.main.temp}</div>
-          <div>{data.wind.speed}</div>
+        <div className={styles.weatherAnimationContainer}>
+          <Lottie
+            options={weatherAnimationOptions}
+            height={150}
+            width={150}
+            className={styles.lottieAnimation}
+          />
+          <div className={styles.weatherDetails}>
+            <div className={styles.locationName}>{data.name}</div>{" "}
+            <div>{data.weather[0].description}</div>
+            <div>{Math.round(data.main.temp)}°C</div>
+            <div>{data.wind.speed} m/s</div>
+          </div>
         </div>
       )}
 

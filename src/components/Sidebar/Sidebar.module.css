@@ -128,3 +128,37 @@
   justify-content: center;
   margin-bottom: 20px;
 }
+
+.weatherAnimationContainer {
+  position: relative;
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 250px;
+  margin: 0 auto;
+  top: 23%; /* 박스를 더 아래로 이동 */
+}
+
+.weatherAnimationContainer .lottieAnimation {
+  margin-bottom: 10px; /* 애니메이션 아래 여백 조정 */
+}
+
+.weatherDetails {
+  font-size: 16px; /* 기본 글꼴 크기 약간 확대 */
+  color: #333;
+}
+
+.weatherDetails .locationName {
+  font-size: 24px; /* 도시 이름의 글꼴 크기를 더 크게 설정 */
+  font-weight: bold; /* 굵게 설정 */
+  color: #2c3e50; /* 강조된 색상 */
+  margin-bottom: 10px; /* 아래 여백 추가 */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 추가 */
+}
+
+.weatherDetails div {
+  margin: 5px 0; /* 각 정보 간격 조정 */
+}

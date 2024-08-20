@@ -11,6 +11,7 @@ const FeaturedPlaylists = () => {
   const [expandedPlaylist, setExpandedPlaylist] = useState(null);
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const getToken = async () => {
@@ -164,9 +165,25 @@ const FeaturedPlaylists = () => {
       <p className={styles.title}>실시간 인기 플레이리스트</p>
       <div className={styles.playlistsGrid}>
         {playlists.map((playlist) => (
-          <div key={playlist.id} className={`${styles.playlistCard} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} onClick={() => handlePlaylistClick(playlist.id)}>
-            <div className={`${styles.playlistHeader} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
-              <img src={playlist.images[0]?.url} alt={playlist.name} className={`${styles.playlistImage} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`} />
+          <div
+            key={playlist.id}
+            className={`${styles.playlistCard} ${
+              expandedPlaylist === playlist.id ? styles.expanded : ""
+            }`}
+            onClick={() => handlePlaylistClick(playlist.id)}
+          >
+            <div
+              className={`${styles.playlistHeader} ${
+                expandedPlaylist === playlist.id ? styles.expanded : ""
+              }`}
+            >
+              <img
+                src={playlist.images[0]?.url}
+                alt={playlist.name}
+                className={`${styles.playlistImage} ${
+                  expandedPlaylist === playlist.id ? styles.expanded : ""
+                }`}
+              />
               <div className={styles.playlistInfo}>
                 <h3
                   className={`${styles.playlistTitle} ${
@@ -186,10 +203,15 @@ const FeaturedPlaylists = () => {
                 </p>
               </div>
             </div>
-            <div className={`${styles.tracksList} ${expandedPlaylist === playlist.id ? styles.expanded : ''}`}>
-              {tracks[playlist.id] && tracks[playlist.id].map((trackItem) => {
-                // trackItem.track이 null이거나 undefined인 경우 렌더링하지 않음
-                if (!trackItem || !trackItem.track) return null;
+            <div
+              className={`${styles.tracksList} ${
+                expandedPlaylist === playlist.id ? styles.expanded : ""
+              }`}
+            >
+              {tracks[playlist.id] &&
+                tracks[playlist.id].map((trackItem) => {
+                  // trackItem.track이 null이거나 undefined인 경우 렌더링하지 않음
+                  if (!trackItem || !trackItem.track) return null;
 
                   return (
                     <div

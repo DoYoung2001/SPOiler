@@ -1,0 +1,22 @@
+/* SearchPage.module.css */
+
+.resultsContainer {
+    padding: 20px;
+  }
+  
+  .trackItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .trackImage {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+  }
+  
+  .trackInfo {
+    display: flex;
+    flex-direction: column;
+  }

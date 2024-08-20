@@ -7,7 +7,6 @@ const Header = ({ onLogout }) => {
   const [token, setToken] = useState('');
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [toggleStates, setToggleStates] = useState({});
   const trackRefs = useRef({});
   const navigate = useNavigate(); // useNavigate 훅 초기화
 
@@ -63,43 +62,6 @@ const Header = ({ onLogout }) => {
     e.preventDefault(); // 기본 폼 제출 동작 방지
     if (query) {
       navigate(`/search?query=${encodeURIComponent(query)}`); // 검색 페이지로 이동
-    }
-  };
-
-  const toggleButton = async (trackId) => {
-    try {
-      setToggleStates((prevStates) => {
-        const newState = !prevStates[trackId];
-        alert(`Track ${newState ? 'bookmarked' : 'unbookmarked'}`);
-        return {
-          ...prevStates,
-          [trackId]: newState,
-        };
-      });
-
-      const localToken = localStorage.getItem('token');
-      if (!localToken) {
-        console.error('Error: No token found in localStorage');
-        return;
-      }
-
-      await axios.post(
-        'http://localhost:8080/api/tracklist',
-        { spotifyId: trackId },
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-    } catch (error) {
-      if (error.response) {
-        console.error('Error toggling bookmark:', error.response.data);
-      } else if (error.request) {
-        console.error('Error toggling bookmark: No response received', error.request);
-      } else {
-        console.error('Error toggling bookmark:', error.message);
-      }
     }
   };
 
@@ -172,16 +134,7 @@ const Header = ({ onLogout }) => {
                       </div>
                     </a>
                   </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="1.5em"
-                    viewBox="0 0 384 512"
-                    className={`${styles.svgIcon} ${toggleStates[result.id] ? styles.checked : ''}`}
-                    onClick={() => toggleButton(result.id)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"></path>
-                  </svg>
+                  
                 </li>
               ))}
             </ul>

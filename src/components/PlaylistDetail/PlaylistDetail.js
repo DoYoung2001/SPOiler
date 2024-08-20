@@ -6,15 +6,41 @@ import styles from "./PlaylistDetail.module.css";
 const PlaylistDetail = () => {
   const { playlistName } = useParams();
   const [tracks, setTracks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [token, setToken] = useState(""); // Spotify API 토큰 상태
   const navigate = useNavigate();
 
-  // Spotify API 토큰 가져오기
   useEffect(() => {
-    const getToken = async () => {
+    const fetchTracks = async () => {
+      setIsLoading(true);
+      setError("");
+
       try {
-        const response = await axios.post(
+        const localToken = localStorage.getItem("token");
+        if (!localToken) {
+          throw new Error("JWT Token not found. Please login again.");
+        }
+
+        // 서버에서 저장된 트랙리스트를 가져옴
+        const tracklistResponse = await axios.get(
+          `http://localhost:8080/api/tracklist`,
+          {
+            headers: {
+              Authorization: `Bearer ${localToken}`,
+            },
+          }
+        );
+
+        const savedTracks = tracklistResponse.data;
+
+        if (savedTracks.length === 0) {
+          setTracks([]);
+          setIsLoading(false);
+          return;
+        }
+
+        // Spotify API 토큰 가져오기
+        const tokenResponse = await axios.post(
           "https://accounts.spotify.com/api/token",
           "grant_type=client_credentials",
           {
@@ -30,48 +56,14 @@ const PlaylistDetail = () => {
             },
           }
         );
-        setToken(response.data.access_token);
-      } catch (error) {
-        console.error(
-          "Error fetching the token:",
-          error.response ? error.response.data : error.message
-        );
-        setError("Failed to fetch Spotify token. Please try again later.");
-      }
-    };
 
-    getToken();
-  }, []);
-
-  // 트랙 정보 가져오기
-  useEffect(() => {
-    const fetchTracks = async () => {
-      setError("");
-
-      try {
-        const localToken = localStorage.getItem("token");
-
-        if (!localToken) {
-          throw new Error("JWT Token not found. Please login again.");
-        }
-
-        // 서버에서 저장된 트랙리스트를 가져옴
-        const response = await axios.get(
-          `http://localhost:8080/api/tracklist`,
-          {
-            headers: {
-              Authorization: `Bearer ${localToken}`,
-            },
-          }
-        );
-
-        const trackIds = response.data.map((track) => track.spotifyId);
+        const spotifyToken = tokenResponse.data.access_token;
 
         // Spotify API를 통해 트랙의 세부 정보를 가져옴
-        const trackDetailsPromises = trackIds.map((spotifyId) =>
-          axios.get(`https://api.spotify.com/v1/tracks/${spotifyId}`, {
+        const trackDetailsPromises = savedTracks.map((track) =>
+          axios.get(`https://api.spotify.com/v1/tracks/${track.spotifyId}`, {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${spotifyToken}`,
             },
           })
         );
@@ -80,22 +72,20 @@ const PlaylistDetail = () => {
         const spotifyTracks = trackDetailsResponses.map((res) => res.data);
 
         setTracks(spotifyTracks);
-        localStorage.setItem("tracksExist", spotifyTracks.length > 0);
       } catch (error) {
         console.error("Error fetching tracks:", error);
         setError("Failed to fetch tracks. Please try again later.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    if (token) {
-      fetchTracks();
-    }
-  }, [token, playlistName]);
+    fetchTracks();
+  }, []);
 
   const handleDelete = async (spotifyId) => {
     try {
       const localToken = localStorage.getItem("token");
-
       if (!localToken) {
         throw new Error("JWT Token not found. Please login again.");
       }
@@ -123,13 +113,14 @@ const PlaylistDetail = () => {
         throw new Error("Failed to delete track. Please try again later.");
       }
     } catch (error) {
-      console.error(
-        "Error deleting track:",
-        error.response ? error.response.data : error.message
-      );
+      console.error("Error deleting track:", error);
       setError("Failed to delete track. Please try again later.");
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.playlistDetailContainer}>

@@ -75,7 +75,7 @@ const Genre = ({ weather }) => {
                 q: `genre:k-pop ${weatherCondition}`,
                 type: 'track',
                 market: 'KR',
-                limit: 20
+                limit: 40
               },
               headers: {
                 Authorization: `Bearer ${token}`,

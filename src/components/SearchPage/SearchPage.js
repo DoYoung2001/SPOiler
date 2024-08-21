@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import styles from './SearchPage.module.css';
+import BookmarkButton from "../BookmarkButton/BookmarkButton";
+
 
 const SearchPage = () => {
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedTrack, setSelectedTrack] = useState(null);
+  const [bookmarkedTracks, setBookmarkedTracks] = useState(new Set());
   const location = useLocation();
 
   useEffect(() => {
@@ -38,6 +41,40 @@ const SearchPage = () => {
     }
   }, [location.search]);
 
+
+  useEffect(() => {
+    const fetchInitialBookmarks = async () => {
+      const userToken = localStorage.getItem("token");
+      if (userToken) {
+        try {
+          const response = await axios.get("http://localhost:8080/api/tracklist", {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          });
+          const bookmarkedIds = new Set(response.data.map(track => track.spotifyId));
+          setBookmarkedTracks(bookmarkedIds);
+        } catch (error) {
+          console.error("Error fetching initial bookmarks:", error);
+        }
+      }
+    };
+
+    fetchInitialBookmarks();
+  }, []);
+
+  const toggleBookmark = (trackId) => {
+    setBookmarkedTracks((prevBookmarks) => {
+      const newBookmarks = new Set(prevBookmarks);
+      if (newBookmarks.has(trackId)) {
+        newBookmarks.delete(trackId);
+      } else {
+        newBookmarks.add(trackId);
+      }
+      return newBookmarks;
+    });
+  };
+
   const handleTrackClick = (track) => {
     setSelectedTrack(track);
   };
@@ -56,6 +93,7 @@ const SearchPage = () => {
       <div className={styles.trackList}>
         <h2 className={styles.searchResultsHeader}>Search Results</h2>
         <div className={styles.trackHeaders}>
+          <span className={styles.bookmark}></span> {/* 북마크 버튼을 위한 빈 헤더 */}
           <span className={styles.index}>#</span>
           <span className={styles.trackName}>Track Name</span>
           <span className={styles.albumName}>Album Name</span>
@@ -64,6 +102,16 @@ const SearchPage = () => {
         <ul>
           {tracks.map((track, index) => (
             <li key={track.id} className={styles.trackItem} onClick={() => handleTrackClick(track)}>
+              <div
+                className={styles.bookmarkButtonContainer}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <BookmarkButton
+                  trackId={track.id}
+                  initialBookmarked={bookmarkedTracks.has(track.id)}
+                  onToggle={() => toggleBookmark(track.id)}
+                />
+              </div>
               <span className={styles.trackIndex}>{index + 1}</span>
               <img src={track.album.images[0]?.url} alt={track.name} className={styles.trackImage} />
               <div className={styles.trackInfo}>

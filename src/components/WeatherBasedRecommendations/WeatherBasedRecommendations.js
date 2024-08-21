@@ -64,7 +64,7 @@ const WeatherBasedRecommendations = ({ weather }) => {
         try {
           const weatherCondition = getWeatherCondition(weather);
           const response = await axios.get(
-            `https://api.spotify.com/v1/search?q=genre:${weatherCondition}&type=track&limit=20`,
+            `https://api.spotify.com/v1/search?q=genre:${weatherCondition}&type=track&limit=40`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

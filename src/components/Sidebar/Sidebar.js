@@ -52,7 +52,7 @@ const Sidebar = ({ lat, lon }) => {
         setShowConfirmDialog(false);
 
         // 페이지 이동을 위해 상태 업데이트가 완료된 후 리디렉션
-        navigate("/"); // 메인 페이지로 이동
+        navigate("/myplaylist"); // 메인 페이지로 이동
       } else {
         throw new Error("Failed to delete tracks. Please try again later.");
       }

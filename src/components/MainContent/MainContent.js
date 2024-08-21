@@ -2,7 +2,7 @@ import React from "react";
 import FeaturedPlaylists from "../FeaturedPlaylists/FeaturedPlaylists";
 import styles from "./MainContent.module.css";
 import NewReleases from "../NewReleases/NewReleases";
-import SpotifyGenreTracks from "../Genre/Genre";
+import Genre from "../Genre/Genre";
 import WeatherBasedRecommendations from "../WeatherBasedRecommendations/WeatherBasedRecommendations";
 import { useWeather } from "../../hooks/useWeather";
 
@@ -24,7 +24,7 @@ const MainContent = ({ lat, lon }) => {
         </div>
         <div className={styles["content-box"]}>
           <div>
-            <SpotifyGenreTracks />
+            {data ? <Genre weather={data.weather[0].main} /> : "..." }
           </div>
         </div>
         <div className={styles["content-box"]}>

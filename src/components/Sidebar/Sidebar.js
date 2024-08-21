@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import TracklistAlert from "../TracklistAlert/TracklistAlert"; // 모달 컴포넌트 임포트
 import styles from "./Sidebar.module.css";
-import { useNavigate } from "react-router-dom"; // useNavigate 훅 임포트
+import { useNavigate, useLocation } from "react-router-dom"; // useNavigate 훅 임포트
 import { useWeather } from "../../hooks/useWeather";
 import Lottie from "react-lottie";
 import clearAnimation from "./animations/clear.json"; // 맑은 날씨 애니메이션
 import rainAnimation from "./animations/rain.json";
 import cloudsAnimation from "./animations/clouds.json";
 import snowAnimation from "./animations/snow.json";
+
 import axios from "axios";
 
 const Sidebar = ({ lat, lon }) => {
@@ -15,6 +16,7 @@ const Sidebar = ({ lat, lon }) => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const navigate = useNavigate(); // useNavigate 훅 사용
   const { data } = useWeather(lat, lon);
+  const location = useLocation();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -50,9 +52,12 @@ const Sidebar = ({ lat, lon }) => {
       if (response.status === 200) {
         console.log("모든 트랙이 삭제되었습니다.");
         setShowConfirmDialog(false);
-
-        // 페이지 이동을 위해 상태 업데이트가 완료된 후 리디렉션
-        navigate("/myplaylist"); // 메인 페이지로 이동
+          // 현재 위치에 따라 다른 페이지로 이동
+          if (location.pathname === "/") {
+            navigate("/myplaylist");
+          } else {
+            navigate("/");
+          }
       } else {
         throw new Error("Failed to delete tracks. Please try again later.");
       }

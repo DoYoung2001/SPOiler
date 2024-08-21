@@ -88,7 +88,7 @@
     width: 40px; /* 인덱스 너비 */
     text-align: center;
     color: #ccc;
-    margin-right: 20px; /* 인덱스와 이미지 사이의 간격 증가 */
+    margin: 20px;
   }
   
   .trackImage {
@@ -198,4 +198,10 @@
     .trackInfoContainer {
       margin-top: 20px;
     }
+  }
+
+  .bookmarkButtonContainer {
+    display: flex;
+    align-items: center;
+    margin: auto; 
   }

@@ -105,7 +105,7 @@ const KpopNewReleases = () => {
 
   return (
     <div className={styles.newReleases}>
-      <p className={styles.title}>New Music K-Pop (국내 최신 가요)</p>
+      <p className={styles.title}>New Music K-Pop</p>
       <div className={styles.releasesGrid}>
         {playlistTracks.map((track) => (
           <div

@@ -72,7 +72,7 @@ const WeatherBasedRecommendations = ({ weather }) => {
             }
           );
           const tracksWithPopularity = response.data.tracks.items.filter(
-            (track) => track.popularity > 50
+            (track) => track.popularity > 30
           );
           setRecommendedTracks(tracksWithPopularity);
         } catch (error) {
@@ -87,7 +87,7 @@ const WeatherBasedRecommendations = ({ weather }) => {
   const getWeatherCondition = (weather) => {
     switch (weather) {
       case "Clear":
-        return "chill";
+        return "sunny";
       case "Clouds":
         return "mellow";
       case "Snow":
@@ -102,15 +102,15 @@ const WeatherBasedRecommendations = ({ weather }) => {
   const getTitle = (weather) => {
     switch (weather) {
       case "Clear":
-        return "맑은 날씨에 추천하는 노래";
+        return "맑은 날씨에 어울리는 pop";
       case "Clouds":
-        return "흐린 날씨에 추천하는 노래";
+        return "흐린 날씨에 어울리는 pop";
       case "Snow":
-        return "눈 내리는 날에 추천하는 노래";
+        return "눈 내리는 날에 어울리는 pop";
       case "Rain":
-        return "비 오는 날에 추천하는 노래";
+        return "비 오는 날에 어울리는 pop";
       default:
-        return "추천하는 노래";
+        return "날씨에 어울리는 pop";
     }
   };
 

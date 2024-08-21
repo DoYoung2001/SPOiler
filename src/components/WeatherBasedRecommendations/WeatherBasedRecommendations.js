@@ -87,7 +87,7 @@ const WeatherBasedRecommendations = ({ weather }) => {
   const getWeatherCondition = (weather) => {
     switch (weather) {
       case "Clear":
-        return "sunny";
+        return "rock";
       case "Clouds":
         return "mellow";
       case "Snow":

@@ -34,7 +34,7 @@ const App = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          setLocation({ lat: 34.6937378, lon: 135.5021651 });
+          setLocation({ lat: 37.6, lon: 127 });
         }
       );
     }

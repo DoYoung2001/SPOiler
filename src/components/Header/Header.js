@@ -43,7 +43,7 @@ const Header = ({ onLogout }) => {
     if (e.target.value && token) {
       try {
         const response = await axios.get(
-          `https://api.spotify.com/v1/search?q=${e.target.value}&type=track&limit=15`,
+          `https://api.spotify.com/v1/search?q=${e.target.value}&type=track&limit=31`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ const Header = ({ onLogout }) => {
     setQuery(trackName);
     try {
       const response = await axios.get(
-        `https://api.spotify.com/v1/search?q=${encodeURIComponent(trackName)}&type=track&limit=15`,
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(trackName)}&type=track&limit=31`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
